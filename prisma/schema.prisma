@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Roles {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  users          Users[]
+  Authorizations Authorizations?
+}
+
+model Privileges {
+  id_privilege   Int              @id @default(autoincrement())
+  authorizations Authorizations[] // One-to-Many relation
+}
+
+model Authorizations {
+  id_role      Int        @id
+  id_privilege Int
+  Roles        Roles      @relation(fields: [id_role], references: [id])
+  Privileges   Privileges @relation(fields: [id_privilege], references: [id_privilege])
+
+  @@unique([id_role, id_privilege])
+}
+
+model Users {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  username String  @unique
+  password String
+  phone    String? @unique
+  role_id  Int    
+  token    String? @db.VarChar(100)
+  Roles    Roles   @relation(fields: [role_id], references: [id])
+
+  Transactions Transactions[]
+}
+
+model WasteCategory {
+  id        Int     @id @default(autoincrement())
+  category  String
+  isDeleted Boolean @default(false)
+
+  Pricelist       Pricelist[]
+  TransactionData TransactionData[]
+  Transactions    Transactions[]
+}
+
+model UOM {
+  id        Int     @id @default(autoincrement())
+  unit      String
+  isDeleted Boolean @default(false)
+
+  Pricelist       Pricelist[]
+  TransactionData TransactionData[]
+}
+
+model Transactions {
+  id               Int            @id @default(autoincrement())
+  user_id          Int
+  transaction_date DateTime?
+  total            Int?
+  approved_by      Int?
+  Users            Users          @relation(fields: [user_id], references: [id])
+  WasteCategory    WasteCategory? @relation(fields: [approved_by], references: [id])
+
+  TransactionData TransactionData[]
+}
+
+model Pricelist {
+  waste_id   Int
+  uom_id     Int
+  price      Int
+  isActive   Boolean
+  start_date DateTime
+  end_date   DateTime?
+  isDeleted  Boolean   @default(false)
+
+  WasteCategory WasteCategory @relation(fields: [waste_id], references: [id])
+  UOM           UOM           @relation(fields: [uom_id], references: [id])
+
+  @@id([waste_id, uom_id]) // Composite key
+}
+
+model TransactionData {
+  transaction_id Int
+  waste_id       Int
+  uom_id         Int
+  quantity       Int
+  price          Float
+
+  Transactions  Transactions  @relation(fields: [transaction_id], references: [id])
+  WasteCategory WasteCategory @relation(fields: [waste_id], references: [id])
+  UOM           UOM           @relation(fields: [uom_id], references: [id])
+
+  @@unique([transaction_id, waste_id, uom_id, quantity, price])
+}
+
+model Videos {
+  id            Int         @id @default(autoincrement())
+  title         String
+  description   String
+  duration      Int
+  format        String
+  thumbnail_url String
+  url           String
+  upload_date   DateTime
+  uploaded_by   String
+  isActive      Boolean
+  video_order   Int
+  LogVideos     LogVideos[]
+}
+
+model Articles {
+  id            Int           @id @default(autoincrement())
+  title         String
+  content       String
+  category      String
+  isPublished   Boolean
+  created_by    String
+  created_date  DateTime
+  article_order Int
+  LogArticles   LogArticles[]
+}
+
+model LogArticles {
+  article_id    Int
+  accessed_by   String
+  accessed_time DateTime
+
+  Articles Articles @relation(fields: [article_id], references: [id])
+
+  @@id([article_id, accessed_by])
+}
+
+model LogVideos {
+  video_id      Int
+  accessed_by   String
+  accessed_time DateTime
+
+  Videos Videos @relation(fields: [video_id], references: [id])
+
+  @@id([video_id, accessed_by])
+}

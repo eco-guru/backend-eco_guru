@@ -1,0 +1,85 @@
+### ADMIN Update profile user
+GET http://localhost:3000/api/admin/users
+Content-Type: application/json
+Accept: application/json
+Authorization: 4a49425e-458c-41cb-9697-a38c35086980
+
+
+### Register
+POST http://localhost:3000/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username" : "asep",
+  "name": "Asep Kurniawan Khannedy",
+  "password" : "rahasia",
+  "phone" : "08126456443"
+}
+
+### Login
+
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "usernameOrPhone" : "asep",
+  "password" : "rahasia"
+}
+
+
+### Get Current User
+### User 
+
+GET http://localhost:3000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: 96a8bd00-a81b-4404-9f1d-4f68f5a2e998
+
+
+### Update User
+### User
+
+PATCH http://localhost:3000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: 96d46a10-8902-444f-87d8-391793437580
+
+{
+  "username" : "dodi",
+  "phone": "085234134511"
+}
+
+
+### Logout
+### User
+
+DELETE http://localhost:3000/api/users/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: 57ef4cc6-00a1-45c4-8b4e-903260b0c588
+
+
+
+### Admin
+### Detail data user
+
+GET http://localhost:3000/api/admin/users/get-one?username=asep
+Content-Type: application/json
+Accept: application/json
+Authorization: 4a49425e-458c-41cb-9697-a38c35086980
+
+
+### Update data by name
+### Admin
+
+PATCH http://localhost:3000/api/admin/user/update?username=user1
+Content-Type: application/json
+Authorization: 4a49425e-458c-41cb-9697-a38c35086980
+
+{
+    "name": "admin",
+    "phone": "0812324222",
+    "role_id": 1
+}
