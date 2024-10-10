@@ -83,3 +83,91 @@ Authorization: 4a49425e-458c-41cb-9697-a38c35086980
     "phone": "0812324222",
     "role_id": 1
 }
+
+
+###
+# Create UOM
+POST http://localhost:3000/api/uom/create
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+{
+  "unit": "Kilogram",
+  "isDeleted": false
+}
+
+###
+
+# Update UOM
+PUT http://localhost:3000/api/uom/update/1
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+{
+  "unit": "Updated Kilogram",
+  "isDeleted": true
+}
+
+###
+
+# Delete UOM
+DELETE http://localhost:3000/api/uom/delete/3
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+
+###
+# Get One UOM
+GET http://localhost:3000/api/uom/get-one/1
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+
+###
+# Get All Uom
+GET http://localhost:3000/api/uom/get
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+
+###
+# Create Waste Category
+POST http://localhost:3000/api/waste-category/create
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+{
+  "category": "Plastic",
+  "isDeleted": false
+}
+
+###
+
+# Update Waste Category
+PUT http://localhost:3000/api/waste-category/update/8
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+{
+  "category": "Updated Plastic",
+  "isDeleted": true
+}
+
+###
+
+# Delete Waste Category
+DELETE http://localhost:3000/api/waste-category/delete/8
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+
+###
+# Get One Waste Category
+GET http://localhost:3000/api/waste-category/get-one/1
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+
+
+###
+# Get All Waste Category
+GET http://localhost:3000/api/waste-category/get
+Content-Type: application/json
+Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f

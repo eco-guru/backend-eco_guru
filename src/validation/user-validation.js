@@ -4,7 +4,7 @@ const registerUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
     password: Joi.string().max(100).required(),
     name: Joi.string().max(100).required(),
-    phone: Joi.string().max(100).required(),
+    phone: Joi.string().optional().pattern(/^[0-9]+$/),
     role_id: Joi.number().optional().default(2),
 });
 
@@ -23,6 +23,7 @@ const updateUserValidation = Joi.object({
 })
 
 const userUpdateSchema = Joi.object({
+    username: Joi.string().max(100).optional(),
     name: Joi.string().optional(),
     phone: Joi.string().optional().pattern(/^[0-9]+$/), // Validasi nomor telepon
     role_id: Joi.number().optional(),

@@ -76,6 +76,7 @@ const login = async (request) => {
     return updatedUser; 
 };
 
+
 const logout = async (username) => {
     username = validate(getUserValidation, username);
 
@@ -131,6 +132,9 @@ const update = async (username,request) => {
     const data = {};
     if (user.username) {
         data.username = user.username;
+    }
+    if (user.name) {
+        data.name = user.name;
     }
     if (user.password) {
         data.password = await bcrypt.hash(user.password, 10);
@@ -192,7 +196,7 @@ const getUserByUsername = async (username) => {
     return user;
 };
 
-  const updateUser = async (username, data) => {
+const updateUser = async (username, data) => {
     username = validate(getUserValidation, username);
 
     if (!username) {
