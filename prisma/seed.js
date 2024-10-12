@@ -19,13 +19,12 @@ async function main() {
     
   });
 
-  // Seed Users
   await prisma.users.create({
     data: {
       username: "user1",
-      name: "admin 1",
       password: hashedPassword,
       phone: "081234567890",
+      profile_picture: "/images/user.jpg",
       token: uuid().toString(),
       role_id: 1,
     },

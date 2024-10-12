@@ -29,16 +29,17 @@ model Authorizations {
 }
 
 model Users {
-  id       Int     @id @default(autoincrement())
-  name     String?
-  username String  @unique
-  password String
-  phone    String? @unique
-  role_id  Int    
-  token    String? @db.VarChar(100)
-  Roles    Roles   @relation(fields: [role_id], references: [id])
+  id              Int     @id @default(autoincrement())
+  username        String  @unique
+  password        String
+  phone           String? @unique
+  profile_picture String? @db.VarChar(255) // Menambahkan kolom Profile_Picture
+  role_id         Int
+  token           String? @db.VarChar(100)
+  Roles           Roles   @relation(fields: [role_id], references: [id])
 
   Transactions Transactions[]
+  WastePickUp  WastePickUp[] // Relasi dengan WastePickUp
 }
 
 model WasteCategory {
@@ -48,7 +49,7 @@ model WasteCategory {
 
   Pricelist       Pricelist[]
   TransactionData TransactionData[]
-  Transactions    Transactions[]
+  Transactions    Transactions[] // Relasi dengan Transactions melalui approved_by
 }
 
 model UOM {
@@ -67,7 +68,7 @@ model Transactions {
   total            Int?
   approved_by      Int?
   Users            Users          @relation(fields: [user_id], references: [id])
-  WasteCategory    WasteCategory? @relation(fields: [approved_by], references: [id])
+  WasteCategory    WasteCategory? @relation(fields: [approved_by], references: [id]) // Relasi ke WasteCategory untuk approved_by
 
   TransactionData TransactionData[]
 }
@@ -146,4 +147,21 @@ model LogVideos {
   Videos Videos @relation(fields: [video_id], references: [id])
 
   @@id([video_id, accessed_by])
+}
+
+enum Status {
+  Scheduled
+  Completed
+  Cancelled
+}
+
+model WastePickUp {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  pick_up_date DateTime
+  location     String
+  status       Status
+  created_date DateTime @default(now())
+
+  Users Users @relation(fields: [user_id], references: [id])
 }

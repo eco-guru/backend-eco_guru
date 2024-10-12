@@ -28,7 +28,38 @@ const postPricelist = async (request) => {
         throw new ResponseError(400, "End date must be greater than start date");
     }
 
-    const pricelist = await prismaClient.pricelists.create({
+    const data = await prismaClient.pricelist.findFirst({
+        where:{
+            waste_id: request.waste_id,
+            uom_id: request.uom_id
+        }
+    })
+
+    if(data) {
+        throw new ResponseError(400, "PriceList already exists");
+    }
+
+    const wasteCategories = await prismaClient.wasteCategory.findFirst({
+        where:{
+            id: request.waste_id
+        }
+    })
+
+    if(!wasteCategories) {
+        throw new ResponseError(400, "Waste Category not found");
+    }
+
+    const uom = await prismaClient.uOM.findFirst({
+        where:{
+            id: request.uom_id
+        }
+    })
+
+    if(!uom) {
+        throw new ResponseError(400, "UOM not found");
+    }
+
+    const pricelist = await prismaClient.pricelist.create({
         data: request
     });
 
@@ -40,7 +71,7 @@ const updatePricelist = async (request) => {
     const data = await prismaClient.pricelist.findFirst({
         where:{
             waste_id: request.waste_id,
-            uom_id: request.uom_id,
+            uom_id: request.uom_id
         }
     })
 
@@ -48,9 +79,36 @@ const updatePricelist = async (request) => {
         throw new ResponseError(400, "Pricelist not found");
     }
 
-    const pricelist = await prismaClient.pricelists.update({
+    if(request.end_date < request.start_date) {
+        throw new ResponseError(400, "End date must be greater than start date");
+    }
+
+    const wasteCategories = await prismaClient.wasteCategory.findFirst({
+        where:{
+            id: request.waste_id
+        }
+    })
+
+    if(!wasteCategories) {
+        throw new ResponseError(400, "Waste Category not found");
+    }
+
+    const uom = await prismaClient.uOM.findFirst({
+        where:{
+            id: request.uom_id
+        }
+    })
+
+    if(!uom) {
+        throw new ResponseError(400, "UOM not found");
+    }
+
+    const pricelist = await prismaClient.pricelist.update({
         where: {
-            id: request.id
+            waste_id_uom_id: {
+                waste_id: request.waste_id,
+                uom_id: request.uom_id
+            }
         },
         data: request
     });
@@ -62,7 +120,8 @@ const deletePricelist = async (request) => {
 
     const data = await prismaClient.pricelist.findFirst({
         where:{
-            waste_id: request.waste_id,
+            waste_id: request.wasteId,
+            uom_id: request.uomId
         }
     });
 
@@ -72,15 +131,41 @@ const deletePricelist = async (request) => {
     
     const pricelist = await prismaClient.pricelist.delete({
         where: {
-            waste_id: request.waste_id,
+            waste_id_uom_id: {
+                waste_id: request.wasteId,
+                uom_id: request.uomId
+            }
+            
         }
     });
-    return pricelist;
+    
+    if(!pricelist) {
+        throw new ResponseError(400, "Pricelist not found");
+    }
+    return {
+        message: "Pricelist deleted successfully"
+    };
+}
+
+const getOne = async (request) => {
+    request = validate(getAndDeletePricelistValidation, request);
+    const data = await prismaClient.pricelist.findFirst({
+        where:{
+            waste_id: request.wasteId,
+            uom_id: request.uomId
+        }
+    });
+    if(!data) {
+        throw new ResponseError(400, "Pricelist not found");
+    }
+
+    return data;
 }
 
 export default {
     getPricelist,
     postPricelist,
     updatePricelist,
-    deletePricelist
+    deletePricelist,
+    getOne
 }

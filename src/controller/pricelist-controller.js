@@ -38,8 +38,24 @@ const updatePricelist = async (req, res, next) => {
 
 const deletePricelist = async (req, res, next) => {
     try {
-        const wasteIid = req.params.wasteIid;
-        const result = await pricelistService.deletePricelist(wasteIid);
+        const wasteId = req.params.wasteId;
+        const uomId = req.params.uomId;
+        const request = { wasteId, uomId }
+        const result = await pricelistService.deletePricelist(request);
+        res.status(200).json({
+            data: result
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
+const getOne = async (req, res, next) => {
+    try {
+        const wasteId = req.params.wasteId;
+        const uomId = req.params.uomId;
+        const request = { wasteId, uomId }
+        const result = await pricelistService.getOne(request);
         res.status(200).json({
             data: result
         });
@@ -53,4 +69,5 @@ export default {
     postPricelist,
     updatePricelist,
     deletePricelist,
+    getOne
 }

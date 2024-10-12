@@ -29,7 +29,6 @@ const register = async (request) => {
         data: user,
         select: {
             username: true,
-            name: true,
             phone: true
         }
     });
@@ -109,7 +108,6 @@ const get = async (username) => {
       select: {
         username: true,
         phone: true,
-        name: true
       }
     });
 
@@ -133,9 +131,6 @@ const update = async (username,request) => {
     if (user.username) {
         data.username = user.username;
     }
-    if (user.name) {
-        data.name = user.name;
-    }
     if (user.password) {
         data.password = await bcrypt.hash(user.password, 10);
     }
@@ -150,7 +145,6 @@ const update = async (username,request) => {
         data: data,
         select: {
             username: true,
-            name: true,
             phone: true
         }
     })
@@ -184,7 +178,6 @@ const getUserByUsername = async (username) => {
       where: { username: username },
       select:{
         username: true,
-        name: true,
         phone: true
       }
     });
@@ -208,7 +201,6 @@ const updateUser = async (username, data) => {
         data: data,
         select:{
             username: true,
-            name: true,
             phone: true,
             role_id: true
         }

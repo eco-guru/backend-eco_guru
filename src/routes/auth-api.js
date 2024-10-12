@@ -29,10 +29,11 @@ userRouter.get('/api/waste-category/get-one/:id', wasteCategoryController.getOne
 userRouter.get('/api/waste-category/get', wasteCategoryController.getWasteCategory);
 
 
-userRouter.get('/api/pricelist', pricelistController.getPricelist);
+userRouter.get('/api/pricelist/get', pricelistController.getPricelist);
+userRouter.get('/api/pricelist/get-one/:wasteId/:uomId', pricelistController.getOne);
 userRouter.post('/api/pricelist', pricelistController.postPricelist);
 userRouter.patch('/api/pricelist/update', pricelistController.updatePricelist);
-userRouter.delete('/api/pricelist/delete', pricelistController.deletePricelist);
+userRouter.delete('/api/pricelist/delete/:wasteId/:uomId', pricelistController.deletePricelist);
 
 
 export {

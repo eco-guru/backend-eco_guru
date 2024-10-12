@@ -3,7 +3,6 @@ import Joi from "joi";
 const registerUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
     password: Joi.string().max(100).required(),
-    name: Joi.string().max(100).required(),
     phone: Joi.string().optional().pattern(/^[0-9]+$/),
     role_id: Joi.number().optional().default(2),
 });
@@ -17,14 +16,12 @@ const getUserValidation = Joi.string().max(100).required();
 
 const updateUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
-    name: Joi.string().max(100).optional(),
     password: Joi.string().max(100).optional(),
     phone: Joi.string().max(100).optional()
 })
 
 const userUpdateSchema = Joi.object({
     username: Joi.string().max(100).optional(),
-    name: Joi.string().optional(),
     phone: Joi.string().optional().pattern(/^[0-9]+$/), // Validasi nomor telepon
     role_id: Joi.number().optional(),
 });

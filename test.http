@@ -12,7 +12,6 @@ Accept: application/json
 
 {
   "username" : "asep",
-  "name": "Asep Kurniawan Khannedy",
   "password" : "rahasia",
   "phone" : "08126456443"
 }
@@ -35,7 +34,7 @@ Accept: application/json
 GET http://localhost:3000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: 96a8bd00-a81b-4404-9f1d-4f68f5a2e998
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ### Update User
@@ -68,7 +67,7 @@ Authorization: 57ef4cc6-00a1-45c4-8b4e-903260b0c588
 GET http://localhost:3000/api/admin/users/get-one?username=asep
 Content-Type: application/json
 Accept: application/json
-Authorization: 4a49425e-458c-41cb-9697-a38c35086980
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ### Update data by name
@@ -119,24 +118,24 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 # Get One UOM
 GET http://localhost:3000/api/uom/get-one/1
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ###
 # Get All Uom
 GET http://localhost:3000/api/uom/get
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ###
 # Create Waste Category
 POST http://localhost:3000/api/waste-category/create
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 {
-  "category": "Plastic",
+  "category": "Iron",
   "isDeleted": false
 }
 
@@ -145,7 +144,7 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 # Update Waste Category
 PUT http://localhost:3000/api/waste-category/update/8
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 {
   "category": "Updated Plastic",
@@ -156,18 +155,74 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 
 # Delete Waste Category
 DELETE http://localhost:3000/api/waste-category/delete/8
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ###
 # Get One Waste Category
 GET http://localhost:3000/api/waste-category/get-one/1
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ###
 # Get All Waste Category
 GET http://localhost:3000/api/waste-category/get
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+
+
+### GET Price List
+
+GET http://localhost:3000/api/pricelist/get
+Content-Type: application/json
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+
+
+### CREATE Price List
+POST http://localhost:3000/api/pricelist
+Content-Type: application/json
+Accept: application/json
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+
+{
+  "waste_id": 8,
+  "uom_id": 2,
+  "price": 10000,
+  "isDeleted": false,
+  "isActive": true,
+  "start_date": "2022-01-01T00:00:00.000Z",
+  "end_date": "2022-12-31T00:00:00.000Z",
+  "isDeleted": false
+}
+
+
+### UPDATE Price List
+PATCH  http://localhost:3000/api/pricelist/update
+Content-Type: application/json
+Accept: application/json
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+
+{
+  "waste_id": 8,
+  "uom_id": 2,
+  "price": 12000,
+  "isDeleted": false,
+  "isActive": true,
+  "start_date": "2022-01-01T00:00:00.000Z",
+  "end_date": "2022-12-31T00:00:00.000Z",
+  "isDeleted": false
+}
+
+
+### DELETE PRICE LIST BY WASTE ID
+DELETE http://localhost:3000/api/pricelist/delete/8/2
+Content-Type: application/json
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+
+
+
+### GET ONE PRICE LIST BY WASTE ID AND UOM ID
+GET http://localhost:3000/api/pricelist/get-one/8/2
+Content-Type: application/json
+Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
