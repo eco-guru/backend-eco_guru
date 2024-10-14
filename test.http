@@ -1,12 +1,12 @@
 ### ADMIN Update profile user
-GET http://localhost:3000/api/admin/users
+GET http://localhost:5000/api/admin/users
 Content-Type: application/json
 Accept: application/json
 Authorization: 4a49425e-458c-41cb-9697-a38c35086980
 
 
 ### Register
-POST http://localhost:3000/api/users
+POST http://localhost:5000/api/users
 Content-Type: application/json
 Accept: application/json
 
@@ -18,7 +18,7 @@ Accept: application/json
 
 ### Login
 
-POST http://localhost:3000/api/users/login
+POST http://localhost:5000/api/users/login
 Content-Type: application/json
 Accept: application/json
 
@@ -31,16 +31,16 @@ Accept: application/json
 ### Get Current User
 ### User 
 
-GET http://localhost:3000/api/users/current
+GET http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ### Update User
 ### User
 
-PATCH http://localhost:3000/api/users/current
+PATCH http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
 Authorization: 96d46a10-8902-444f-87d8-391793437580
@@ -54,7 +54,7 @@ Authorization: 96d46a10-8902-444f-87d8-391793437580
 ### Logout
 ### User
 
-DELETE http://localhost:3000/api/users/logout
+DELETE http://localhost:5000/api/users/logout
 Content-Type: application/json
 Accept: application/json
 Authorization: 57ef4cc6-00a1-45c4-8b4e-903260b0c588
@@ -64,16 +64,16 @@ Authorization: 57ef4cc6-00a1-45c4-8b4e-903260b0c588
 ### Admin
 ### Detail data user
 
-GET http://localhost:3000/api/admin/users/get-one?username=asep
+GET http://localhost:5000/api/admin/users/get-one?username=asep
 Content-Type: application/json
 Accept: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ### Update data by name
 ### Admin
 
-PATCH http://localhost:3000/api/admin/user/update?username=user1
+PATCH http://localhost:5000/api/admin/user/update?username=user1
 Content-Type: application/json
 Authorization: 4a49425e-458c-41cb-9697-a38c35086980
 
@@ -86,7 +86,7 @@ Authorization: 4a49425e-458c-41cb-9697-a38c35086980
 
 ###
 # Create UOM
-POST http://localhost:3000/api/uom/create
+POST http://localhost:5000/api/uom/create
 Content-Type: application/json
 Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 
@@ -98,7 +98,7 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 ###
 
 # Update UOM
-PUT http://localhost:3000/api/uom/update/1
+PUT http://localhost:5000/api/uom/update/1
 Content-Type: application/json
 Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 
@@ -110,29 +110,29 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 ###
 
 # Delete UOM
-DELETE http://localhost:3000/api/uom/delete/3
+DELETE http://localhost:5000/api/uom/delete/3
 Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 
 
 ###
 # Get One UOM
-GET http://localhost:3000/api/uom/get-one/1
+GET http://localhost:5000/api/uom/get-one/1
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ###
 # Get All Uom
-GET http://localhost:3000/api/uom/get
+GET http://localhost:5000/api/uom/get
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ###
 # Create Waste Category
-POST http://localhost:3000/api/waste-category/create
+POST http://localhost:5000/api/waste-category/create
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 {
   "category": "Iron",
@@ -142,9 +142,9 @@ Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 ###
 
 # Update Waste Category
-PUT http://localhost:3000/api/waste-category/update/8
+PUT http://localhost:5000/api/waste-category/update/8
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 {
   "category": "Updated Plastic",
@@ -154,36 +154,36 @@ Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 ###
 
 # Delete Waste Category
-DELETE http://localhost:3000/api/waste-category/delete/8
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+DELETE http://localhost:5000/api/waste-category/delete/8
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ###
 # Get One Waste Category
-GET http://localhost:3000/api/waste-category/get-one/1
+GET http://localhost:5000/api/waste-category/get-one/1
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ###
 # Get All Waste Category
-GET http://localhost:3000/api/waste-category/get
+GET http://localhost:5000/api/waste-category/get
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ### GET Price List
 
-GET http://localhost:3000/api/pricelist/get
+GET http://localhost:5000/api/pricelist/get
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 ### CREATE Price List
-POST http://localhost:3000/api/pricelist
+POST http://localhost:5000/api/pricelist
 Content-Type: application/json
 Accept: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 {
   "waste_id": 8,
@@ -198,10 +198,10 @@ Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ### UPDATE Price List
-PATCH  http://localhost:3000/api/pricelist/update
+PATCH  http://localhost:5000/api/pricelist/update
 Content-Type: application/json
 Accept: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 {
   "waste_id": 8,
@@ -216,13 +216,13 @@ Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
 
 
 ### DELETE PRICE LIST BY WASTE ID
-DELETE http://localhost:3000/api/pricelist/delete/8/2
+DELETE http://localhost:5000/api/pricelist/delete/8/2
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 
 
 ### GET ONE PRICE LIST BY WASTE ID AND UOM ID
-GET http://localhost:3000/api/pricelist/get-one/8/2
+GET http://localhost:5000/api/pricelist/get-one/8/2
 Content-Type: application/json
-Authorization: d0633506-63dd-44fc-bd81-c1ca41437638
+Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4

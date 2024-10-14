@@ -129,13 +129,15 @@ const deletePricelist = async (request) => {
         throw new ResponseError(400, "Pricelist not found");
     }
     
-    const pricelist = await prismaClient.pricelist.delete({
+    const pricelist = await prismaClient.pricelist.update({
         where: {
             waste_id_uom_id: {
                 waste_id: request.wasteId,
                 uom_id: request.uomId
-            }
-            
+            }, 
+        },
+        data:{
+            isActive: false
         }
     });
     

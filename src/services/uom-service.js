@@ -53,9 +53,10 @@ const deleteUOM = async (id) => {
         throw new ResponseError(404,'UOM not found');
     }
 
-    await prismaClient.uOM.delete({
-        where: { id: id }
-    });
+    await prismaClient.uOM.update({
+        where: { id: id },
+        data: { isDeleted: true }
+      });
 };
 
 const getOneUOM = async (id) => {
