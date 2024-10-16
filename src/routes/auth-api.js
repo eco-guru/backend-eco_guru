@@ -13,27 +13,16 @@ userRouter.get('/api/users/current', userController.getCurrent);
 userRouter.patch('/api/users/current', userController.update);
 userRouter.delete('/api/users/logout', userController.logout);
 
-
-userRouter.post('/api/uom/create', uomController.createUOM);
-userRouter.put('/api/uom/update/:id', uomController.updateUOM);
-userRouter.delete('/api/uom/delete/:id', uomController.deleteUOM);
 userRouter.get('/api/uom/get-one/:id', uomController.getOneUOM);
 userRouter.get('/api/uom/get', uomController.getUOM);
 
-
-
-userRouter.post('/api/waste-category/create', wasteCategoryController.createWasteCategory);
-userRouter.put('/api/waste-category/update/:id', wasteCategoryController.updateWasteCategory);
-userRouter.delete('/api/waste-category/delete/:id', wasteCategoryController.deleteWasteCategory);
 userRouter.get('/api/waste-category/get-one/:id', wasteCategoryController.getOneWasteCategory);
 userRouter.get('/api/waste-category/get', wasteCategoryController.getWasteCategory);
 
 
 userRouter.get('/api/pricelist/get', pricelistController.getPricelist);
 userRouter.get('/api/pricelist/get-one/:wasteId/:uomId', pricelistController.getOne);
-userRouter.post('/api/pricelist', pricelistController.postPricelist);
-userRouter.patch('/api/pricelist/update', pricelistController.updatePricelist);
-userRouter.delete('/api/pricelist/delete/:wasteId/:uomId', pricelistController.deletePricelist);
+
 
 
 export {
