@@ -11,9 +11,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username" : "user1",
+  "username" : "farhandwi1",
   "password" : "password123",
-  "phone" : "08126456443"
+  "phone" : "085820165161"
 }
 
 ### Login
@@ -23,7 +23,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "usernameOrPhone" : "user1",
+  "usernameOrPhone" : "farhandwi",
   "password" : "password123"
 }
 
