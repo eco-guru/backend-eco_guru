@@ -53,6 +53,29 @@ const deleteWasteCategory = async (id) => {
     if (!existingWasteCategory) {
       throw new ResponseError(404, 'Waste Category not found');
     }
+
+    const dataPriceList = await prismaClient.pricelist.findFirst({
+      where:{
+        waste_id: id
+      },
+      select:{
+        isActive: true
+      }
+    });
+
+    if(dataPriceList.isActive === true){
+      throw new ResponseError(409, "Data Waste Category Constrains with PriceList");
+    }
+
+    const dataTransactions = await prismaClient.transactions.findFirst({
+      where:{
+        id: id
+      }
+    });
+
+    if(dataPriceList){
+      throw new ResponseError(409, "Data Uom Constrains with Transactions");
+    }
   
     await prismaClient.wasteCategory.update({
       where: { id: id },

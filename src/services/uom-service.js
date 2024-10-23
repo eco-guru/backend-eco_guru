@@ -53,6 +53,31 @@ const deleteUOM = async (id) => {
         throw new ResponseError(404,'UOM not found');
     }
 
+    // Cek Constrains Price List
+    const dataPriceList = await prismaClient.pricelist.findFirst({
+        where:{
+            uom_id: id
+        },
+        select:{
+            isActive: true
+        }
+    })
+
+    if(dataPriceList.isActive === true){
+        throw new ResponseError(409, "Data Uom Constrains with PriceList");
+    }
+
+    // Cek Constrains Transaction Data
+    const dataTransaction = await prismaClient.transactionData.findFirst({
+        where:{
+            uom_id: id
+        },
+    })
+
+    if(dataTransaction){
+        throw new ResponseError(409, "Data Uom Constrains with Transaction Data");
+    }
+
     await prismaClient.uOM.update({
         where: { id: id },
         data: { isDeleted: true }

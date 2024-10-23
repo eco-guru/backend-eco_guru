@@ -11,8 +11,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username" : "asep",
-  "password" : "rahasia",
+  "username" : "user1",
+  "password" : "password123",
   "phone" : "08126456443"
 }
 
@@ -23,8 +23,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "usernameOrPhone" : "asep",
-  "password" : "rahasia"
+  "usernameOrPhone" : "user1",
+  "password" : "password123"
 }
 
 
@@ -110,8 +110,8 @@ Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
 ###
 
 # Delete UOM
-DELETE http://localhost:5000/api/uom/delete/3
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+DELETE http://localhost:5000/api/uom/delete/2
+Authorization: 4643f909-41d2-4a37-9707-5b47ec2a90d1
 
 
 ###
@@ -154,8 +154,8 @@ Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 ###
 
 # Delete Waste Category
-DELETE http://localhost:5000/api/waste-category/delete/8
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+DELETE http://localhost:5000/api/waste-category/delete/6
+Authorization: 4643f909-41d2-4a37-9707-5b47ec2a90d1
 
 
 ###
