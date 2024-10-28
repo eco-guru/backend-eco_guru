@@ -21,10 +21,11 @@ const login = async (req, res) => {
 
       if (user) {
         res.cookie('user-role', data, {
-          httpOnly: true, 
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict', 
-          maxAge: 24 * 60 * 60 * 1000
+          httpOnly: true,
+          maxAge: 2 * 60 * 60 * 1000,
+          domain: 'localhost',
+          secure: true,
+          sameSite: 'strict',
         });
   
         return res.status(200).json({

@@ -132,10 +132,10 @@ Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 # Create Waste Category
 POST http://localhost:5000/api/waste-category/create
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 358a81d4-349d-4572-aa6a-0952c17ee4a6
 
 {
-  "category": "Iron",
+  "category": "Bernadya",
   "isDeleted": false
 }
 
