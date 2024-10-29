@@ -4,6 +4,8 @@ import {authMiddleware} from "../middleware/auth-middleware.js";
 import pricelistController from "../controller/pricelist-controller.js";
 import uomController from '../controller/uom-controller.js';
 import wasteCategoryController from "../controller/wasteCategory-controller.js";
+import transactionController from "../controller/transaction-controller.js";
+import transactionDataController from "../controller/transaction-data-controller.js";
 
 const userRouter = new express.Router();
 userRouter.use(authMiddleware);
@@ -23,7 +25,11 @@ userRouter.get('/api/waste-category/get', wasteCategoryController.getWasteCatego
 userRouter.get('/api/pricelist/get', pricelistController.getPricelist);
 userRouter.get('/api/pricelist/get-one/:wasteId/:uomId', pricelistController.getOne);
 
+userRouter.get('/api/transaction/list', transactionController.listAllTransactions);
+userRouter.get('/api/transaction/getOne/:id', transactionController.getTransactionById);
 
+userRouter.get('/api/transactionData/list', transactionDataController.listAllTransactionData);
+userRouter.get('/api/transactionData/getOne/:transactionId', transactionDataController.getTransactionDataById);
 
 export {
     userRouter

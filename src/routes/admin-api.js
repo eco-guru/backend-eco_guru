@@ -4,6 +4,8 @@ import pricelistController from "../controller/pricelist-controller.js";
 import uomController from '../controller/uom-controller.js';
 import wasteCategoryController from "../controller/wasteCategory-controller.js";
 import {adminMiddleware} from "../middleware/admin-middleware.js";
+import transactionController from "../controller/transaction-controller.js";
+import transactionDataController from "../controller/transaction-data-controller.js";
 
 const adminRouter = new express.Router();
 
@@ -24,6 +26,18 @@ adminRouter.delete('/api/pricelist/delete/:wasteId/:uomId', pricelistController.
 adminRouter.post('/api/waste-category/create', wasteCategoryController.createWasteCategory);
 adminRouter.put('/api/waste-category/update/:id', wasteCategoryController.updateWasteCategory);
 adminRouter.delete('/api/waste-category/delete/:id', wasteCategoryController.deleteWasteCategory);
+
+adminRouter.post('/api/transaction/create', transactionController.createTransaction);
+adminRouter.put('/api/transaction/update/:id', transactionController.updateTransaction);
+adminRouter.delete('/api/transaction/delete/:id', transactionController.deleteTransaction);
+adminRouter.get('/api/transaction/list', transactionController.listAllTransactions);
+adminRouter.get('/api/transaction/getOne/:id', transactionController.getTransactionById);
+
+adminRouter.post('/api/transactionData/create', transactionDataController.createTransactionData);
+adminRouter.put('/api/transactionData/update/:transactionId', transactionDataController.updateTransactionData);
+adminRouter.delete('/api/transactionData/delete/:transactionId', transactionDataController.deleteTransactionData);
+adminRouter.get('/api/transactionData/list', transactionDataController.listAllTransactionData);
+adminRouter.get('/api/transactionData/getOne/:transactionId', transactionDataController.getTransactionDataById);
 
 export {
     adminRouter
