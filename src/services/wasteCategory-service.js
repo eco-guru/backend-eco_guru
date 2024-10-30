@@ -73,7 +73,17 @@ const deleteWasteCategory = async (id) => {
       }
     });
 
-    if(dataPriceList){
+    if(dataTransactions){
+      throw new ResponseError(409, "Data Uom Constrains with Transactions");
+    }
+
+    const dataTransactionData = await prismaClient.transactionData.findFirst({
+      where:{
+        waste_id: id
+      }
+    });
+
+    if(dataTransactionData){
       throw new ResponseError(409, "Data Uom Constrains with Transactions");
     }
   
