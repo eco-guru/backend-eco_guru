@@ -53,23 +53,9 @@ const listAllTransactionData = async (req, res, next) => {
     }
   };
   
-  const deleteTransactionData = async (req, res, next) => {
-    try {
-      const { transactionId } = req.params;
-      const result = await transactionDataService.deleteTransactionData(Number(transactionId));
-      res.status(200).json({
-        message: 'Transaction Successfully Deleted',
-        data: result
-      });
-    } catch (e) {
-      next(e);
-    }
-  };
-  
   export default {
     createTransactionData,
     listAllTransactionData,
     getTransactionDataById,
     updateTransactionData,
-    deleteTransactionData,
   };

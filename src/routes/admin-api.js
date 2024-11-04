@@ -29,13 +29,11 @@ adminRouter.delete('/api/waste-category/delete/:id', wasteCategoryController.del
 
 adminRouter.post('/api/transaction/create', transactionController.createTransaction);
 adminRouter.put('/api/transaction/update/:id', transactionController.updateTransaction);
-adminRouter.delete('/api/transaction/delete/:id', transactionController.deleteTransaction);
 adminRouter.get('/api/transaction/list', transactionController.listAllTransactions);
 adminRouter.get('/api/transaction/getOne/:id', transactionController.getTransactionById);
 
 adminRouter.post('/api/transactionData/create', transactionDataController.createTransactionData);
 adminRouter.put('/api/transactionData/update/:transactionId', transactionDataController.updateTransactionData);
-adminRouter.delete('/api/transactionData/delete/:transactionId', transactionDataController.deleteTransactionData);
 adminRouter.get('/api/transactionData/list', transactionDataController.listAllTransactionData);
 adminRouter.get('/api/transactionData/getOne/:transactionId', transactionDataController.getTransactionDataById);
 

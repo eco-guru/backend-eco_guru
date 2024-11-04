@@ -13,9 +13,9 @@ Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
 
 
 {
-  "username" : "farhandwi1",
+  "username" : "aomrizky",
   "password" : "password123",
-  "phone" : "085820165161"
+  "phone" : "08748399200"
 }
 
 ### Login
@@ -328,12 +328,5 @@ Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOp
   "quantity": 2,
   "price": 30000
 }
-
-# Delete Transactions Data
-###
-DELETE http://localhost:5000/api/transactionData/delete/2
-Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
 
 

@@ -127,31 +127,9 @@ const updateTransactionData = async (request) => {
     return updatedTransaction;
 };
 
-
-const deleteTransactionData = async (id) => {
-    id = validate(getOneSchema, id);
-    const transaction = await prismaClient.transactionData.findFirst({
-        where: {
-            transaction_id: id,
-        },
-    });
-    if (!transaction) {
-        throw new Error('Transaction not found');
-    }
-
-    await prismaClient.transactionData.deleteMany({
-        where: {
-            transaction_id: id,
-        },
-    });
-
-    return { message: 'Transaction deleted' };
-};
-
 export default {
     createTransactionData,
     listAllTransactionData,
     getTransactionDataById,
     updateTransactionData,
-    deleteTransactionData,
 };

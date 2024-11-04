@@ -99,30 +99,9 @@ const updateTransaction = async (request) => {
     return updatedTransaction;
 };
 
-const deleteTransaction = async (id) => {
-    id = validate(ListAndDeleteSchema, id);
-    const transaction = await prismaClient.transactions.findUnique({
-        where: {
-        id,
-        },
-    });
-    if (!transaction) {
-        throw new Error('Transaction not found');
-    }
-
-    await prismaClient.transactions.delete({
-        where: {
-        id,
-        },
-    });
-
-    return { message: 'Transaction deleted' };
-};
-
 export default {
     createTransaction,
     listAllTransactions,
     getTransactionById,
     updateTransaction,
-    deleteTransaction,
 };
