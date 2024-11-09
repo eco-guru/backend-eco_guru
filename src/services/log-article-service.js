@@ -2,11 +2,11 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { validate } from "../validation/validation.js";
 import {
-  getLogArticleValidation,
-  postLogArticleValidation,
-} from "../validation/log-article-validation.js";
+  createLogArticles,
+  schemaUpdateLogArticle,
+  schemaDeleteLogArticles
+} from "../validation/logArticle-validation.js";
 
-// Mendapatkan semua data log artikel
 const getLogArticles = async () => {
   const logArticles = await prismaClient.logArticles.findMany({
     select: {
@@ -25,8 +25,9 @@ const getLogArticles = async () => {
 
 // Mendapatkan satu log artikel berdasarkan artikel_id dan accessed_by
 const getOneLogArticle = async (request) => {
-  request = validate(getLogArticleValidation, request);
-  const logArticle = await prismaClient.logArticles.findFirst({
+  request = validate(schemaDeleteLogArticles, request);
+  console.log(request);
+  const logArticle = await prismaClient.logArticles.findMany({
     where: {
       article_id: request.article_id,
       accessed_by: request.accessed_by,
@@ -36,35 +37,15 @@ const getOneLogArticle = async (request) => {
   if (!logArticle) {
     throw new ResponseError(404, "Log article not found");
   }
-
-  return logArticle;
-};
-
-// Menambahkan log artikel baru
-const postLogArticle = async (request) => {
-  request = validate(postLogArticleValidation, request);
-
-  // Pastikan artikel terkait ada di database
-  const article = await prismaClient.articles.findFirst({
-    where: { id: request.article_id },
-  });
-
-  if (!article) {
-    throw new ResponseError(400, "Article not found");
-  }
-
-  const logArticle = await prismaClient.logArticles.create({
-    data: request,
-  });
 
   return logArticle;
 };
 
 // Menghapus log artikel berdasarkan artikel_id dan accessed_by
 const deleteLogArticle = async (request) => {
-  request = validate(getLogArticleValidation, request);
+  request = validate(schemaDeleteLogArticles, request);
 
-  const logArticle = await prismaClient.logArticles.findFirst({
+  const logArticle = await prismaClient.logArticles.findMany({
     where: {
       article_id: request.article_id,
       accessed_by: request.accessed_by,
@@ -75,26 +56,25 @@ const deleteLogArticle = async (request) => {
     throw new ResponseError(404, "Log article not found");
   }
 
-  await prismaClient.logArticles.delete({
+  const deleteData = await prismaClient.logArticles.deleteMany({
     where: {
-      article_id_accessed_by: {
-        article_id: request.article_id,
-        accessed_by: request.accessed_by,
-      },
+      article_id: request.article_id,
+      accessed_by: request.accessed_by,
     },
   });
 
-  return { message: "Log article deleted successfully" };
+  return deleteData;
 };
 
 // Memperbarui waktu akses pada log artikel
 const updateLogArticle = async (request) => {
-  request = validate(postLogArticleValidation, request);
+  request = validate(schemaUpdateLogArticle, request);
 
   const logArticle = await prismaClient.logArticles.findFirst({
     where: {
       article_id: request.article_id,
       accessed_by: request.accessed_by,
+      accessed_time: request.accessed_time_old,
     },
   });
 
@@ -104,46 +84,31 @@ const updateLogArticle = async (request) => {
 
   const updatedLogArticle = await prismaClient.logArticles.update({
     where: {
-      article_id_accessed_by: {
+      article_id_accessed_by_accessed_time: {
         article_id: request.article_id,
         accessed_by: request.accessed_by,
+        accessed_time: request.accessed_time_old,
       },
     },
     data: {
-      accessed_time: request.accessed_time,
+      accessed_time: request.accessed_time_new,
     },
   });
 
   return updatedLogArticle;
 };
 
-const createOrUpdateLogArticle = async (request) => {
-  request = validate(postLogArticleValidation, request);
+const createArticle = async (request) => {
+  request = validate(createLogArticles, request);
 
-  // Cek apakah log artikel sudah ada
-  const existingLogArticle = await prismaClient.logArticles.findFirst({
-    where: {
-      article_id: request.article_id,
-      accessed_by: request.accessed_by,
-    },
+  const articlesData = await prismaClient.articles.findFirst({
+    where:{
+      id: request.article_id
+    }
   });
 
-  // Jika sudah ada, tambahkan durasi waktu aksesnya
-  if (existingLogArticle) {
-    const existingDuration = existingLogArticle.accessed_time;
-    const newTotalDuration = existingDuration + request.accessed_time;
-
-    return await prismaClient.logArticles.update({
-      where: {
-        article_id_accessed_by: {
-          article_id: request.article_id,
-          accessed_by: request.accessed_by,
-        },
-      },
-      data: {
-        accessed_time: newTotalDuration,
-      },
-    });
+  if(!articlesData){
+    throw new ResponseError(404, "Article not found");
   }
 
   // Jika belum ada, buat log artikel baru
@@ -151,7 +116,7 @@ const createOrUpdateLogArticle = async (request) => {
     data: {
       article_id: request.article_id,
       accessed_by: request.accessed_by,
-      accessed_time: request.accessed_time, // Menyimpan durasi awal dalam menit
+      accessed_time: request.accessed_time,
     },
   });
 };
@@ -159,8 +124,7 @@ const createOrUpdateLogArticle = async (request) => {
 export default {
   getLogArticles,
   getOneLogArticle,
-  postLogArticle,
   deleteLogArticle,
   updateLogArticle,
-  createOrUpdateLogArticle
+  createArticle
 };

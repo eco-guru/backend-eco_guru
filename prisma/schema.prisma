@@ -48,9 +48,17 @@ model WasteCategory {
   category  String
   isDeleted Boolean @default(false)
 
-  Pricelist       Pricelist[]
-  TransactionData TransactionData[]
-  Transactions    Transactions[]
+  WasteType WasteType[]
+}
+
+model WasteType {
+  id                Int               @id @default(autoincrement())
+  waste_category_id Int
+  type              String
+  isDeleted         Boolean           @default(false)
+  Pricelist         Pricelist[]
+  WasteCategory     WasteCategory     @relation(fields: [waste_category_id], references: [id])
+  TransactionData   TransactionData[]
 }
 
 model UOM {
@@ -63,44 +71,42 @@ model UOM {
 }
 
 model Transactions {
-  id               Int            @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   user_id          Int
   transaction_date DateTime?
   total            Int?
   approved_by      Int?
-  Users            Users          @relation(fields: [user_id], references: [id])
-  WasteCategory    WasteCategory? @relation(fields: [approved_by], references: [id])
+  Users            Users     @relation(fields: [user_id], references: [id])
 
   TransactionData TransactionData[]
 }
 
 model Pricelist {
-  waste_id   Int
-  uom_id     Int
-  price      Int
-  isActive   Boolean
-  start_date DateTime
-  end_date   DateTime?
-  isDeleted  Boolean   @default(false)
+  waste_type_id Int
+  uom_id        Int
+  price         Int
+  isActive      Boolean   @default(true)
+  start_date    DateTime
+  end_date      DateTime?
 
-  WasteCategory WasteCategory @relation(fields: [waste_id], references: [id])
-  UOM           UOM           @relation(fields: [uom_id], references: [id])
+  WasteType WasteType @relation(fields: [waste_type_id], references: [id])
+  UOM       UOM       @relation(fields: [uom_id], references: [id])
 
-  @@id([waste_id, uom_id]) // Composite key
+  @@id([waste_type_id, uom_id])
 }
 
 model TransactionData {
   transaction_id Int
-  waste_id       Int
+  waste_type_id  Int
   uom_id         Int
   quantity       Int
   price          Float
 
-  Transactions  Transactions  @relation(fields: [transaction_id], references: [id])
-  WasteCategory WasteCategory @relation(fields: [waste_id], references: [id])
-  UOM           UOM           @relation(fields: [uom_id], references: [id])
+  Transactions Transactions @relation(fields: [transaction_id], references: [id])
+  WasteType    WasteType    @relation(fields: [waste_type_id], references: [id])
+  UOM          UOM          @relation(fields: [uom_id], references: [id])
 
-  @@unique([transaction_id, waste_id, uom_id, quantity, price])
+  @@unique([transaction_id, waste_type_id, uom_id, quantity, price])
 }
 
 model Videos {
@@ -139,7 +145,7 @@ model LogArticles {
 
   Articles Articles @relation(fields: [article_id], references: [id])
 
-  @@id([article_id, accessed_by])
+  @@id([article_id, accessed_by, accessed_time])
 }
 
 model LogVideos {
@@ -149,7 +155,7 @@ model LogVideos {
 
   Videos Videos @relation(fields: [video_id], references: [id])
 
-  @@id([video_id, accessed_by])
+  @@id([video_id, accessed_by, accessed_time])
 }
 
 enum Status {

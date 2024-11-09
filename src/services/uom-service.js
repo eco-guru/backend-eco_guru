@@ -56,14 +56,15 @@ const deleteUOM = async (id) => {
     // Cek Constrains Price List
     const dataPriceList = await prismaClient.pricelist.findFirst({
         where:{
-            uom_id: id
+            uom_id: id,
+            isActive: true
         },
         select:{
             isActive: true
         }
     })
 
-    if(dataPriceList.isActive === true){
+    if(dataPriceList){
         throw new ResponseError(409, "Data Uom Constrains with PriceList");
     }
 
@@ -98,7 +99,11 @@ const getOneUOM = async (id) => {
 };
 
 const getUOM = async () => {
-    return await prismaClient.uOM.findMany();
+    return await prismaClient.uOM.findMany({
+        where:{
+            isDeleted: false
+        }
+    });
 }
 
 export default {

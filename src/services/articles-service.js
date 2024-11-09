@@ -2,11 +2,10 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { validate } from "../validation/validation.js";
 import {
-  getArticleValidation,
-  postAndUpdateArticleValidation,
+  UpdateArticles,
+  createArticles,
+  getAndDeleteArticles,
 } from "../validation/article-validation.js";
-import LogArticlesServices from "./log-article-service.js"
-
 
 // Mendapatkan semua artikel
 const getArticles = async () => {
@@ -32,7 +31,7 @@ const getArticles = async () => {
 
 // Menambahkan artikel baru
 const postArticle = async (request) => {
-  request = validate(postAndUpdateArticleValidation, request);
+  request = validate(createArticles, request);
 
   const user = await prismaClient.users.findUnique({
     where: { username: request.created_by },
@@ -51,7 +50,7 @@ const postArticle = async (request) => {
 
 // Memperbarui artikel berdasarkan ID
 const updateArticle = async (request) => {
-  request = validate(postAndUpdateArticleValidation, request);
+  request = validate(UpdateArticles, request);
 
   const article = await prismaClient.articles.findUnique({
     where: { id: request.id },
@@ -71,40 +70,48 @@ const updateArticle = async (request) => {
 
 // Menghapus artikel berdasarkan ID
 const deleteArticle = async (request) => {
-  request = validate(getArticleValidation, request);
+  request = validate(getAndDeleteArticles, request);
 
   const article = await prismaClient.articles.findUnique({
-    where: { id: request.id },
+    where: { id: request },
   });
 
   if (!article) {
     throw new ResponseError(404, "Article not found");
   }
 
-  await prismaClient.articles.delete({
-    where: { id: request.id },
+  const deleteData = await prismaClient.articles.delete({
+    where: { id: request },
   });
 
-  return { message: "Article deleted successfully" };
+  return deleteData;
 };
 
 const getOneArticle = async (request) => {
-  request = validate(getArticleValidation, request);
+  request = validate(getAndDeleteArticles, request);
   const article = await prismaClient.articles.findUnique({
-    where: { id: request.id },
+    where: { id: request },
   });
 
   if (!article) {
     throw new ResponseError(404, "Article not found");
   }
 
-  await createOrUpdateLogArticle({
-    article_id: article.id,
-    accessed_by: request.username,
-    accessed_time: request.duration || 1,
+  const data = await prismaClient.articles.findUnique({
+    where: { id: request },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      category: true,
+      isPublished: true,
+      created_by: true,
+      created_date: true,
+      article_order: true,
+    },
   });
 
-  return article;
+  return data;
 };
 
 export default {

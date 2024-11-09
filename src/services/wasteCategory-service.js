@@ -44,54 +44,32 @@ const updateWasteCategory = async (request) => {
 };
 
 const deleteWasteCategory = async (id) => {
-    id = validate(getAndDeleteWasteCategoryValidation, id);
-  
-    const existingWasteCategory = await prismaClient.wasteCategory.findUnique({
-      where: { id: id }
-    });
-  
-    if (!existingWasteCategory) {
-      throw new ResponseError(404, 'Waste Category not found');
+  id = validate(getAndDeleteWasteCategoryValidation, id);
+
+  const existingWasteCategory = await prismaClient.wasteCategory.findUnique({
+    where: { id: id }
+  });
+
+  if (!existingWasteCategory) {
+    throw new ResponseError(404, 'Waste Category not found');
+  }
+
+  const dataWasteType = await prismaClient.wasteType.findFirst({
+    where: {
+      waste_category_id: id
     }
+  });
 
-    const dataPriceList = await prismaClient.pricelist.findFirst({
-      where:{
-        waste_id: id
-      },
-      select:{
-        isActive: true
-      }
-    });
+  if (dataWasteType) {
+    throw new ResponseError(409, "Waste Category constrains with Waste Type.");
+  }
 
-    if(dataPriceList.isActive === true){
-      throw new ResponseError(409, "Data Waste Category Constrains with PriceList");
-    }
-
-    const dataTransactions = await prismaClient.transactions.findFirst({
-      where:{
-        id: id
-      }
-    });
-
-    if(dataTransactions){
-      throw new ResponseError(409, "Data Uom Constrains with Transactions");
-    }
-
-    const dataTransactionData = await prismaClient.transactionData.findFirst({
-      where:{
-        waste_id: id
-      }
-    });
-
-    if(dataTransactionData){
-      throw new ResponseError(409, "Data Uom Constrains with Transactions");
-    }
-  
-    await prismaClient.wasteCategory.update({
-      where: { id: id },
-      data: { isDeleted: true }
-    });
+  await prismaClient.wasteCategory.update({
+    where: { id: id },
+    data: { isDeleted: true }
+  });
 };
+
 
 const getOneWasteCategory = async (id) => {
     id = validate(getAndDeleteWasteCategoryValidation, id);
@@ -108,7 +86,11 @@ const getOneWasteCategory = async (id) => {
 };
 
 const getWasteCategory = async () => { 
-    const result = await prismaClient.wasteCategory.findMany();
+    const result = await prismaClient.wasteCategory.findMany({
+      where:{
+        isDeleted: false
+      }
+    });
     return result;
 };
 

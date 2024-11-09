@@ -32,11 +32,9 @@ async function main() {
 
   // Seed Waste Categories
   const wasteCategories = [
-    { category: "Karton" },
-    { category: "Kertas" },
-    { category: "Plastik - Botol" },
-    { category: "Plastik - Kantong" },
-    { category: "Plastik - Kemasan" },
+    { category: "Karton"},
+    { category: "Kertas"},
+    { category: "Plastik"},
     { category: "Minyak Jelantah" },
     { category: "Kaca/Beling" },
   ];
@@ -50,15 +48,29 @@ async function main() {
     data: uoms,
   });
 
+  const wasteTypes = [
+    {type: "Kertas Karton", waste_category_id: 1},
+    {type: "Kertas Kemasan", waste_category_id: 2},
+    {type: "Plastik Botol", waste_category_id: 3},
+    {type: "Plastik Kantong", waste_category_id: 3},
+    {type: "Minyak Jelantah", waste_category_id: 4},
+    {type: "Kaca Cermin", waste_category_id: 5},
+    {type: "Kaca Beling", waste_category_id: 5},
+  ]
+
+  await prisma.wasteType.createMany({
+    data: wasteTypes,
+  });
+
   // Seed Pricelist
   const pricelist = [
-    { waste_id: 1, uom_id: 2, price: 500, isActive: true, start_date: new Date() },
-    { waste_id: 2, uom_id: 2, price: 300, isActive: true, start_date: new Date() },
-    { waste_id: 3, uom_id: 2, price: 1000, isActive: true, start_date: new Date() },
-    { waste_id: 4, uom_id: 2, price: 800, isActive: true, start_date: new Date() },
-    { waste_id: 5, uom_id: 2, price: 600, isActive: true, start_date: new Date() },
-    { waste_id: 6, uom_id: 1, price: 5000, isActive: true, start_date: new Date() },
-    { waste_id: 7, uom_id: 2, price: 1500, isActive: true, start_date: new Date() },
+    {waste_type_id: 1, uom_id: 2, price: 500, isActive: true, start_date: new Date() },
+    {waste_type_id: 2, uom_id: 2, price: 300, isActive: true, start_date: new Date() },
+    {waste_type_id: 3, uom_id: 2, price: 1000, isActive: true, start_date: new Date() },
+    {waste_type_id: 4, uom_id: 2, price: 800, isActive: true, start_date: new Date() },
+    {waste_type_id: 5, uom_id: 2, price: 600, isActive: true, start_date: new Date() },
+    {waste_type_id: 6, uom_id: 1, price: 5000, isActive: true, start_date: new Date() },
+    {waste_type_id: 7, uom_id: 2, price: 1500, isActive: true, start_date: new Date() },
   ];
   await prisma.pricelist.createMany({
     data: pricelist,

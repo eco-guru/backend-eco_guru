@@ -14,7 +14,7 @@ Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
 
 {
   "username" : "aomrizky",
-  "password" : "password123",
+  "password" : "rahasia",
   "phone" : "08748399200"
 }
 
@@ -36,7 +36,7 @@ Accept: application/json
 GET http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: 77040070-f2a1-4e4b-acb3-2f04e5148ae5
+Authorization: e3565d32-a42a-4860-b293-fbf747d95302
 
 
 ### Update User
@@ -45,7 +45,7 @@ Authorization: 77040070-f2a1-4e4b-acb3-2f04e5148ae5
 PATCH http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: 96d46a10-8902-444f-87d8-391793437580
+Authorization: e3565d32-a42a-4860-b293-fbf747d95302
 
 {
   "username" : "dodi",
@@ -59,31 +59,32 @@ Authorization: 96d46a10-8902-444f-87d8-391793437580
 DELETE http://localhost:5000/api/users/logout
 Content-Type: application/json
 Accept: application/json
-Authorization: 57ef4cc6-00a1-45c4-8b4e-903260b0c588
+Authorization: e3565d32-a42a-4860-b293-fbf747d95302
 
 
 
 ### Admin
 ### Detail data user
 
-GET http://localhost:5000/api/admin/users/get-one?username=farhandwi
+GET http://localhost:5000/api/admin/users/get-one?username=aomrizky
 Content-Type: application/json
 Accept: application/json
-Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
-Cookie: user-role=%242b%2410%24o9fIinqE.W1zZCG86gnY1Od5cnnvJJh66oKLC0uXAD0CBzHYjo.B6
+Authorization: 60b85aca-074f-465a-8e77-b07400b5850b
+Cookie: user-role=%242b%2410%24D3WxNow2fiU%2FVs9Nt24QreEEia1d2FtmxUOGT9kk1jTnSFtCrGxDy
 
 
 ### Update data by name
 ### Admin
 
-PATCH http://localhost:5000/api/admin/user/update?username=user1
+PATCH http://localhost:5000/api/admin/user/update?username=aomrizky
 Content-Type: application/json
-Authorization: 4a49425e-458c-41cb-9697-a38c35086980
+Authorization: 60b85aca-074f-465a-8e77-b07400b5850b
+Cookie: user-role=%242b%2410%24D3WxNow2fiU%2FVs9Nt24QreEEia1d2FtmxUOGT9kk1jTnSFtCrGxDy
 
 {
-    "name": "admin",
-    "phone": "0812324222",
-    "role_id": 1
+    "username": "aomrizky123",
+    "phone": "08134343433",
+    "role_id": 2
 }
 
 
@@ -91,52 +92,56 @@ Authorization: 4a49425e-458c-41cb-9697-a38c35086980
 # Create UOM
 POST http://localhost:5000/api/uom/create
 Content-Type: application/json
-Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
-Cookie: user-role=%242b%2410%24o9fIinqE.W1zZCG86gnY1Od5cnnvJJh66oKLC0uXAD0CBzHYjo.B6
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
-  "unit": "Ireng",
+  "unit": "Arang",
   "isDeleted": false
 }
 
 ###
 
 # Update UOM
-PUT http://localhost:5000/api/uom/update/1
+PUT http://localhost:5000/api/uom/update/3
 Content-Type: application/json
-Authorization: 8456db92-3ae7-4448-a300-7ab53b34e37f
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
-  "unit": "Updated Kilogram",
-  "isDeleted": true
+  "unit": "Arang"
 }
 
 ###
 
 # Delete UOM
-DELETE http://localhost:5000/api/uom/delete/2
-Authorization: 4643f909-41d2-4a37-9707-5b47ec2a90d1
+DELETE http://localhost:5000/api/uom/delete/3
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ###
 # Get One UOM
 GET http://localhost:5000/api/uom/get-one/1
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ###
 # Get All Uom
 GET http://localhost:5000/api/uom/get
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ###
 # Create Waste Category
 POST http://localhost:5000/api/waste-category/create
 Content-Type: application/json
-Authorization: 358a81d4-349d-4572-aa6a-0952c17ee4a6
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
   "category": "Bernadya",
@@ -146,12 +151,13 @@ Authorization: 358a81d4-349d-4572-aa6a-0952c17ee4a6
 ###
 
 # Update Waste Category
-PUT http://localhost:5000/api/waste-category/update/8
+PUT http://localhost:5000/api/waste-category/update/6
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
-  "category": "Updated Plastic",
+  "category": "Handphone",
   "isDeleted": true
 }
 
@@ -159,45 +165,98 @@ Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 
 # Delete Waste Category
 DELETE http://localhost:5000/api/waste-category/delete/6
-Authorization: 4643f909-41d2-4a37-9707-5b47ec2a90d1
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ###
 # Get One Waste Category
 GET http://localhost:5000/api/waste-category/get-one/1
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ###
 # Get All Waste Category
 GET http://localhost:5000/api/waste-category/get
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
+
+
+###
+# Create Waste Type
+POST http://localhost:5000/api/waste-type/create
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+{
+  "waste_category_id": 1,
+  "type": "Plastic Bottle Tomorro"
+}
+
+###
+
+# Update Waste Type
+PUT http://localhost:5000/api/waste-type/update/8
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+{
+  "type": "Plastic Bottle Tomorro",
+  "waste_category_id": 3,
+  "isDeleted": false
+}
+
+###
+
+# Delete Waste Type
+DELETE http://localhost:5000/api/waste-type/delete/8
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+
+###
+# Get One Waste Type
+GET http://localhost:5000/api/waste-type/get-one/1
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+
+###
+# Get All Waste Type
+GET http://localhost:5000/api/waste-type/get
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 
 ### GET Price List
 
 GET http://localhost:5000/api/pricelist/get
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 ### CREATE Price List
 POST http://localhost:5000/api/pricelist
 Content-Type: application/json
 Accept: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
-  "waste_id": 8,
+  "waste_type_id": 6,
   "uom_id": 2,
   "price": 10000,
-  "isDeleted": false,
   "isActive": true,
   "start_date": "2022-01-01T00:00:00.000Z",
-  "end_date": "2022-12-31T00:00:00.000Z",
-  "isDeleted": false
+  "end_date": "2022-12-31T00:00:00.000Z"
 }
 
 
@@ -205,42 +264,43 @@ Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
 PATCH  http://localhost:5000/api/pricelist/update
 Content-Type: application/json
 Accept: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 {
-  "waste_id": 8,
+  "waste_type_id": 6,
   "uom_id": 2,
   "price": 12000,
-  "isDeleted": false,
   "isActive": true,
   "start_date": "2022-01-01T00:00:00.000Z",
-  "end_date": "2022-12-31T00:00:00.000Z",
-  "isDeleted": false
+  "end_date": "2022-12-31T00:00:00.000Z"
 }
 
 
-### DELETE PRICE LIST BY WASTE ID
-DELETE http://localhost:5000/api/pricelist/delete/8/2
+### DELETE PRICE LIST BY WASTE TYPE ID AND UOM ID
+DELETE http://localhost:5000/api/pricelist/delete/6/2
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 
 ### GET ONE PRICE LIST BY WASTE ID AND UOM ID
 GET http://localhost:5000/api/pricelist/get-one/8/2
 Content-Type: application/json
-Authorization: 1c0cfcd9-8f70-4b70-8b58-aaa525f7a2f4
+Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
+Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
 
 
 # CREATE Transactions
 ###
 POST http://localhost:5000/api/transaction/create
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 {
-  "user_id": 2,
+  "user_id": 1,
   "transaction_date": "2024-10-10T00:00:00.000Z",
   "total": 10000,
   "approved_by": 2
@@ -250,24 +310,24 @@ Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOp
 ###
 GET http://localhost:5000/api/transaction/list
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 
 # Get One Transactions
 ###
 GET http://localhost:5000/api/transaction/getOne/1
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 
 # Update Transactions
 ###
 PUT http://localhost:5000/api/transaction/update/1
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 {
   "user_id": 2,
@@ -277,16 +337,24 @@ Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOp
 }
 
 
+# Delete Transactions
+###
+DELETE http://localhost:5000/api/transaction/delete/1
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+
 # CREATE Transactions Data
 ###
 POST http://localhost:5000/api/transactionData/create
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 {
   "transaction_id": 2,
-  "waste_id": 2,
+  "waste_type_id": 2,
   "uom_id": 2,
   "quantity": 2,
   "price": 20000
@@ -296,30 +364,257 @@ Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOp
 ###
 GET http://localhost:5000/api/transactionData/list
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 
 # Get One Transactions Data
 ###
 GET http://localhost:5000/api/transactionData/getOne/2
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 
 # Update Transactions Data
 ###
 PUT http://localhost:5000/api/transactionData/update/2
 Content-Type: application/json
-Authorization: 57bf208e-cbea-4ffa-8f1e-5828ab36784e
-Cookie: user-role=%242b%2410%24fWx0xAw3wUH3RepEfuKWnOvWMr6pZbEW0zs1iH%2FZtRXJyOpQCSI2e
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
 
 {
-  "waste_id": 2,
+  "waste_type_id": 2,
   "uom_id": 2,
   "quantity": 2,
-  "price": 30000
+  "price": 22000
 }
 
+# Delete Transactions Data
+###
+DELETE http://localhost:5000/api/transactionData/delete/2
+Content-Type: application/json
+Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
+Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+
+
+
+# CREATE Article
+###
+POST http://localhost:5000/api/article/create
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+{
+  "title": "Pengelolaan Bungkus Botol",
+  "content": "Pentingnya pengelolaan Bungkus Botol.",
+  "category": "Lingkungan",
+  "isPublished": true,
+  "created_by": "user1",
+  "created_date": "2024-11-09T03:18:03.378Z",
+  "article_order": 1
+}
+
+# READ Article
+###
+GET http://localhost:5000/api/article/list
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+
+# Get One Article
+###
+GET http://localhost:5000/api/article/getOne/2
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+
+# Update Article
+###
+PUT http://localhost:5000/api/article/update/2
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+{
+  "title": "Pengelolaan Bungkus Botol Coba",
+  "content": "Pentingnya pengelolaan Bungkus Botol.",
+  "category": "Lingkungan",
+  "isPublished": true,
+  "created_by": "user1",
+  "created_date": "2024-11-09T03:18:03.378Z",
+  "article_order": 1
+}
+
+# Delete Article
+###
+DELETE http://localhost:5000/api/article/delete/2
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+
+# CREATE Log Articles
+###
+POST http://localhost:5000/api/log-article/create
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+{
+  "article_id": 1,
+  "accessed_by": "user1",
+  "accessed_time": "2024-11-09T13:20:03.378Z"
+}
+
+# READ Log Articles
+###
+GET http://localhost:5000/api/log-article/list
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+
+# Get One Log Articles
+###
+GET http://localhost:5000/api/log-article/getOne/1/user1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# Update Log Articles
+###
+PUT http://localhost:5000/api/log-article/update/1/user1
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+{
+  "accessed_time_old": "2024-11-09T13:20:03.378Z",
+  "accessed_time_new": "2024-11-09T13:20:30.378Z"
+}
+
+# Delete Log Articles
+###
+DELETE http://localhost:5000/api/log-article/delete/1/user1
+Content-Type: application/json
+Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
+Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+
+
+# CREATE Videos
+###
+POST http://localhost:5000/api/videos/create
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+{
+  "title": "Pengelolaan Bungkus Botol",
+  "description": "Pentingnya pengelolaan Bungkus Botol.",
+  "duration": 400,
+  "format": "mp4",
+  "thumbnail_url": "https://example.com/thumbnail.jpg",
+  "url": "https://example.com/video.mp4",
+  "upload_date": "2024-11-09T03:18:03.378Z",
+  "uploaded_by": "user1",
+  "isActive": true,
+  "video_order": 1
+}
+
+# READ Videos
+###
+GET http://localhost:5000/api/videos/list
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# Get One Article
+###
+GET http://localhost:5000/api/article/getOne/1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# Update Videos
+###
+PUT http://localhost:5000/api/videos/update/1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+{
+  "title": "Pengelolaan Bungkus Botol",
+  "description": "Pentingnya pengelolaan Bungkus Botol.",
+  "duration": 350,
+  "format": "mp4",
+  "thumbnail_url": "https://example.com/thumbnail.jpg",
+  "url": "https://example.com/video.mp4",
+  "upload_date": "2024-11-09T03:18:03.378Z",
+  "uploaded_by": "user1",
+  "isActive": true,
+  "video_order": 1
+}
+
+# Delete Article
+###
+DELETE http://localhost:5000/api/article/delete/1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# CREATE Log Videos
+###
+POST http://localhost:5000/api/log-videos/create
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+{
+  "video_id": 1,
+  "accessed_by": "user1",
+  "accessed_time": "2024-11-09T13:22:03.378Z"
+}
+
+# READ Log Videos
+###
+GET http://localhost:5000/api/log-videos/list
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# Get One Log Videos
+###
+GET http://localhost:5000/api/log-videos/getOne/1/user1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+
+# Update Log Videos
+###
+PUT http://localhost:5000/api/log-videos/update/1/user1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+
+{
+  "accessed_time_old": "2024-11-09T13:20:03.378Z",
+  "accessed_time_new": "2024-11-09T13:22:30.378Z"
+}
+
+# Delete Log Videos
+###
+DELETE http://localhost:5000/api/log-videos/delete/1/user1
+Content-Type: application/json
+Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
+Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
 

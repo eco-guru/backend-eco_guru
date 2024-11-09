@@ -11,7 +11,7 @@ const createTransaction = async (data) => {
         },
     });
     if (!user) {
-        throw new ResponseError('User not found');
+        throw new ResponseError(404, 'User not found');
     }
     
     const wasteCategory = await prismaClient.wasteCategory.findUnique({
@@ -20,7 +20,7 @@ const createTransaction = async (data) => {
         },
     });
     if (!wasteCategory) {
-        throw new ResponseError('Approved by not found in Waste Category');
+        throw new ResponseError(404, 'Approved by not found in Waste Category');
     }
     
     const transaction = await prismaClient.transactions.create({
@@ -49,7 +49,7 @@ const getTransactionById = async (id) => {
     });
 
     if (!transaction) {
-        throw new Error('Transaction not found');
+        throw new ResponseError(404, 'Transaction not found');
     }
 
     return transaction;
@@ -63,7 +63,7 @@ const updateTransaction = async (request) => {
         },
     });
     if (!transaction) {
-        throw new Error('Transaction not found');
+        throw new ResponseError(404, 'Transaction not found');
     }
 
     const user = await prismaClient.users.findUnique({
@@ -72,7 +72,7 @@ const updateTransaction = async (request) => {
         },
     });
     if (!user) {
-        throw new Error('User not found');
+        throw new ResponseError(404, 'User not found');
     }
 
     const wasteCategory = await prismaClient.wasteCategory.findUnique({
@@ -81,7 +81,7 @@ const updateTransaction = async (request) => {
         },
     });
     if (!wasteCategory) {
-        throw new Error('Approved by not found in Waste Category');
+        throw new ResponseError(404, 'Approved by not found in Waste Category');
     }
 
     const updatedTransaction = await prismaClient.transactions.update({
@@ -99,9 +99,37 @@ const updateTransaction = async (request) => {
     return updatedTransaction;
 };
 
+const deleteTransaction = async (request) => {
+    request = validate(ListAndDeleteSchema, request);
+
+    const transaction = await prismaClient.transactions.findUnique({
+        where: { id: request }
+    });
+
+    if (!transaction) {
+        throw new ResponseError(404, 'Transaction not found');
+    }
+
+    const transactionData = await prismaClient.transactionData.findMany({
+        where: { transaction_id: request }
+    });
+
+    if (transactionData.length > 0) {
+        throw new ResponseError(409, 'Cannot delete transaction with associated transaction data');
+    }
+
+    const deletedTransaction = await prismaClient.transactions.delete({
+        where: { id: request }
+    });
+
+    return deletedTransaction;
+};
+
+
 export default {
     createTransaction,
     listAllTransactions,
     getTransactionById,
     updateTransaction,
+    deleteTransaction
 };
