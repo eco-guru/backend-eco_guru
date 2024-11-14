@@ -249,8 +249,8 @@ Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkK
 POST http://localhost:5000/api/pricelist
 Content-Type: application/json
 Accept: application/json
-Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
-Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
+Authorization: b0a36ebd-b1f2-44d3-8c84-dfcd5bf2bd1e
+Cookie: user-role=%242b%2410%24LGMRfs2bmEneJz2QeO.UwuXC56kT6kCt5j89QbIBHFpEV5LGXEeDS
 
 {
   "waste_type_id": 6,
@@ -266,8 +266,8 @@ Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkK
 PATCH  http://localhost:5000/api/pricelist/update
 Content-Type: application/json
 Accept: application/json
-Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
-Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
+Authorization: b0a36ebd-b1f2-44d3-8c84-dfcd5bf2bd1e
+Cookie: user-role=%242b%2410%24LGMRfs2bmEneJz2QeO.UwuXC56kT6kCt5j89QbIBHFpEV5LGXEeDS
 
 {
   "waste_type_id": 6,

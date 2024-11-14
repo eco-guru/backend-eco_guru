@@ -39,14 +39,14 @@ const postPricelist = async (request) => {
         throw new ResponseError(400, "PriceList already exists");
     }
 
-    const wasteCategories = await prismaClient.wasteCategory.findFirst({
+    const wasteType = await prismaClient.wasteType.findFirst({
         where:{
             id: request.waste_type_id
         }
     })
 
-    if(!wasteCategories) {
-        throw new ResponseError(404, "Waste Category not found");
+    if(!wasteType) {
+        throw new ResponseError(404, "Waste Type not found");
     }
 
     const uom = await prismaClient.uOM.findFirst({
@@ -83,14 +83,14 @@ const updatePricelist = async (request) => {
         throw new ResponseError(400, "End date must be greater than start date");
     }
 
-    const wasteCategories = await prismaClient.wasteCategory.findFirst({
+    const wasteType = await prismaClient.wasteType.findFirst({
         where:{
             id: request.waste_type_id
         }
     })
 
-    if(!wasteCategories) {
-        throw new ResponseError(404, "Waste Category not found");
+    if(!wasteType) {
+        throw new ResponseError(404, "Waste Type not found");
     }
 
     const uom = await prismaClient.uOM.findFirst({
