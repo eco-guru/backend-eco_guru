@@ -51,12 +51,12 @@ const login = async (request) => {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new ResponseError(404, 'User not found');
     }
 
     const isPasswordValid = await bcrypt.compare(request.password, user.password);
     if (!isPasswordValid) {
-      throw new Error('Invalid password');
+      throw new ResponseError(404, 'Invalid password');
     }
 
     const token = uuid().toString();
@@ -68,14 +68,29 @@ const login = async (request) => {
       where: {
         id: user.id
       },
-      include: { Roles: true } 
+      select:{
+        username: true,
+        phone: true,
+        token: true,
+        Roles:{
+            select:{
+                name: true
+            }
+        }
+      }
     });
 
+
     if (!updatedUser) {
-      throw new Error('Failed to update user token');
+      throw new ResponseError(400, 'Failed to update user token');
     }
 
-    return updatedUser; 
+    return {
+        username: updatedUser.username,
+        phone: updatedUser.phone,
+        token: updatedUser.token,
+        role: updatedUser.Roles.name
+    };
 };
 
 
@@ -140,6 +155,9 @@ const update = async (username,request) => {
     if (user.phone) {
         data.phone = user.phone;
     }
+    if (user.profile_picture) {
+        data.profile_picture = user.profile_picture;
+    }
     console.log(data);
     return prismaClient.users.update({
         where: {
@@ -148,7 +166,8 @@ const update = async (username,request) => {
         data: data,
         select: {
             username: true,
-            phone: true
+            phone: true,
+            profile_picture: true
         }
     })
 }

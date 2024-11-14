@@ -18,9 +18,16 @@ const schemaDeleteLogVideo = Joi.object({
     accessed_by: Joi.string().max(100).required(),
 });
 
+const schemaCountVideos = Joi.object({
+    videosId: Joi.number().integer().required(),
+    option: Joi.string()
+        .required()
+});
+
 
 export {
     schemaUpdateLogVideo,
     createLogVideo,
-    schemaDeleteLogVideo
+    schemaDeleteLogVideo,
+    schemaCountVideos
 }

@@ -14,13 +14,13 @@ const createTransaction = async (data) => {
         throw new ResponseError(404, 'User not found');
     }
     
-    const wasteCategory = await prismaClient.wasteCategory.findUnique({
+    const wasteCategory = await prismaClient.users.findUnique({
         where: {
           id: data.approved_by,
         },
     });
     if (!wasteCategory) {
-        throw new ResponseError(404, 'Approved by not found in Waste Category');
+        throw new ResponseError(404, 'Approved by not found in Users');
     }
     
     const transaction = await prismaClient.transactions.create({

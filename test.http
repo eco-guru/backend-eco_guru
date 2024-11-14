@@ -45,11 +45,13 @@ Authorization: e3565d32-a42a-4860-b293-fbf747d95302
 PATCH http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: e3565d32-a42a-4860-b293-fbf747d95302
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
-  "username" : "dodi",
-  "phone": "085234134511"
+  "username" : "aomrizky",
+  "phone": "08748399200",
+  "profile_picture": "https://example.com/image.jpg"
 }
 
 
@@ -78,13 +80,13 @@ Cookie: user-role=%242b%2410%24D3WxNow2fiU%2FVs9Nt24QreEEia1d2FtmxUOGT9kk1jTnSFt
 
 PATCH http://localhost:5000/api/admin/user/update?username=aomrizky
 Content-Type: application/json
-Authorization: 60b85aca-074f-465a-8e77-b07400b5850b
-Cookie: user-role=%242b%2410%24D3WxNow2fiU%2FVs9Nt24QreEEia1d2FtmxUOGT9kk1jTnSFtCrGxDy
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
     "username": "aomrizky123",
     "phone": "08134343433",
-    "role_id": 2
+    "role_id": 3
 }
 
 
@@ -296,14 +298,14 @@ Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkK
 ###
 POST http://localhost:5000/api/transaction/create
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "user_id": 1,
   "transaction_date": "2024-10-10T00:00:00.000Z",
   "total": 10000,
-  "approved_by": 2
+  "approved_by": 1
 }
 
 # READ Transactions
@@ -403,8 +405,8 @@ Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjg
 ###
 POST http://localhost:5000/api/article/create
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "title": "Pengelolaan Bungkus Botol",
@@ -420,24 +422,24 @@ Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVp
 ###
 GET http://localhost:5000/api/article/list
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Get One Article
 ###
 GET http://localhost:5000/api/article/getOne/2
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Update Article
 ###
 PUT http://localhost:5000/api/article/update/2
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "title": "Pengelolaan Bungkus Botol Coba",
@@ -453,37 +455,37 @@ Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVp
 ###
 DELETE http://localhost:5000/api/article/delete/2
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # CREATE Log Articles
 ###
 POST http://localhost:5000/api/log-article/create
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
-  "article_id": 1,
+  "article_id": 2,
   "accessed_by": "user1",
-  "accessed_time": "2024-11-09T13:20:03.378Z"
+  "accessed_time": "2024-11-09T13:20:30.378Z"
 }
 
 # READ Log Articles
 ###
 GET http://localhost:5000/api/log-article/list
 Content-Type: application/json
-Authorization: 1efdb2f5-6668-4f1e-aeee-0f3de3eda8c4
-Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVpOZnm
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Get One Log Articles
 ###
-GET http://localhost:5000/api/log-article/getOne/1/user1
+GET http://localhost:5000/api/log-article/getOne/2/user1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Update Log Articles
@@ -510,8 +512,8 @@ Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVp
 ###
 POST http://localhost:5000/api/videos/create
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "title": "Pengelolaan Bungkus Botol",
@@ -530,24 +532,24 @@ Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2
 ###
 GET http://localhost:5000/api/videos/list
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
-# Get One Article
+# Get One Videos
 ###
-GET http://localhost:5000/api/article/getOne/1
+GET http://localhost:5000/api/videos/getOne/1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Update Videos
 ###
 PUT http://localhost:5000/api/videos/update/1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "title": "Pengelolaan Bungkus Botol",
@@ -566,55 +568,84 @@ Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2
 ###
 DELETE http://localhost:5000/api/article/delete/1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # CREATE Log Videos
 ###
 POST http://localhost:5000/api/log-videos/create
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
   "video_id": 1,
   "accessed_by": "user1",
-  "accessed_time": "2024-11-09T13:22:03.378Z"
+  "accessed_time": "2024-11-09T13:22:30.378Z"
 }
 
 # READ Log Videos
 ###
 GET http://localhost:5000/api/log-videos/list
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Get One Log Videos
 ###
 GET http://localhost:5000/api/log-videos/getOne/1/user1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 
 # Update Log Videos
 ###
 PUT http://localhost:5000/api/log-videos/update/1/user1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
 {
-  "accessed_time_old": "2024-11-09T13:20:03.378Z",
-  "accessed_time_new": "2024-11-09T13:22:30.378Z"
+  "accessed_time_old": "2024-11-09T13:22:03.378Z",
+  "accessed_time_new": "2024-11-09T13:22:29.378Z"
 }
 
 # Delete Log Videos
 ###
 DELETE http://localhost:5000/api/log-videos/delete/1/user1
 Content-Type: application/json
-Authorization: 8ae2d803-5276-4882-8253-9313d6dd5ef6
-Cookie: user-role=%242b%2410%24L71LcW0c%2FhdlSVhSMklUJud%2Fe6L4TR3U2.nwL4Cg2VD%2FdsSV7.J1S
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
 
+
+# Count Articles
+### Test 1: Get daily count
+GET http://localhost:5000/api/count/articles/2/2024-11-08
+Content-Type: application/json
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+
+
+### Test 2: Get monthly count
+GET http://localhost:5000/api/count/articles/2/2024-08
+Content-Type: application/json
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+
+
+### Test 3: Get yearly count
+GET http://localhost:5000/api/count/articles/2/2024
+Content-Type: application/json
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+
+
+# Count Videos
+### Test 1: Get daily count
+GET http://localhost:5000/api/count/videos/1/2024-11-09
+Content-Type: application/json
+Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
+Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi

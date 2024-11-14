@@ -3,6 +3,7 @@ import { ResponseError } from "../error/response-error.js";
 import { validate } from "../validation/validation.js";
 import {
   createLogVideo,
+  schemaCountVideos,
   schemaDeleteLogVideo,
   schemaUpdateLogVideo
 } from "../validation/logVideos-validation.js";
@@ -120,10 +121,58 @@ const createVideos = async (request) => {
   });
 };
 
+const countVideosAccessByOptionAndVideosId = async (videosId, option) => {
+  const params = validate(schemaCountVideos, { videosId, option });
+  let whereCondition = { video_id: params.videosId };
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(params.option)) {
+      // Daily
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}T00:00:00.000Z`),
+          lt: new Date(`${params.option}T23:59:59.999Z`),
+      };
+  } else if (/^\d{4}-\d{2}$/.test(params.option)) {
+      // Monthly
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}-01T00:00:00.000Z`),
+          lt: new Date(`${params.option}-31T23:59:59.999Z`),
+      };
+  } else if (/^\d{4}$/.test(params.option)) {
+      // Yearly
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}-01-01T00:00:00.000Z`),
+          lt: new Date(`${params.option}-12-31T23:59:59.999Z`),
+      };
+  } else {
+      throw new ResponseError(400,'Invalid option format. Use YYYY-MM-DD, YYYY-MM, or YYYY.');
+  }
+
+  // Check if the videos exists
+  const videosExists = await prismaClient.videos.findUnique({
+      where: { id: videosId },
+  });
+
+  if (!videosExists) {
+      throw new ResponseError(400,'Videos not found.');
+  }
+
+  // Query the database for unique user count
+  const users = await prismaClient.logVideos.findMany({
+      where: whereCondition,
+      select: {
+          accessed_by: true,
+      },
+  });
+
+  const uniqueUsers = new Set(users.map((user) => user.accessed_by));
+  return uniqueUsers.size;
+}
+
 export default {
   getLogVideos,
   getOneLogVideos,
   deleteLogVideos,
   updateLogVideos,
-  createVideos
+  createVideos,
+  countVideosAccessByOptionAndVideosId
 };

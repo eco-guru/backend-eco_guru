@@ -9,6 +9,7 @@ import { userRouter } from "../routes/auth-api.js";
 import cookieParser from "cookie-parser";
 import apiDocumentation from "../../docs/api-docs.json" assert { type: "json" };
 import { adminRouter } from "../routes/admin-api.js";
+import { collectorRouter } from "../routes/wasteCollector-api.js";
 
 const upload = multer(); 
 dotenv.config();
@@ -27,4 +28,5 @@ web.use(upload.none());
 web.use(publicRouter);
 web.use(userRouter);
 web.use(adminRouter);
+web.use(collectorRouter);
 web.use(errorMiddleware);

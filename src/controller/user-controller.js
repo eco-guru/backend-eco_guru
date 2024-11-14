@@ -17,7 +17,7 @@ const register = async (req, res, next) => {
 const login = async (req, res) => {
     try {
         const user = await userService.login(req.body);
-        const data = await bcrypt.hash(user.Roles.name, 10);
+        const data = await bcrypt.hash(user.role, 10);
 
       if (user) {
         res.cookie('user-role', data, {
@@ -30,12 +30,7 @@ const login = async (req, res) => {
   
         return res.status(200).json({
           message: 'Login successful',
-          user: {
-            id: user.id,
-            name: user.name,
-            username: user.username,
-            token: user.token,
-          }
+          user: user
         });
       } else {
         return res.status(401).json({ message: 'Invalid username or password' });

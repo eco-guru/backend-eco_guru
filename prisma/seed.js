@@ -15,6 +15,12 @@ async function main() {
       {
         name: "User",
       },
+      {
+        name: "Waste collector",
+      },
+      {
+        name: "Educator",
+      },
     ]
     
   });

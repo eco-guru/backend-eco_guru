@@ -80,11 +80,32 @@ const getOneLogArticles = async (req, res) => {
   }
 };
 
+async function countArticles(req, res) {
+  try {
+      const { articleId, option } = req.params;
+
+      const count = await logArticleService.countArticleAccessByOptionAndArticleId(Number(articleId), option);
+
+      res.status(200).json({
+          message: 'Count retrieved successfully',
+          success: true,
+          data: count,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: 'Internal server error',
+          success: false,
+          message: error.message,
+      });
+  }
+}
+
 
 export default {
     createLogArticles,
     updateLogArticles,
     deleteLogArticles,
     getLogArticles,
-    getOneLogArticles
+    getOneLogArticles,
+    countArticles
 }

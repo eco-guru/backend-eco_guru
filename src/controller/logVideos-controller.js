@@ -80,11 +80,31 @@ const getOneLogVideos = async (req, res) => {
   }
 };
 
+async function countVideos(req, res) {
+  try {
+      const { videosId, option } = req.params;
+
+      const count = await logVideosService.countVideosAccessByOptionAndVideosId(Number(videosId), option);
+
+      res.status(200).json({
+          message: 'Count retrieved successfully',
+          success: true,
+          data: count,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: 'Internal server error',
+          success: false,
+          message: error.message,
+      });
+  }
+}
 
 export default {
     createLogVideos,
     updateLogVideos,
     deleteLogVideos,
     getLogVideos,
-    getOneLogVideos
+    getOneLogVideos,
+    countVideos
 }

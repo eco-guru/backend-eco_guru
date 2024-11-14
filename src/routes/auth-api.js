@@ -50,6 +50,9 @@ userRouter.get('/api/videos/getOne/:id', videosController.getOneVideos);
 userRouter.get('/api/log-videos/list', logVideosController.getLogVideos);
 userRouter.get('/api/log-videos/getOne/:video_id/:accessed_by', logVideosController.getOneLogVideos);
 
+userRouter.get('/api/count/articles/:articleId/:option', logArticleController.countArticles);
+userRouter.get('/api/count/videos/:videosId/:option', logVideosController.countVideos);
+
 export {
     userRouter
 }

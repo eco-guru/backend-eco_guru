@@ -4,7 +4,8 @@ import { validate } from "../validation/validation.js";
 import {
   createLogArticles,
   schemaUpdateLogArticle,
-  schemaDeleteLogArticles
+  schemaDeleteLogArticles,
+  schemaCountArticles
 } from "../validation/logArticle-validation.js";
 
 const getLogArticles = async () => {
@@ -121,10 +122,58 @@ const createArticle = async (request) => {
   });
 };
 
+const countArticleAccessByOptionAndArticleId = async (articleId, option) => {
+  const params = validate(schemaCountArticles, { articleId, option });
+  let whereCondition = { article_id: params.articleId };
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(params.option)) {
+      // Daily
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}T00:00:00.000Z`),
+          lt: new Date(`${params.option}T23:59:59.999Z`),
+      };
+  } else if (/^\d{4}-\d{2}$/.test(params.option)) {
+      // Monthly
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}-01T00:00:00.000Z`),
+          lt: new Date(`${params.option}-31T23:59:59.999Z`),
+      };
+  } else if (/^\d{4}$/.test(params.option)) {
+      // Yearly
+      whereCondition.accessed_time = {
+          gte: new Date(`${params.option}-01-01T00:00:00.000Z`),
+          lt: new Date(`${params.option}-12-31T23:59:59.999Z`),
+      };
+  } else {
+      throw new ResponseError(400,'Invalid option format. Use YYYY-MM-DD, YYYY-MM, or YYYY.');
+  }
+
+  // Check if the article exists
+  const articleExists = await prismaClient.articles.findUnique({
+      where: { id: articleId },
+  });
+
+  if (!articleExists) {
+      throw new ResponseError(400,'Article not found.');
+  }
+
+  // Query the database for unique user count
+  const users = await prismaClient.logArticles.findMany({
+      where: whereCondition,
+      select: {
+          accessed_by: true,
+      },
+  });
+
+  const uniqueUsers = new Set(users.map((user) => user.accessed_by));
+  return uniqueUsers.size;
+}
+
 export default {
   getLogArticles,
   getOneLogArticle,
   deleteLogArticle,
   updateLogArticle,
-  createArticle
+  createArticle,
+  countArticleAccessByOptionAndArticleId
 };

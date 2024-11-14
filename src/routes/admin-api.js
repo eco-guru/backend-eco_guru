@@ -80,6 +80,8 @@ adminRouter.get('/api/log-videos/list', logVideosController.getLogVideos);
 adminRouter.get('/api/log-videos/getOne/:video_id/:accessed_by', logVideosController.getOneLogVideos);
 adminRouter.delete('/api/log-videos/delete/:video_id/:accessed_by', logVideosController.deleteLogVideos);
 
+adminRouter.get('/api/count/articles/:articleId/:option', logArticleController.countArticles);
+
 export {
     adminRouter
 }

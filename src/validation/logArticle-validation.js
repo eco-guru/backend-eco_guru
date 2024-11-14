@@ -18,9 +18,15 @@ const schemaDeleteLogArticles = Joi.object({
     accessed_by: Joi.string().max(100).required(),
 });
 
+const schemaCountArticles = Joi.object({
+    articleId: Joi.number().integer().required(),
+    option: Joi.string()
+        .required()
+});
 
 export {
     schemaUpdateLogArticle,
     createLogArticles,
-    schemaDeleteLogArticles
+    schemaDeleteLogArticles,
+    schemaCountArticles
 }
