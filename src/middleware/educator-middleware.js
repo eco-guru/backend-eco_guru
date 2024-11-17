@@ -26,7 +26,6 @@ export const educatorMiddleware = async (req, res, next) => {
         }).end();
     }
 
-    // Ambil cookie 'user-role'
     const encryptedRole = req.cookies['user-role'];
 
     if (!encryptedRole) {
@@ -44,7 +43,6 @@ export const educatorMiddleware = async (req, res, next) => {
         }).end();
     }
 
-    // Jika role Educator, izinkan melanjutkan
     req.user = user;
     next();
 };

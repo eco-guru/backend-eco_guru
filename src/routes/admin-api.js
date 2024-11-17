@@ -29,7 +29,7 @@ adminRouter.delete('/api/uom/delete/:id', uomController.deleteUOM);
 adminRouter.get('/api/pricelist/get', pricelistController.getPricelist);
 adminRouter.get('/api/pricelist/get-one/:wasteTypeId/:uomId', pricelistController.getOne);
 adminRouter.post('/api/pricelist', pricelistController.postPricelist);
-adminRouter.patch('/api/pricelist/update', pricelistController.updatePricelist);
+adminRouter.put('/api/pricelist/update/:wasteTypeId/:uomId', pricelistController.updatePricelist);
 adminRouter.delete('/api/pricelist/delete/:wasteTypeId/:uomId', pricelistController.deletePricelist);
 
 adminRouter.get('/api/waste-category/get-one/:id', wasteCategoryController.getOneWasteCategory);

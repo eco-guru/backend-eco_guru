@@ -1,7 +1,7 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import {validate} from "../validation/validation.js";
-import {getAndDeletePricelistValidation, postAndUpdatePricelistValidation} from "../validation/pricelist-validation.js";
+import {getAndDeletePricelistValidation, postPricelistValidation, updatePricelistValidation} from "../validation/pricelist-validation.js";
 
 const getPricelist = async () => {
     const pricelist = await prismaClient.pricelist.findMany({
@@ -22,7 +22,7 @@ const getPricelist = async () => {
 }
 
 const postPricelist = async (request) => {
-    request = validate(postAndUpdatePricelistValidation,request);
+    request = validate(postPricelistValidation,request);
 
     if(request.end_date < request.start_date) {
         throw new ResponseError(400, "End date must be greater than start date");
@@ -67,11 +67,11 @@ const postPricelist = async (request) => {
 }
 
 const updatePricelist = async (request) => {
-    request = validate(postAndUpdatePricelistValidation,request);
+    request = validate(updatePricelistValidation,request);
     const data = await prismaClient.pricelist.findFirst({
         where:{
-            waste_type_id: request.waste_type_id,
-            uom_id: request.uom_id
+            waste_type_id: request.params_waste_type_id,
+            uom_id: request.params_uom_id
         }
     })
 
@@ -85,7 +85,7 @@ const updatePricelist = async (request) => {
 
     const wasteType = await prismaClient.wasteType.findFirst({
         where:{
-            id: request.waste_type_id
+            id: request.params_waste_type_id
         }
     })
 
@@ -93,9 +93,19 @@ const updatePricelist = async (request) => {
         throw new ResponseError(404, "Waste Type not found");
     }
 
+    const existWasteType = await prismaClient.wasteType.findFirst({
+        where:{
+            id: request.params_waste_type_id
+        }
+    })
+
+    if(!existWasteType) {
+        throw new ResponseError(404, "Waste Type not found");
+    }
+
     const uom = await prismaClient.uOM.findFirst({
         where:{
-            id: request.uom_id
+            id: request.params_uom_id
         }
     })
 
@@ -103,21 +113,38 @@ const updatePricelist = async (request) => {
         throw new ResponseError(404, "UOM not found");
     }
 
+    const existsUom = await prismaClient.uOM.findFirst({
+        where:{
+            id: request.uom_id
+        }
+    })
+
+    if(!existsUom) {
+        throw new ResponseError(404, "UOM not found");
+    }
+
     const pricelist = await prismaClient.pricelist.update({
         where: {
             waste_type_id_uom_id: {
-                waste_type_id: request.waste_type_id,
-                uom_id: request.uom_id
+                waste_type_id: request.params_waste_type_id,
+                uom_id: request.params_uom_id
             }
         },
-        data: request
+        data: {
+            uom_id: request.uom_id,
+            waste_type_id: request.waste_type_id,
+            price: request.price,
+            isActive: request.isActive,
+            start_date: request.start_date,
+            end_date: request.end_date
+        }
     });
     return pricelist;
 }
 
 const deletePricelist = async (request) => {
     request = validate(getAndDeletePricelistValidation, request);
-
+    
     const data = await prismaClient.pricelist.findFirst({
         where:{
             waste_type_id: request.waste_type_id,
