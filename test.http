@@ -45,13 +45,12 @@ Authorization: e3565d32-a42a-4860-b293-fbf747d95302
 PATCH http://localhost:5000/api/users/current
 Content-Type: application/json
 Accept: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: 66592e2a-a070-4a22-9b32-2cc8de6ec99b
 
 {
   "username" : "aomrizky",
   "phone": "08748399200",
-  "profile_picture": "https://example.com/image.jpg"
+  "password": "rahasia"
 }
 
 
@@ -262,7 +261,7 @@ Cookie: user-role=%242b%2410%24LGMRfs2bmEneJz2QeO.UwuXC56kT6kCt5j89QbIBHFpEV5LGX
 }
 
 
-### UPDATE Price List
+### UPDATE Price List BY WASTE TYPE ID AND UOM ID (6 waste type id and 2 uom id)
 PUT  http://localhost:5000/api/pricelist/update/6/2
 Content-Type: application/json
 Accept: application/json

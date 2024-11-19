@@ -17,20 +17,18 @@ const getUserValidation = Joi.string().max(100).required();
 const updateUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
     password: Joi.string().max(100).optional(),
-    profile_picture: Joi.string().max(100).optional(),
-    phone: Joi.string().max(100).optional()
+    profile_picture: Joi.any().optional().custom((value, helpers) => {
+        if (Buffer.isBuffer(value)) {
+            return value;
+        }
+        return helpers.message("Profile picture must be a binary data (Blob).");
+    }),
+    phone: Joi.string().optional().pattern(/^[0-9]+$/)
 })
-
-const userUpdateSchema = Joi.object({
-    username: Joi.string().max(100).optional(),
-    phone: Joi.string().optional().pattern(/^[0-9]+$/), // Validasi nomor telepon
-    role_id: Joi.number().optional(),
-});
 
 export {
     registerUserValidation,
     loginUserValidation,
     getUserValidation,
     updateUserValidation,
-    userUpdateSchema
 }

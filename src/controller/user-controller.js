@@ -55,8 +55,13 @@ const update = async (req, res, next) => {
     try {
       const username = req.user.username;
       const request = req.body;
+      let profile_picture = null;
+        if (req.file) {
+            profile_picture = req.file.buffer;
+        }
+
   
-      const result = await userService.update(username, request);
+      const result = await userService.update(username, request, profile_picture);
       res.status(200).json({
         data: result
       });

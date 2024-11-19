@@ -132,7 +132,7 @@ const get = async (username) => {
     return user;
 }
 
-const update = async (username,request) => {
+const update = async (username,request,profile_picture) => {
     const user = validate(updateUserValidation, request);
     console.log(user.username);
     const totalUserInDatabase = await prismaClient.users.count({
@@ -158,6 +158,7 @@ const update = async (username,request) => {
     if (user.profile_picture) {
         data.profile_picture = user.profile_picture;
     }
+    data.profile_picture = profile_picture;
     console.log(data);
     return prismaClient.users.update({
         where: {
