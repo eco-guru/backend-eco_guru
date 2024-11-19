@@ -157,8 +157,9 @@ const update = async (username,request,profile_picture) => {
     }
     if (user.profile_picture) {
         data.profile_picture = user.profile_picture;
+    }else{
+        data.profile_picture = profile_picture;
     }
-    data.profile_picture = profile_picture;
     console.log(data);
     return prismaClient.users.update({
         where: {
