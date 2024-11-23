@@ -24,18 +24,6 @@ async function main() {
     ]
     
   });
-
-  await prisma.users.create({
-    data: {
-      username: "user1",
-      password: hashedPassword,
-      phone: "081234567890",
-      profile_picture: "/images/user.jpg",
-      token: uuid().toString(),
-      role_id: 1,
-    },
-  });
-
   // Seed Waste Categories
   const wasteCategories = [
     { category: "Karton"},
@@ -44,6 +32,84 @@ async function main() {
     { category: "Minyak Jelantah" },
     { category: "Kaca/Beling" },
   ];
+
+  const user1 = await prisma.users.create({
+    data: {
+      username: "user1",
+      password: hashedPassword,
+      phone: "081234567890",
+      token: uuid().toString(),
+      role_id: 1,
+    },
+  });
+
+  const user2 = await prisma.users.create({
+      data: {
+        username: "john_doe",
+        password: hashedPassword,
+        phone: "081234567891",
+        token: uuid().toString(),
+        role_id: 2
+      },
+    });
+
+  const user3 = await prisma.users.create({
+      data: {
+        username: "jane_smith",
+        password: hashedPassword,
+        phone: "081234567892",
+        token: uuid().toString(),
+        role_id: 2
+      },
+    });
+  const user4 = await prisma.users.create({
+      data: {
+        username: "bob_johnson",
+        password: hashedPassword,
+        phone: "081234567893",
+        token: uuid().toString(),
+        role_id: 3
+      },
+    });
+
+    
+  const user5 = await prisma.users.create({
+      data: {
+        username: "alice_brown",
+        password: hashedPassword,
+        phone: "081234567894",
+        token: uuid().toString(),
+        role_id: 4
+      },
+  });
+
+  await prisma.paymentRequest.create({
+    data: {
+      user_id: user2.id,
+      request_date: new Date(),
+      request_amount: 1000000,
+      expected_payment_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      payment_date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+      payment_by: user4.id,
+      confirmation_status: 'Waiting_For_Confirmation',
+      confirmation_date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+    },
+  }),
+  
+  // Successful payments
+  await prisma.paymentRequest.create({
+    data: {
+      user_id: user3.id,
+      request_date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+      request_amount: 2500000,
+      expected_payment_date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      payment_date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+      payment_by: user4.id,
+      confirmation_status: 'Success',
+      confirmation_date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+    },
+  }),
+
   await prisma.wasteCategory.createMany({
     data: wasteCategories,
   });
@@ -111,6 +177,8 @@ async function main() {
     },
   });
 }
+
+console.log('Seed data created successfully');
 
 main()
   .catch((e) => {

@@ -11,6 +11,8 @@ import articleController from "../controller/article-controller.js";
 import logArticleController from "../controller/logArticle-controller.js";
 import videosController from "../controller/videos-controller.js";
 import logVideosController from "../controller/logVideos-controller.js";
+import paymentRequestController from "../controller/payment-request-controller.js";
+import wastePickupController from "../controller/waste-pickup-controller.js";
 
 const adminRouter = new express.Router();
 
@@ -81,6 +83,20 @@ adminRouter.get('/api/log-videos/getOne/:video_id/:accessed_by', logVideosContro
 adminRouter.delete('/api/log-videos/delete/:video_id/:accessed_by', logVideosController.deleteLogVideos);
 
 adminRouter.get('/api/count/articles/:articleId/:option', logArticleController.countArticles);
+
+
+adminRouter.get("/api/payment-requests", paymentRequestController.get);
+adminRouter.get("/api/payment-requests/:paymentRequestId", paymentRequestController.getById);
+adminRouter.post("/api/payment-requests", paymentRequestController.create);
+adminRouter.put("/api/payment-requests/:paymentRequestId", paymentRequestController.update);
+adminRouter.delete("/api/payment-requests/:paymentRequestId", paymentRequestController.remove);
+
+adminRouter.get('/api/waste-pickups', wastePickupController.getAllWastePickups);
+adminRouter.get('/api/waste-pickups/:id', wastePickupController.getOneWastePickup);
+adminRouter.post('/api/waste-pickups', wastePickupController.createWastePickup);
+adminRouter.put('/api/waste-pickups/:id', wastePickupController.updateWastePickup);
+adminRouter.delete('/api/waste-pickups/:id', wastePickupController.deleteWastePickup);
+
 
 export {
     adminRouter

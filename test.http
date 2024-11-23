@@ -648,3 +648,193 @@ GET http://localhost:5000/api/count/videos/1/2024-11-09
 Content-Type: application/json
 Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
 Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+
+
+
+### Get All Payment Requests
+GET http://localhost:5000/api/payment-requests
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Get Payment Request by ID
+GET http://localhost:5000/api/payment-requests/1
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Create New Payment Request
+POST http://localhost:5000/api/payment-requests
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 2,
+    "request_date": "2024-01-01T00:00:00.000Z",
+    "request_amount": 1000000,
+    "payment_by": 2,
+    "confirmation_status": "Waiting_For_Confirmation",
+    "confirmation_date": "2024-01-05T00:00:00.000Z"
+}
+
+### Update Payment Request
+PUT http://localhost:5000/api/payment-requests/4
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 2,
+    "request_date": "2024-01-01T00:00:00.000Z",
+    "request_amount": 1500000,
+    "expected_payment_date": "2024-01-10T00:00:00.000Z",
+    "payment_date": "2024-01-05T00:00:00.000Z",
+    "payment_by": 2,
+    "confirmation_status": "APPROVED",
+    "confirmation_status": "Waiting_For_Confirmation",
+    "confirmation_date": "2024-01-05T00:00:00.000Z"
+}
+
+### Delete Payment Request
+DELETE http://localhost:5000/api/payment-requests/4
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Test Invalid Create (Missing Required Fields)
+POST http://localhost:5000/api/payment-requests
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "request_amount": 1000000
+}
+
+### Test Invalid Create (Invalid Status)
+POST http://localhost:5000/api/payment-requests
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "request_date": "2024-01-01T00:00:00.000Z",
+    "request_amount": 1000000,
+    "expected_payment_date": "2024-01-10T00:00:00.000Z",
+    "payment_by": 2,
+    "confirmation_status": "INVALID_STATUS"
+}
+
+### Test Get Non-existent Payment Request
+GET http://localhost:5000/api/payment-requests/999
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Test Update Non-existent Payment Request
+PUT http://localhost:5000/api/payment-requests/999
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "request_date": "2024-01-01T00:00:00.000Z",
+    "request_amount": 1500000,
+    "expected_payment_date": "2024-01-10T00:00:00.000Z",
+    "payment_by": 2,
+    "confirmation_status": "APPROVED"
+}
+
+### Test Create Duplicate Payment Request (Same user_id and payment_by)
+POST http://localhost:5000/api/payment-requests
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "request_date": "2024-01-01T00:00:00.000Z",
+    "request_amount": 1000000,
+    "expected_payment_date": "2024-01-10T00:00:00.000Z",
+    "payment_by": 2,
+    "confirmation_status": "Success",
+    "confirmation_date": "2024-01-05T00:00:00.000Z"
+}
+
+### Get All Waste Pickups
+GET http://localhost:5000/api/waste-pickups
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Get One Waste Pickup
+GET http://localhost:5000/api/waste-pickups/1
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Create New Waste Pickup
+POST http://localhost:5000/api/waste-pickups
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "pick_up_date": "2024-11-25T10:00:00.000Z",
+    "location": "Jl. Contoh No. 123, Jakarta",
+    "status": "Scheduled"
+}
+
+### Update Waste Pickup
+PUT http://localhost:5000/api/waste-pickups/1
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "pick_up_date": "2024-11-26T10:00:00.000Z",
+    "location": "Jl. Contoh No. 123, Jakarta",
+    "status": "Completed"
+}
+
+### Delete Waste Pickup
+DELETE http://localhost:5000/api/waste-pickups/1
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+
+### Test Invalid Status
+POST http://localhost:5000/api/waste-pickups
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "pick_up_date": "2024-11-25T10:00:00.000Z",
+    "location": "Jl. Contoh No. 123, Jakarta",
+    "status": "INVALID_STATUS"
+}
+
+### Test Invalid User ID
+POST http://localhost:5000/api/waste-pickups
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 999999,
+    "pick_up_date": "2024-11-25T10:00:00.000Z",
+    "location": "Jl. Contoh No. 123, Jakarta",
+    "status": "PENDING"
+}
+
+### Test Missing Required Fields
+POST http://localhost:5000/api/waste-pickups
+Authorization: 90dcb747-b5af-49d7-b91e-4e7df2c03ba2
+Cookie: user-role=%242b%2410%24LLzah8QH8nQzE70aC8%2FWLeznJXdfNDByduCeWXWEYkmijTD8IhvVK
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "location": "Jl. Contoh No. 123, Jakarta"
+}
