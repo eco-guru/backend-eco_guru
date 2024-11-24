@@ -13,6 +13,7 @@ import videosController from "../controller/videos-controller.js";
 import logVideosController from "../controller/logVideos-controller.js";
 import paymentRequestController from "../controller/payment-request-controller.js";
 import wastePickupController from "../controller/waste-pickup-controller.js";
+import dashboardController from "../controller/dashboard-controller.js";
 
 const adminRouter = new express.Router();
 
@@ -53,10 +54,10 @@ adminRouter.get('/api/transaction/getOne/:id', transactionController.getTransact
 adminRouter.delete('/api/transaction/delete/:id', transactionController.deleteTransaction);
 
 adminRouter.post('/api/transactionData/create', transactionDataController.createTransactionData);
-adminRouter.put('/api/transactionData/update/:transactionId', transactionDataController.updateTransactionData);
+adminRouter.put('/api/transactionData/update/:Id', transactionDataController.updateTransactionData);
 adminRouter.get('/api/transactionData/list', transactionDataController.listAllTransactionData);
-adminRouter.get('/api/transactionData/getOne/:transactionId', transactionDataController.getTransactionDataById);
-adminRouter.delete('/api/transactionData/delete/:transactionId', transactionDataController.deleteTransactionData);
+adminRouter.get('/api/transactionData/getOne/:Id', transactionDataController.getTransactionDataById);
+adminRouter.delete('/api/transactionData/delete/:Id', transactionDataController.deleteTransactionData);
 
 adminRouter.post('/api/article/create', articleController.createArticles);
 adminRouter.put('/api/article/update/:id', articleController.updateArticles);
@@ -96,6 +97,8 @@ adminRouter.get('/api/waste-pickups/:id', wastePickupController.getOneWastePicku
 adminRouter.post('/api/waste-pickups', wastePickupController.createWastePickup);
 adminRouter.put('/api/waste-pickups/:id', wastePickupController.updateWastePickup);
 adminRouter.delete('/api/waste-pickups/:id', wastePickupController.deleteWastePickup);
+
+adminRouter.get('/api/dashboard', dashboardController.DashboardController);
 
 
 export {

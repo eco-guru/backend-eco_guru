@@ -297,8 +297,8 @@ Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkK
 ###
 POST http://localhost:5000/api/transaction/create
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 {
   "user_id": 1,
@@ -319,8 +319,8 @@ Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjg
 ###
 GET http://localhost:5000/api/transaction/getOne/1
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 
 # Update Transactions
@@ -350,41 +350,42 @@ Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjg
 ###
 POST http://localhost:5000/api/transactionData/create
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 {
-  "transaction_id": 2,
-  "waste_type_id": 2,
+  "transaction_id": 1,
+  "waste_type_id": 3,
   "uom_id": 2,
-  "quantity": 2,
-  "price": 20000
+  "quantity": 3,
+  "price": 40000
 }
 
 # READ Transactions Data
 ###
-GET http://localhost:5000/api/transactionData/list
+GET http://localhost:5000/api/transactionData/list?transaction_id=2
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 
 # Get One Transactions Data
 ###
 GET http://localhost:5000/api/transactionData/getOne/2
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 
 # Update Transactions Data
 ###
 PUT http://localhost:5000/api/transactionData/update/2
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 {
+  "transaction_id": 1,
   "waste_type_id": 2,
   "uom_id": 2,
   "quantity": 2,
@@ -393,10 +394,10 @@ Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjg
 
 # Delete Transactions Data
 ###
-DELETE http://localhost:5000/api/transactionData/delete/2
+DELETE http://localhost:5000/api/transactionData/delete/1
 Content-Type: application/json
-Authorization: c8db002c-9133-4dce-a5df-8d23d1b8c7f0
-Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjgA5upqm
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
 
 
 
@@ -838,3 +839,15 @@ Content-Type: application/json
     "user_id": 1,
     "location": "Jl. Contoh No. 123, Jakarta"
 }
+
+### Get Dashboard Data (Default - Current Year)
+GET http://localhost:5000/api/dashboard
+Content-Type: application/json
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
+
+### Get Dashboard Data with Custom Date Range
+GET http://localhost:5000/api/dashboard?startDate=2024-01-01&endDate=2024-06-30
+Content-Type: application/json
+Authorization: f9d1a47f-d33b-4869-bf63-43f961b0809d
+Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YTYhQuRb%2Fq
