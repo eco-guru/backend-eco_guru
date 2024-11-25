@@ -15,6 +15,24 @@ const register = async (req, res) => {
     }
 }
 
+const mobileLogin = async (req, res) => {
+  try {
+    const user = await userService.mobileLogin(req.body);
+
+    if (user) {
+      return res.status(200).json({
+        message: 'Login berhasil',
+        token: user.token,
+        user: {role: user.user.role}
+      });
+    } else {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+  } catch (err) {
+    return res.status(500).json({message: err.message });
+  }
+}
+
 const login = async (req, res) => {
     try {
         const user = await userService.login(req.body);
@@ -134,6 +152,7 @@ export default {
     get,
     update,
     login,
+    mobileLogin,
     register,
     logout,
     getCurrent,

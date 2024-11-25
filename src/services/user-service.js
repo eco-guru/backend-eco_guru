@@ -9,6 +9,7 @@ import {
 } from "../validation/user-validation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuid} from "uuid";
+import jwt from 'jsonwebtoken'
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request);
@@ -101,6 +102,35 @@ const login = async (request) => {
         phone: updatedUser.phone,
         token: updatedUser.token,
         role: updatedUser.Roles.name
+    };
+};
+
+const mobileLogin = async (request) => {
+    request = validate(loginUserValidation, request);
+
+    const user = await prismaClient.users.findFirst({
+      where: {
+        username: request.username
+      },
+      include: { Roles: true } 
+    });
+
+    if (!user) {
+      throw new ResponseError(404, 'User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(request.password, user.password);
+
+    if (!isPasswordValid) {
+      throw new ResponseError(404, 'Invalid password');
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {expiresIn: '1d'});
+
+    return {
+        message: "Login berhasil",
+        token: token,
+        user: {role: user.role_id},
     };
 };
 
@@ -248,6 +278,7 @@ const updateUser = async (username, data) => {
 export default {
     get,
     login,
+    mobileLogin,
     register,
     logout,
     update,

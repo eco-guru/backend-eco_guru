@@ -11,6 +11,7 @@ const registerUserValidation = Joi.object({
 
 const loginUserValidation = Joi.object({
     usernameOrPhone: Joi.string().optional(),
+    username: Joi.string().optional(),
     password: Joi.string().min(6).required()
 });
 
