@@ -1,20 +1,4 @@
 import express from "express";
-<<<<<<< HEAD:src/routes/web/admin-api.js
-import userController from "../../controller/user-controller.js";
-import pricelistController from "../../controller/pricelist-controller.js";
-import uomController from '../../controller/uom-controller.js';
-import wasteCategoryController from "../../controller/wasteCategory-controller.js";
-import {adminMiddleware} from "../../middleware/admin-middleware.js";
-import transactionController from "../../controller/transaction-controller.js";
-import transactionDataController from "../../controller/transaction-data-controller.js";
-import wasteTypeController from "../../controller/wasteType-controller.js";
-import articleController from "../../controller/article-controller.js";
-import logArticleController from "../../controller/logArticle-controller.js";
-import videosController from "../../controller/videos-controller.js";
-import logVideosController from "../../controller/logVideos-controller.js";
-import paymentRequestController from "../../controller/payment-request-controller.js";
-import wastePickupController from "../../controller/waste-pickup-controller.js";
-=======
 import userController from "../controller/user-controller.js";
 import pricelistController from "../controller/pricelist-controller.js";
 import uomController from '../controller/uom-controller.js';
@@ -30,7 +14,6 @@ import logVideosController from "../controller/logVideos-controller.js";
 import paymentRequestController from "../controller/payment-request-controller.js";
 import wastePickupController from "../controller/waste-pickup-controller.js";
 import dashboardController from "../controller/dashboard-controller.js";
->>>>>>> 0337c54d6996e3cee1f6589ef12da3f4b69a7420:src/routes/admin-api.js
 
 const adminRouter = new express.Router();
 
