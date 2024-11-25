@@ -29,7 +29,18 @@ const register = async (request) => {
     user.password = await bcrypt.hash(user.password, 10);
 
     return prismaClient.users.create({
-        data: user,
+        data: {
+            username: user.username,
+            password: user.password,
+            phone: user.phone,
+            role_id: user.role_id,
+            answers: {
+                create: {
+                    question_id: user.question_id,
+                    answer_text: user.answers
+                }
+            }
+        },
         select: {
             username: true,
             phone: true

@@ -83,6 +83,36 @@ async function main() {
       },
   });
 
+  await prisma.secretQuestion.create({
+    data: {
+      question_text: "Apa warna favorit anda?"
+    }
+  });
+
+  await prisma.secretQuestion.create({
+    data: {
+      question_text: "Apa nama jalan tempat anda tinggal saat kecil?"
+    }
+  });
+
+  await prisma.secretQuestion.create({
+    data: {
+      question_text: "Apa makanan kesukaan anda?"
+    }
+  });
+
+  await prisma.secretQuestion.create({
+    data: {
+      question_text: "Siapa tokoh favorit anda?"
+    }
+  });
+
+  await prisma.secretQuestion.create({
+    data: {
+      question_text: "Apa hobi anda?"
+    }
+  });
+
   await prisma.paymentRequest.create({
     data: {
       user_id: user2.id,

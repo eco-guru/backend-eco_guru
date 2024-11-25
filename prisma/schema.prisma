@@ -36,6 +36,7 @@ model Users {
   profile_picture Bytes?
   role_id         Int
   token           String? @db.VarChar(100)
+  balance         Int     @default(0)
   Roles           Roles   @relation(fields: [role_id], references: [id])
 
   Transactions    Transactions[]
@@ -43,6 +44,8 @@ model Users {
   Articles        Articles[]
   paymentRequests PaymentRequest[] @relation("UserPaymentRequests")
   paymentsToPay   PaymentRequest[] @relation("UserPaymentsToPay")
+
+  answers SecretAnswer[]
 }
 
 model WasteCategory {
@@ -193,6 +196,24 @@ model PaymentRequest {
 
   @@unique([user_id, payment_by])
 }
+
+model SecretQuestion {
+  question_id Int @id @default(autoincrement())
+  question_text String 
+
+  answer SecretAnswer[]
+}
+
+model SecretAnswer {
+  answer_id   Int      @id @default(autoincrement())
+  user_id     Int      @unique
+  question_id Int      
+  answer_text String
+
+  user        Users          @relation(fields: [user_id], references: [id])
+  question    SecretQuestion @relation(fields: [question_id], references: [question_id])
+}
+
 
 enum STATUS_PAYMENT {
   Waiting_For_Confirmation

@@ -1,3 +1,9 @@
+GET http://localhost:5000/test-mobile
+Content-Type: application/json
+Accept: application/json
+Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
+Cookie: user-role=%242b%2410%24o9fIinqE.W1zZCG86gnY1Od5cnnvJJh66oKLC0uXAD0CBzHYjo.B6
+
 ### ADMIN Update profile user
 GET http://localhost:5000/api/admin/users
 Content-Type: application/json

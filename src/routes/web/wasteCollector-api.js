@@ -1,8 +1,8 @@
 import express from "express";
-import pricelistController from "../controller/pricelist-controller.js";
-import { wasteCollectorMiddleware } from "../middleware/wasteCollector-middleware.js";
-import paymentRequestController from "../controller/payment-request-controller.js";
-import wastePickupController from "../controller/waste-pickup-controller.js";
+import pricelistController from "../../controller/pricelist-controller.js";
+import { wasteCollectorMiddleware } from "../../middleware/wasteCollector-middleware.js";
+import paymentRequestController from "../../controller/payment-request-controller.js";
+import wastePickupController from "../../controller/waste-pickup-controller.js";
 
 const collectorRouter = new express.Router();
 collectorRouter.use(wasteCollectorMiddleware);

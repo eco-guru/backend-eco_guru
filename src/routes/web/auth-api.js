@@ -1,17 +1,17 @@
 import express from "express";
 import multer from "multer";
-import userController from "../controller/user-controller.js";
-import {authMiddleware} from "../middleware/auth-middleware.js";
-import pricelistController from "../controller/pricelist-controller.js";
-import uomController from '../controller/uom-controller.js';
-import wasteCategoryController from "../controller/wasteCategory-controller.js";
-import transactionController from "../controller/transaction-controller.js";
-import transactionDataController from "../controller/transaction-data-controller.js";
-import wasteTypeController from "../controller/wasteType-controller.js";
-import articleController from "../controller/article-controller.js";
-import logArticleController from "../controller/logArticle-controller.js";
-import videosController from "../controller/videos-controller.js";
-import logVideosController from "../controller/logVideos-controller.js";
+import userController from "../../controller/user-controller.js";
+import {authMiddleware} from "../../middleware/auth-middleware.js";
+import pricelistController from "../../controller/pricelist-controller.js";
+import uomController from '../../controller/uom-controller.js';
+import wasteCategoryController from "../../controller/wasteCategory-controller.js";
+import transactionController from "../../controller/transaction-controller.js";
+import transactionDataController from "../../controller/transaction-data-controller.js";
+import wasteTypeController from "../../controller/wasteType-controller.js";
+import articleController from "../../controller/article-controller.js";
+import logArticleController from "../../controller/logArticle-controller.js";
+import videosController from "../../controller/videos-controller.js";
+import logVideosController from "../../controller/logVideos-controller.js";
 
 const userRouter = new express.Router();
 
