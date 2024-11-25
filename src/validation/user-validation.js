@@ -29,7 +29,20 @@ const resetPasswordValidation = Joi.object({
     password: Joi.string().required()
 });
 
+const resetPasswordAuthenticatedValidation = Joi.object({
+    token: Joi.string().required(),
+    oldPassword: Joi.string().required(),
+    password: Joi.string().required()
+});
+
 const getUserValidation = Joi.string().max(100).required();
+
+const tokenValidation = Joi.string().required();
+
+const updateMobileValidation = Joi.object({
+    username: Joi.string().required(),
+    phone: Joi.string().required()
+})
 
 const updateUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
@@ -50,5 +63,8 @@ export {
     updateUserValidation,
     verificationUserValidation,
     resetPasswordValidation,
-    proofUserValidation
+    resetPasswordAuthenticatedValidation,
+    proofUserValidation,
+    tokenValidation, 
+    updateMobileValidation
 }

@@ -64,6 +64,15 @@ const resetPassword = async (req, res) => {
   }
 }
 
+const resetPasswordAuthenticated = async (req, res) => {
+  try {
+    const reset = userService.resetPasswordAuthenticated(req.body, res);
+    return reset;
+  } catch (e) {
+    return res.status(500).json({message: "Terjadi kesalahan saat memperbarui profil"});
+  }
+}
+
 const login = async (req, res) => {
     try {
         const user = await userService.login(req.body);
@@ -89,6 +98,31 @@ const login = async (req, res) => {
       return res.status(500).json({message: err.message });
     }
 };
+
+const getUserBalance = async (req, res) => {
+  try {
+    const user = await userService.getUserByToken(req.params.token);
+    return res.status(200).json({ balance: user.balance });
+  } catch (e) {
+    return res.status(500).json({message: "Terjadi kesalahan saat mengambil data beranda"});
+  }
+}
+
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await userService.getUserByToken(req.params.token);
+    return res.status(200).json({
+      message: "Profil pengguna berhasil diambil",
+      data: {
+        username: user.username,
+        phone: user.phone,
+        profile_picture: user.profile_picture
+      }
+    })
+  } catch (err) {
+    return res.status(500).json({message: "Terjadi kesalahan saat mengambil profil"});
+  }
+}
 
 const get = async (req, res, next) => {
     try {
@@ -118,6 +152,16 @@ const update = async (req, res, next) => {
     } catch (e) {
       next(e);
     }
+}
+
+const updateMobile = async (req, res) => {
+  try {
+    const user = await userService.updateMobile(req.body, req.params.token);
+    if(user.id) return res.status(200).json({message: "Profil berhasil diperbarui"});
+    else return res.status(404).json({message: "Pengguna tidak ditemukan"});
+  } catch (e) {
+    return res.status(500).json({ message: "Terjadi kesalahan saat memperbarui profil"});
+  }
 }
 
 const logout = async (req, res, next) => {
@@ -188,8 +232,12 @@ export default {
     verification,
     verifyWithQuestion, 
     resetPassword,
+    resetPasswordAuthenticated,
     logout,
     getCurrent,
     getUserByUsername,
-    updateUserByUsername
+    updateUserByUsername,
+    getUserBalance,
+    getUserProfile,
+    updateMobile
 }

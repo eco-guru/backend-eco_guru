@@ -6,7 +6,10 @@ import {
     loginUserValidation,
     proofUserValidation,
     registerUserValidation,
+    resetPasswordAuthenticatedValidation,
     resetPasswordValidation,
+    tokenValidation,
+    updateMobileValidation,
     updateUserValidation,
     verificationUserValidation
 } from "../validation/user-validation.js";
@@ -201,6 +204,27 @@ const resetPassword = async (request) => {
     });
 }
 
+const resetPasswordAuthenticated = async (request, res) => {
+    request = validate(resetPasswordAuthenticatedValidation, request);
+
+    const data = jwt.verify(request.token, process.env.SECRET_KEY);
+    const user = await prismaClient.users.findFirst({
+        where: { id: data.id },
+        select: { password: true }
+    });
+    const match = await bcrypt.compare(request.oldPassword, user.password);
+
+    if(!match) return res.status(400).json({ message: "Password yang kamu masukkan salah!", wrongPassword: true });
+
+    const newPassword = await bcrypt.hash(request.password, 10);
+    await prismaClient.users.update({
+        where: {  id: data.id },
+        data: { password: newPassword }
+    });
+
+    return res.status(200).json({message: "Password mu berhasil diubah!"});
+}
+
 const logout = async (username) => {
     username = validate(getUserValidation, username);
 
@@ -227,6 +251,16 @@ const logout = async (username) => {
     })
 }
 
+const getUserByToken = async (token) => {
+    token = validate(tokenValidation, token);
+    const data = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await prismaClient.users.findFirst({
+        where: { id: data.id },
+        select: { balance: true, username: true, phone: true, profile_picture: true }
+    });
+    return user;
+}
+
 const get = async (username) => {
   
     const user = await prismaClient.users.findMany({
@@ -237,6 +271,25 @@ const get = async (username) => {
     });
 
     return user;
+}
+
+const updateMobile = async (req, token) => {
+    token = validate(tokenValidation, token);
+    req = validate(updateMobileValidation, req);
+
+    const data = jwt.verify(token, process.env.SECRET_KEY);
+    const totalUser = await prismaClient.users.count({
+        where: { id: data.id },
+    });
+    if(totalUser !== 1) return ({ message: "Pengguna tidak ditemukan "});
+    return prismaClient.users.update({
+        where: {id: data.id},
+        data: {
+            username: req.username,
+            phone: req.phone
+        }
+    })
+
 }
 
 const update = async (username,request,profile_picture) => {
@@ -348,10 +401,13 @@ export default {
     verification,
     proofUser,
     resetPassword,
+    resetPasswordAuthenticated,
     register,
     logout,
     update,
     getCurrent,
     getUserByUsername,
-    updateUser
+    updateUser,
+    getUserByToken,
+    updateMobile
 }
