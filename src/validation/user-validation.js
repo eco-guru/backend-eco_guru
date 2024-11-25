@@ -15,6 +15,20 @@ const loginUserValidation = Joi.object({
     password: Joi.string().min(6).required()
 });
 
+const verificationUserValidation = Joi.object({
+    phone: Joi.string().required()
+});
+
+const proofUserValidation = Joi.object({
+    phone: Joi.string().required(),
+    answer: Joi.string().required()
+});
+
+const resetPasswordValidation = Joi.object({
+    phone: Joi.string().required(),
+    password: Joi.string().required()
+});
+
 const getUserValidation = Joi.string().max(100).required();
 
 const updateUserValidation = Joi.object({
@@ -34,4 +48,7 @@ export {
     loginUserValidation,
     getUserValidation,
     updateUserValidation,
+    verificationUserValidation,
+    resetPasswordValidation,
+    proofUserValidation
 }

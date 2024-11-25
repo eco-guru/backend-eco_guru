@@ -33,6 +33,37 @@ const mobileLogin = async (req, res) => {
   }
 }
 
+const verification = async (req, res) => {
+  try {
+    const question = await userService.verification(req.body); 
+    if (question && !question.error) {
+      return res.status(200).json(question);
+    } else if(question.error) {
+      return res.status(401).json({ message: 'Nomor telepon tidak ditemukan' });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Terjadi kesalahan pada server, silahkan coba lagi" });
+  }
+}
+
+const verifyWithQuestion = async (req, res) => {
+  try {
+    const validate = await userService.proofUser(req.body, res);
+    return validate;
+  } catch (err) {
+    return res.status(500).json({ message: "Terjadi kesalahan saat verifikasi pengguna" });
+  }
+}
+
+const resetPassword = async (req, res) => {
+  try {
+    const reset = userService.resetPassword(req.body);
+    return res.status(200).json({message: "Password mu berhasil diubah. Silahkan lakukan login", reset: reset});
+  } catch (e) {
+    return res.status(500).json({ message: "Terjadi kesalahan pada server, silahkan coba lagi"})
+  }
+}
+
 const login = async (req, res) => {
     try {
         const user = await userService.login(req.body);
@@ -154,6 +185,9 @@ export default {
     login,
     mobileLogin,
     register,
+    verification,
+    verifyWithQuestion, 
+    resetPassword,
     logout,
     getCurrent,
     getUserByUsername,

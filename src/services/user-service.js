@@ -4,8 +4,11 @@ import {validate} from "../validation/validation.js";
 import {
     getUserValidation,
     loginUserValidation,
+    proofUserValidation,
     registerUserValidation,
-    updateUserValidation
+    resetPasswordValidation,
+    updateUserValidation,
+    verificationUserValidation
 } from "../validation/user-validation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuid} from "uuid";
@@ -134,6 +137,69 @@ const mobileLogin = async (request) => {
     };
 };
 
+const verification = async (request) => {
+    request = validate(verificationUserValidation, request);
+    const questionText = await prismaClient.users.findFirst({
+        where: {
+            phone: request.phone
+        },
+        select: {
+            answers: {
+                select: {
+                    question: {
+                        select: {
+                            question_text: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if(!questionText) {
+        return { message: "Pengguna tidak ditemukan", error: true};
+    } 
+
+    return {
+        message: "Nomor telepon ditemukan, lakukan verifikasi berikut",
+        question: questionText.answers[0].question.question_text,
+    };
+
+}
+
+const proofUser = async (request, response) => {
+    request = validate(proofUserValidation, request);
+    const answers = await prismaClient.users.findFirst({
+        where: { phone: request.phone },
+        select: {
+            answers: {
+                select: {
+                    answer_text: true
+                }
+            }
+        }
+    });
+    const answer = answers.answers[0].answer_text  === request.answer
+    if(answer) return response.status(200).json({ message: "Verifikasi berhasil, lakukan reset password segera" });
+    else return response.status(400).json({ message: "Verifikasi gagal, jawaban yang diberikan tidak sesuai" });
+
+}
+
+const resetPassword = async (request) => {
+    request = validate(resetPasswordValidation, request);
+    const newPassword = await bcrypt.hash(request.password, 10);
+    return prismaClient.users.update({
+        where: {
+            phone: request.phone
+        },
+        data: {
+            password: newPassword
+        },
+        select: {
+            username: true
+        }
+    });
+}
 
 const logout = async (username) => {
     username = validate(getUserValidation, username);
@@ -279,6 +345,9 @@ export default {
     get,
     login,
     mobileLogin,
+    verification,
+    proofUser,
+    resetPassword,
     register,
     logout,
     update,
