@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 const createAndUpdateSchema = Joi.object({
+    id: Joi.number().positive().optional(),
     transaction_id: Joi.number().positive().required(),
     waste_type_id: Joi.number().positive().required(),
     uom_id: Joi.number().positive().required(),

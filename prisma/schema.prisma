@@ -101,6 +101,7 @@ model Pricelist {
 }
 
 model TransactionData {
+  id             Int   @id @default(autoincrement())
   transaction_id Int
   waste_type_id  Int
   uom_id         Int

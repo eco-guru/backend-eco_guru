@@ -15,7 +15,8 @@ const createTransactionData = async (req, res, next) => {
 
 const listAllTransactionData = async (req, res, next) => {
     try {
-      const transactions = await transactionDataService.listAllTransactionData();
+      const query = req.query.transaction_id;
+      const transactions = await transactionDataService.listAllTransactionData(query);
       res.status(200).json({
         message: 'Transaction Successfully Showed',
         data: transactions
@@ -27,8 +28,8 @@ const listAllTransactionData = async (req, res, next) => {
   
   const getTransactionDataById = async (req, res, next) => {
     try {
-      const { transactionId } = req.params;
-      const transaction = await transactionDataService.getTransactionDataById(Number(transactionId));
+      const { Id } = req.params;
+      const transaction = await transactionDataService.getTransactionDataById(Number(Id));
       res.status(200).json({
         message: 'Transaction Successfully Showed',
         data: transaction
@@ -41,7 +42,7 @@ const listAllTransactionData = async (req, res, next) => {
   const updateTransactionData = async (req, res, next) => {
     try {
       const request = req.body;
-      request.transaction_id = Number(req.params.transactionId);
+      request.id = Number(req.params.Id);
       console.log(request);
       const updatedTransaction = await transactionDataService.updateTransactionData(request);
       res.status(200).json({
@@ -55,8 +56,8 @@ const listAllTransactionData = async (req, res, next) => {
 
   const deleteTransactionData = async (req, res, next) => {
     try {
-      const { transactionId } = req.params;
-      const deletedTransaction = await transactionDataService.deleteTransactionData(Number(transactionId));
+      const { Id } = req.params;
+      const deletedTransaction = await transactionDataService.deleteTransactionData(Number(Id));
       res.status(200).json({
         message: 'Transaction Successfully Deleted',
         data: deletedTransaction

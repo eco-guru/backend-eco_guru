@@ -38,7 +38,7 @@ userRouter.get('/api/transaction/list', transactionController.listAllTransaction
 userRouter.get('/api/transaction/getOne/:id', transactionController.getTransactionById);
 
 userRouter.get('/api/transactionData/list', transactionDataController.listAllTransactionData);
-userRouter.get('/api/transactionData/getOne/:transactionId', transactionDataController.getTransactionDataById);
+userRouter.get('/api/transactionData/getOne/:Id', transactionDataController.getTransactionDataById);
 
 userRouter.get('/api/waste-type/get-one/:id', wasteTypeController.getOneWasteType);
 userRouter.get('/api/waste-type/get', wasteTypeController.getWasteType);
