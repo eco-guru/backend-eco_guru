@@ -18,10 +18,14 @@ export const web = express();
 web.use("/api-docs", swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 
 web.use(cookieParser());
+// web.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true
+// }));
 web.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
+    origin: 'http://localhost',
+    credentials: true
+  }));
 web.use(express.json());
 web.use(publicRouter);
 web.use(userRouter);

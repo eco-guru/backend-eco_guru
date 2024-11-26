@@ -14,14 +14,19 @@ import logVideosController from "../controller/logVideos-controller.js";
 import paymentRequestController from "../controller/payment-request-controller.js";
 import wastePickupController from "../controller/waste-pickup-controller.js";
 import dashboardController from "../controller/dashboard-controller.js";
+import multer from "multer";
 
 const adminRouter = new express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 adminRouter.use(adminMiddleware);
 
 adminRouter.get('/api/admin/users', userController.get);
 adminRouter.get('/api/admin/users/get-one', userController.getUserByUsername);
 adminRouter.patch('/api/admin/user/update', userController.updateUserByUsername);
+adminRouter.post('/api/create/user',upload.single('profile_picture'), userController.postCreateUser);
 
 adminRouter.get('/api/uom/get-one/:id', uomController.getOneUOM);
 adminRouter.get('/api/uom/get', uomController.getUOM);
