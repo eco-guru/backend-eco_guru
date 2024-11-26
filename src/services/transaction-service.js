@@ -1,7 +1,8 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import {validate} from "../validation/validation.js";
-import {createSchema, ListAndDeleteSchema, updateSchema} from "../validation/transaction-validation.js"
+import {createSchema, ListAndDeleteSchema, updateSchema, tokenValidation} from "../validation/transaction-validation.js"
+import jwt from 'jsonwebtoken';
 
 const createTransaction = async (data) => {
     data = validate(createSchema, data);
@@ -45,6 +46,22 @@ const getTransactionById = async (id) => {
     const transaction = await prismaClient.transactions.findUnique({
         where: {
             id,
+        },
+    });
+
+    if (!transaction) {
+        throw new ResponseError(404, 'Transaction not found');
+    }
+
+    return transaction;
+};
+
+const getTransactionByUser = async (token) => {
+    token = validate(tokenValidation, token);
+    const data = jwt.verify(token, process.env.SECRET_KEY);
+    const transaction = await prismaClient.transactions.findMany({
+        where: {
+            user_id: data.id,
         },
     });
 
@@ -130,6 +147,7 @@ export default {
     createTransaction,
     listAllTransactions,
     getTransactionById,
+    getTransactionByUser,
     updateTransaction,
     deleteTransaction
 };

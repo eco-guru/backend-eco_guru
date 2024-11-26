@@ -9,7 +9,7 @@ const createAndUpdateSchema = Joi.object({
     price: Joi.number().positive().required(),
 });
 
-const getOneSchema = Joi.number().required().positive();
+const getOneSchema = Joi.number().optional().positive();
 
 export {
     createAndUpdateSchema,

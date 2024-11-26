@@ -1,6 +1,5 @@
 import transactionService from '../services/transaction-service.js';
 import transactionDataService from '../services/transaction-data-service.js';
-import wasteCategoryService from '../services/wasteCategory-service.js';
 import userService from '../services/user-service.js';
 
 const createTransaction = async (req, res, next) => {
@@ -72,12 +71,42 @@ const listAllTransactions = async (req, res, next) => {
       next(e);
     }
   };
+
+  const getTransactionByToken = async (req, res, next) => {
+    try {
+      const { token } = req.params;
+      const transaction = await transactionService.getTransactionByUser(token);
+      const transactions = transaction.map(value => {return {...value, total_amount: value.total, transaction_id: value.id}});
+      const details = await transactionDataService.listAllTransactionData();
+      const transactionDetails = details.filter(value => {
+        return transaction.some(item => item.id === value.transaction_id);
+      });
+      const transactionDetailsData = transactionDetails.map(value => {
+        return {
+          transaction_id: value.transaction_id,
+          quantity: value.quantity,
+          price: value.price,
+          waste_name: value.waste_type,
+          unit_name: value.uom,
+          waste_category: value.waste_category
+        }
+      });
+
+      res.status(200).json({
+        message: 'Riwayat transaksi berhasil diambil',
+        transactions: transactions,
+        transactionsDetail: transactionDetailsData,
+      });
+    } catch (e) {
+      next(e);
+    }
+  };
   
   const updateTransaction = async (req, res, next) => {
     try {
       const request = req.body;
       request.id = Number(req.params.id);
-      console.log(request);
+      
       const updatedTransaction = await transactionService.updateTransaction(request);
       res.status(200).json({
         message: 'Transaction Successfully Updated',
@@ -106,6 +135,7 @@ const listAllTransactions = async (req, res, next) => {
     createTransactionMobile,
     listAllTransactions,
     getTransactionById,
+    getTransactionByToken,
     updateTransaction,
     deleteTransaction
   };

@@ -6,7 +6,7 @@ export const transactionMobileRouter = express.Router();
 
 transactionMobileRouter.get('/waste-types', wasteTypeController.getWasteTypeMobile);
 transactionMobileRouter.post('/transactions', transactionController.createTransactionMobile);
-transactionMobileRouter.get('/transaction-history/:token');
+transactionMobileRouter.get('/transaction-history/:token', transactionController.getTransactionByToken);
 
 transactionMobileRouter.post('/disbursement/:token')
 transactionMobileRouter.put('/give-disbursement-confirmation/:token')
@@ -18,46 +18,6 @@ transactionMobileRouter.get('/waste-collector-home-data/:token')
 
 transactionMobileRouter.get('/report/:token')
 transactionMobileRouter.get('/report-specify/:token')
-
-// app.get("/transaction-history/:token", async (req, res) => {
-//     const { token } = req.params;
-  
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-//       const resultDetail = await pool.query(
-//         `SELECT t.transaction_id, td.waste_category, td.waste_name, td.quantity, td.price, u.unit_name
-//          FROM TRANSACTIONS t
-//          JOIN TRANSACTION_DATA td ON t.transaction_id = td.transaction_id
-//          JOIN UOM u ON td.uom_id = u.uom_id
-//          WHERE t.user_id = $1
-//          ORDER BY t.transaction_date DESC`,
-//         [userId]
-//       );
-  
-//       const resultTransaction = await pool.query(
-//         `SELECT transaction_id, transaction_date, total_amount
-//          FROM TRANSACTIONS
-//          WHERE user_id = $1
-//          ORDER BY transaction_date DESC`,
-//         [userId]
-//       );
-  
-//       if (resultTransaction.rows.length === 0) {  
-//         return res.status(404).json({ message: "Tidak ada riwayat transaksi ditemukan", result: false});
-//       }
-  
-//       res.status(200).json({
-//         message: "Riwayat transaksi berhasil diambil",
-//         transactionsDetail: resultDetail.rows,
-//         transactions: resultTransaction.rows,
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: "Terjadi kesalahan saat mengambil riwayat transaksi" });
-//     }
-//   });
 
 // app.post("/disbursement/:token", async (req, res) => {
 //     const { token } = req.params;

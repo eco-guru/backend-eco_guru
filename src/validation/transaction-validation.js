@@ -10,6 +10,8 @@ const createSchema = Joi.object({
 
 const ListAndDeleteSchema = Joi.number().positive().required();
 
+const tokenValidation = Joi.string().required();
+
 const updateSchema = Joi.object({
     id: Joi.number().required(),
     user_id: Joi.number().required(),
@@ -22,5 +24,6 @@ const updateSchema = Joi.object({
 export {
     createSchema,
     ListAndDeleteSchema,
-    updateSchema
+    updateSchema,
+    tokenValidation
 };

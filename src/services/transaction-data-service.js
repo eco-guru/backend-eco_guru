@@ -66,7 +66,7 @@ const listAllTransactionData = async (query) => {
             select:{
                 WasteType:{
                     select:{
-                        type: true
+                        type: true,
                     }
                 },
                 UOM:{
@@ -93,7 +93,12 @@ const listAllTransactionData = async (query) => {
             select:{
                 WasteType:{
                     select:{
-                        type: true
+                        type: true,
+                        WasteCategory: {
+                            select: {
+                                category: true,
+                            }
+                        }
                     }
                 },
                 UOM:{
@@ -109,6 +114,7 @@ const listAllTransactionData = async (query) => {
     
         transactionData.forEach(element => {
             element.waste_type = element.WasteType.type;
+            element.waste_category = element.WasteType.WasteCategory.category
             element.uom = element.UOM.unit;
             delete element.WasteType;
             delete element.UOM;
@@ -117,6 +123,7 @@ const listAllTransactionData = async (query) => {
         return transactionData; 
     }
 };
+
 
 const getTransactionDataById = async (id) => {
     id = validate(getOneSchema, id);
