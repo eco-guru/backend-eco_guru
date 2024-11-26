@@ -10,10 +10,10 @@ async function main() {
   const adminRole = await prisma.roles.createMany({
     data: [
       {
-        name: "Admin",
+        name: "User",
       },
       {
-        name: "User",
+        name: "Admin",
       },
       {
         name: "Waste collector",
@@ -178,17 +178,82 @@ async function main() {
     data: pricelist,
   });
 
+  await prisma.articleCategory.create({
+    data: { category: 'Recyling' } 
+  });
+
+  await prisma.articleCategory.create({
+    data: { category: 'Composting' } 
+  });
+
+  await prisma.articleCategory.create({
+    data: { category: 'Reducing Waste' } 
+  });
+
+  await prisma.videoCategory.create({
+    data: { category: 'Recycling Tutorial' }
+  });
+
+  await prisma.videoCategory.create({
+    data: { category: 'Waste reduction tips' }
+  });
+
+  await prisma.videoCategory.create({
+    data: { category: 'Composting Trick' }
+  });
+
   // Seed Articles
   await prisma.articles.create({
     data: {
-      title: "Pengelolaan Sampah Plastik",
-      content: "Pentingnya pengelolaan sampah plastik.",
-      category: "Lingkungan",
-      isPublished: true,
-      created_by: "user1",
-      created_date: new Date(),
-      article_order: 1,
-    },
+        title: "Pengelolaan Sampah Plastik",
+        content: `<p>Mengelola sampah plastik secara efektif memerlukan langkah-langkah berkelanjutan yang dapat dimulai dari diri sendiri hingga skala komunitas atau industri. Berikut adalah beberapa cara untuk mengelola sampah plastik:</p>
+         <ul>
+             <li>Gunakan barang yang bisa dipakai ulang, seperti botol minum dan tas kain.</li>
+             <li>Pisahkan plastik bersih yang dapat didaur ulang, lalu kirim ke pusat daur ulang atau bank sampah.</li>
+             <li>Manfaatkan plastik bekas untuk barang berguna, seperti pot tanaman atau kerajinan tangan.</li>
+             <li>Cari komunitas atau program yang menawarkan hadiah atau poin untuk penukaran sampah plastik.</li>
+             <li>Ikut serta dalam kegiatan bersih-bersih untuk mengurangi sampah plastik di lingkungan sekitar.</li>
+         </ul>`,
+        // category: 1,
+        isPublished: true,
+        // created_by: "user1",
+        created_date: new Date(),
+        article_order: 1,
+        user: {
+          connect: { username: 'user1' }
+        },
+        category: {
+          connect: { id: 1 }
+        }
+      }
+  });
+
+  await prisma.articles.create({
+    data: {
+        title: "Memilih Jenis Visa Korea yang Tepat. Butuh Cepat? Ada Express Visa!",
+        content: `<p style="text-align: justify;"><span style="font-weight: 400;">Cara membuat visa Korea Selatan 2024 yang pertama adalah menentukan jenis visa yang kamu butuhkan. Untuk pilihan jenis visa Korea ada beberapa, di antaranya adalah:</span></p>
+         <ul style="text-align: justify;">
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Single Visa (Kunjungan di bawah 90 hari) Rp856.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Single Visa Express (Kunjungan di bawah 90 hari) Rp1.318.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Single Visa Khusus (Kunjungan di atas 91 hari) Rp1.164.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Double Visa (Kunjungan sebanyak 2x dan berlaku hingga 6 bulan) Rp1.318.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Double Visa Express (Kunjungan sebanyak 2x dan berlaku hingga 6 bulan) Rp1.934.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Multiple Visa (Kunjungan berkali-kali dengan masa berlaku selama 5 tahun) Rp1.626.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Multiple Visa Express (Kunjungan berkali-kali dengan masa berlaku selama 5 tahun) Rp2.242.000</span></li>
+             <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Grup Visa (Grup wisatawan minimal 5 orang dan maksimal 50 orang dengan jadwal keberangkatan dan kepulangan yang sama, khusus pengajuan travel agen yang terdaftar di Kedubes Korea di Indonesia)</span></li>
+         </ul>`,
+        // category: 2,
+        isPublished: true,
+        // created_by: "user1",
+        created_date: new Date(),
+        article_order: 1,
+        user: {
+          connect: { username: 'user1' }
+        },
+        category: {
+          connect: { id: 2 }
+        }
+      }
   });
 
   // Seed Videos
@@ -201,9 +266,16 @@ async function main() {
       thumbnail_url: "https://dlh.semarangkota.go.id/wp-content/uploads/2021/02/Bank-sampah-image-nu.or_.id.jpg",
       url: "https://www.youtube.com/watch?v=qulKqnwNXQo&t=5s",
       upload_date: new Date(),
-      uploaded_by: "user1",
+      // uploaded_by: "user1",
       isActive: true,
       video_order: 2,
+      // categoryId: 2,
+      user: {
+        connect: { username: 'user1' }
+      },
+      category: {
+        connect: { id: 2 }
+      }
     },
   });
 }

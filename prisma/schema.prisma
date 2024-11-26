@@ -42,6 +42,7 @@ model Users {
   Transactions    Transactions[]
   WastePickUp     WastePickUp[]
   Articles        Articles[]
+  Videos          Videos[]
   paymentRequests PaymentRequest[] @relation("UserPaymentRequests")
   paymentsToPay   PaymentRequest[] @relation("UserPaymentsToPay")
 
@@ -116,7 +117,7 @@ model TransactionData {
 }
 
 model Videos {
-  id            Int         @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   title         String
   description   String
   duration      Int
@@ -128,20 +129,40 @@ model Videos {
   isActive      Boolean
   video_order   Int
   LogVideos     LogVideos[]
+  categoryId    Int
+
+  category      VideoCategory @relation(fields: [categoryId], references: [id])
+  user       Users         @relation(fields: [uploaded_by], references: [username])
+  
 }
 
 model Articles {
-  id            Int           @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   title         String
   content       String
-  category      String
   isPublished   Boolean
   created_by    String
   created_date  DateTime
   article_order Int
   LogArticles   LogArticles[]
+  categoryId    Int
 
-  Users Users @relation(fields: [created_by], references: [username])
+  user         Users            @relation(fields: [created_by], references: [username])
+  category      ArticleCategory @relation(fields: [categoryId], references: [id])
+}
+
+model VideoCategory {
+  id       Int      @id @default(autoincrement())
+  category String
+
+  Videos Videos[]
+}
+
+model ArticleCategory {
+  id       Int @id @default(autoincrement())
+  category String
+
+  Articles Articles[]
 }
 
 model LogArticles {
