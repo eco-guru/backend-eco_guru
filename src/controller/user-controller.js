@@ -20,14 +20,14 @@ const mobileLogin = async (req, res) => {
   try {
     const user = await userService.mobileLogin(req.body);
 
-    if (user) {
+    if (user && !user.wrongPassword) {
       return res.status(200).json({
         message: 'Login berhasil',
         token: user.token,
         user: {role: user.user.role}
       });
-    } else {
-      return res.status(401).json({ message: 'Invalid username or password' });
+    } else if(user.wrongPassword) {
+      return res.status(400).json(user);
     }
   } catch (err) {
     return res.status(500).json({message: err.message });

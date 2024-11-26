@@ -129,7 +129,7 @@ const mobileLogin = async (request) => {
     const isPasswordValid = await bcrypt.compare(request.password, user.password);
 
     if (!isPasswordValid) {
-      throw new ResponseError(404, 'Invalid password');
+        return { message: "Password yang kamu masukkan salah!", wrongPassword: true };
     }
 
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {expiresIn: '1d'});
@@ -389,6 +389,7 @@ const getUserByUsername = async (username) => {
         ]
        },
       select:{
+        id: true,
         username: true,
         phone: true,
         role_id: true,
@@ -462,6 +463,13 @@ const createUser = async (request, profile_picture) => {
     return user;
   };
 
+  const updateBalance = async (req) => {
+    return await prismaClient.users.update({
+        where: { id: req.user_id },
+        data: { balance: req.total },
+    })
+  }
+
 
 export default {
     get,
@@ -480,5 +488,6 @@ export default {
     updateUser,
     createUser,
     getUserByToken,
-    updateMobile
+    updateMobile,
+    updateBalance
 }

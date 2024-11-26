@@ -5,6 +5,7 @@ import {validate} from "../validation/validation.js";
 
 const createTransactionData = async (data) => {
     data = validate(createAndUpdateSchema, data);
+    console.log(data);
     const transaction = await prismaClient.transactions.findFirst({
         where: {
           id: data.transaction_id,

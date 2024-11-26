@@ -1,82 +1,23 @@
 import express from 'express'
+import wasteTypeController from '../../controller/wasteType-controller.js';
+import transactionController from '../../controller/transaction-controller.js';
 
 export const transactionMobileRouter = express.Router();
-  
-//   app.get("/waste-price/:wasteId", async (req, res) => {
-//     const { wasteId } = req.params;
-//     try {
-//       const result = await pool.query("SELECT * FROM PRICELIST WHERE waste_id = $1 AND is_active = true", [wasteId]);
-//       if (result.rows.length === 0) {
-//         return res.status(404).json({ message: "Harga sampah tidak ditemukan" });
-//       }
-//       res.status(200).json(result.rows[0]);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: "Terjadi kesalahan saat mengambil harga sampah" });
-//     }
-//   });
-  
-//   app.get("/waste-types", async (req, res) => {
-//     try {
-//       const result = await pool.query(`SELECT 
-//         WASTE_TYPE.waste_type_id,
-//         WASTE_TYPE.waste_category,
-//         WASTE_TYPE.price,
-//         WASTE_TYPE.waste_name,
-//         UOM.unit_name,
-//         UOM.uom_id
-//         FROM WASTE_TYPE
-//         INNER JOIN UOM 
-//         ON WASTE_TYPE.uom_id = UOM.uom_id;
-//       `);
-//       res.status(200).json(result.rows);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: "Terjadi kesalahan saat mengambil jenis sampah" });
-//     }
-//   });
-  
-//   app.post("/transactions", async (req, res) => {
-//     const { username, totalAmount, approvedByUsername, transactionData } = req.body;
-    
-//     const client = await pool.connect();
-//     try {
-//       await client.query("BEGIN");
-  
-//       const user = await client.query("SELECT user_id, balance FROM USERS WHERE username = $1", [username]);
-//       const { user_id, balance } = user.rows[0];
-//       const updateBalance = balance + totalAmount;
-  
-//       const userApproved = await client.query("SELECT user_id FROM USERS WHERE username = $1", [approvedByUsername]);
-//       const approvedBy = userApproved.rows[0].user_id;
-  
-//       await client.query("UPDATE USERS SET balance = $1 WHERE user_id = $2", [updateBalance, user_id]);
-  
-//       const transactionResult = await client.query(
-//         "INSERT INTO TRANSACTIONS (user_id, transaction_date, total_amount, approved_by) VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING transaction_id",
-//         [user_id, totalAmount, approvedBy]
-//       );
-      
-//       const transactionId = transactionResult.rows[0].transaction_id;
-//       const insertPromises = JSON.parse(transactionData).map(item => {
-//         return client.query(
-//           "INSERT INTO TRANSACTION_DATA (transaction_id, waste_name, waste_category, uom_id, quantity, price) VALUES ($1, $2, $3, $4, $5, $6)",
-//           [transactionId, item.waste_name, item.waste_category, item.uom_id, item.amount, item.price]
-//         );
-//       });
-  
-//       await Promise.all(insertPromises);
-//       await client.query("COMMIT");
-      
-//       res.status(201).json({ message: "Transaksi berhasil!", transactionId });
-//     } catch (error) {
-//       await client.query("ROLLBACK");
-//       console.error(error);
-//       res.status(500).json({ message: "Terjadi kesalahan saat menyimpan transaksi" });
-//     } finally {
-//       client.release();
-//     }
-//   });
+
+transactionMobileRouter.get('/waste-types', wasteTypeController.getWasteTypeMobile);
+transactionMobileRouter.post('/transactions', transactionController.createTransactionMobile);
+transactionMobileRouter.get('/transaction-history/:token');
+
+transactionMobileRouter.post('/disbursement/:token')
+transactionMobileRouter.put('/give-disbursement-confirmation/:token')
+transactionMobileRouter.get('/get-all-disbursement')
+transactionMobileRouter.get('/history-disbursement/:token')
+transactionMobileRouter.put('/accept-disbursement/:token')
+transactionMobileRouter.put('/decline-disbursement')
+transactionMobileRouter.get('/waste-collector-home-data/:token')
+
+transactionMobileRouter.get('/report/:token')
+transactionMobileRouter.get('/report-specify/:token')
 
 // app.get("/transaction-history/:token", async (req, res) => {
 //     const { token } = req.params;
