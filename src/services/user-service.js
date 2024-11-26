@@ -6,7 +6,6 @@ import {
     loginUserValidation,
     proofUserValidation,
     registerUserValidation,
-    updateUserValidation,
     createUserValidation,
     resetPasswordAuthenticatedValidation,
     resetPasswordValidation,
