@@ -8,6 +8,7 @@ const register = async (req, res) => {
         const result = await userService.register(req.body);
         return res.status(200).json({
             data: result,
+            message: "Kamu berhasil registrasi!"
         });
     } catch (e) {
         console.log(e);

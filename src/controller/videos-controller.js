@@ -1,5 +1,6 @@
 import videosService from '../services/video-service.js';
 import logVideoService from '../services/logVideo-service.js';
+import { categoryService } from '../services/category-content-service.js';
 
 const createVideos = async (req, res) => {
   try {
@@ -72,9 +73,11 @@ const getMobileVideos = async (req, res) => {
   try {
     const results = await videosService.getVideos();
     const logs = await logVideoService.getLogVideos();
+    const videoCategory = await categoryService.getVideoCategory();
     const data = results.map((result) => {
       const logResult = logs.filter(log => log.video_id === result.id);
-      return {...result, views: logResult.length || 0, url: `https://www.youtube.com/embed/${extractYoutubeID(result.url)}`};
+      const category = videoCategory.find(video => video.id === result.categoryId).category;
+      return {...result, views: logResult.length || 0, url: `https://www.youtube.com/embed/${extractYoutubeID(result.url)}`, category: category};
     });
     return res.status(200).json({
       message: 'Video berhasil didapatkan',

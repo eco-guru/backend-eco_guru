@@ -179,7 +179,7 @@ async function main() {
   });
 
   await prisma.articleCategory.create({
-    data: { category: 'Recyling' } 
+    data: { category: 'Recycling' } 
   });
 
   await prisma.articleCategory.create({
@@ -214,10 +214,9 @@ async function main() {
              <li>Cari komunitas atau program yang menawarkan hadiah atau poin untuk penukaran sampah plastik.</li>
              <li>Ikut serta dalam kegiatan bersih-bersih untuk mengurangi sampah plastik di lingkungan sekitar.</li>
          </ul>`,
-        // category: 1,
         isPublished: true,
-        // created_by: "user1",
         created_date: new Date(),
+        thumbnail_url: 'https://tokoweb.co/wp-content/uploads/2020/10/Demo-Website-02-1024x521.jpg',
         article_order: 1,
         user: {
           connect: { username: 'user1' }
@@ -242,11 +241,10 @@ async function main() {
              <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Multiple Visa Express (Kunjungan berkali-kali dengan masa berlaku selama 5 tahun) Rp2.242.000</span></li>
              <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Grup Visa (Grup wisatawan minimal 5 orang dan maksimal 50 orang dengan jadwal keberangkatan dan kepulangan yang sama, khusus pengajuan travel agen yang terdaftar di Kedubes Korea di Indonesia)</span></li>
          </ul>`,
-        // category: 2,
         isPublished: true,
-        // created_by: "user1",
         created_date: new Date(),
         article_order: 1,
+        thumbnail_url: 'https://cdn-web-2.ruangguru.com/landing-pages/assets/cab2b02d-5c7a-4b73-a628-0f6397b29662.png',
         user: {
           connect: { username: 'user1' }
         },
@@ -266,10 +264,8 @@ async function main() {
       thumbnail_url: "https://dlh.semarangkota.go.id/wp-content/uploads/2021/02/Bank-sampah-image-nu.or_.id.jpg",
       url: "https://www.youtube.com/watch?v=qulKqnwNXQo&t=5s",
       upload_date: new Date(),
-      // uploaded_by: "user1",
       isActive: true,
       video_order: 2,
-      // categoryId: 2,
       user: {
         connect: { username: 'user1' }
       },

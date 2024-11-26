@@ -26,7 +26,7 @@ const createLogMobileArticles = async (req, res) => {
       const article_id = articles.find(article => article.title === req.body.title);
   
       const request = {article_id: article_id.id, accessed_by: users.username};
-      const result = await logArticleService.createArticle(request);
+      await logArticleService.createArticle(request);
     }
     return res.status(201).json({
       message: 'Silahkan membaca artikel'

@@ -1,5 +1,6 @@
 import express from 'express';
 import userController from '../../controller/user-controller.js';
+import { questionController } from '../../controller/question-controller.js';
 
 export const authMobileRouter = express.Router();
 
@@ -18,6 +19,8 @@ authMobileRouter.get('/home/:token', userController.getUserBalance);
 authMobileRouter.get('/users/username/:username', userController.getUserMobileByUsername);
 authMobileRouter.get('/users/all/', userController.getUserMobile);
 authMobileRouter.get('/users/phone/:phone', userController.getUserByPhoneNumber);
+
+authMobileRouter.get('/list-question', questionController.getQuestion);
   
 //   app.post("/edit-photo/:token", async (req, res) => {
 //     const { token } = req.params;

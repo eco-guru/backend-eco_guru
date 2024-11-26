@@ -1,4 +1,5 @@
 import articleService from '../services/articles-service.js';
+import { categoryService } from '../services/category-content-service.js';
 import logArticleService from '../services/log-article-service.js';
 
 const createArticles = async (req, res) => {
@@ -65,9 +66,11 @@ const getMobileArticles = async (req, res) => {
   try {
     const results = await articleService.getArticles();
     const logs = await logArticleService.getLogArticles();
+    const categoryArticle = await categoryService.getArticleCategory();
     const data = results.map((result) => {
       const logResult = logs.filter(log => log.article_id === result.id);
-      return {...result, views: logResult.length || 0};
+      const category = categoryArticle.find(article => article.id === result.categoryId).category;
+      return {...result, views: logResult.length || 0, category: category};
     });
     return res.status(200).json({
       message: 'Artikel berhasil didapatkan',

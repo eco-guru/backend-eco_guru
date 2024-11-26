@@ -146,6 +146,7 @@ model Articles {
   article_order Int
   LogArticles   LogArticles[]
   categoryId    Int
+  thumbnail_url String
 
   user         Users            @relation(fields: [created_by], references: [username])
   category      ArticleCategory @relation(fields: [categoryId], references: [id])

@@ -19,6 +19,7 @@ const getArticles = async () => {
       created_by: true,
       created_date: true,
       article_order: true,
+      thumbnail_url: true,
     },
     where: {
       isPublished: true,

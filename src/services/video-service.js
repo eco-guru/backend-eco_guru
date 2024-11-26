@@ -22,6 +22,7 @@ const getVideos = async () => {
       uploaded_by: true,
       isActive: true,
       video_order: true,
+      categoryId: true
     },
   });
 
