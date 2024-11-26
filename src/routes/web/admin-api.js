@@ -1,4 +1,20 @@
 import express from "express";
+import userController from "../controller/user-controller.js";
+import pricelistController from "../controller/pricelist-controller.js";
+import uomController from '../controller/uom-controller.js';
+import wasteCategoryController from "../controller/wasteCategory-controller.js";
+import {adminMiddleware} from "../middleware/admin-middleware.js";
+import transactionController from "../controller/transaction-controller.js";
+import transactionDataController from "../controller/transaction-data-controller.js";
+import wasteTypeController from "../controller/wasteType-controller.js";
+import articleController from "../controller/article-controller.js";
+import logArticleController from "../controller/logArticle-controller.js";
+import videosController from "../controller/videos-controller.js";
+import logVideosController from "../controller/logVideos-controller.js";
+import paymentRequestController from "../controller/payment-request-controller.js";
+import wastePickupController from "../controller/waste-pickup-controller.js";
+import dashboardController from "../controller/dashboard-controller.js";
+import multer from "multer";
 import userController from "../../controller/user-controller.js";
 import pricelistController from "../../controller/pricelist-controller.js";
 import uomController from '../../controller/uom-controller.js';
@@ -17,11 +33,15 @@ import dashboardController from "../../controller/dashboard-controller.js";
 
 const adminRouter = new express.Router();
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 adminRouter.use(adminMiddleware);
 
 adminRouter.get('/api/admin/users', userController.get);
 adminRouter.get('/api/admin/users/get-one', userController.getUserByUsername);
 adminRouter.patch('/api/admin/user/update', userController.updateUserByUsername);
+adminRouter.post('/api/create/user',upload.single('profile_picture'), userController.postCreateUser);
 
 adminRouter.get('/api/uom/get-one/:id', uomController.getOneUOM);
 adminRouter.get('/api/uom/get', uomController.getUOM);

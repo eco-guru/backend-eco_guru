@@ -6,6 +6,8 @@ import {
     loginUserValidation,
     proofUserValidation,
     registerUserValidation,
+    updateUserValidation,
+    createUserValidation,
     resetPasswordAuthenticatedValidation,
     resetPasswordValidation,
     tokenValidation,
@@ -422,6 +424,44 @@ const updateUser = async (username, data) => {
     return updatedUser;
 };
 
+const createUser = async (request, profile_picture) => {
+    request = validate(createUserValidation, request);
+  
+    const existingUser = await prismaClient.users.findUnique({
+      where: { username: request.username }
+    });
+  
+    if (existingUser) {
+      throw new ResponseError(400, "Username sudah digunakan");
+    }
+  
+    const role = await prismaClient.roles.findUnique({
+      where: { id: request.role_id }
+    });
+  
+    if (!role) {
+      throw new ResponseError(400, "Role ID tidak valid");
+    }
+
+    const hashedPassword = await bcrypt.hash(request.password, 10);
+  
+    const user = await prismaClient.users.create({
+      data: {
+        ...request,
+        profile_picture: profile_picture,
+        password: hashedPassword
+      },
+      select: {
+        id: true,
+        username: true,
+        phone: true,
+        role_id: true
+      }
+    });
+  
+    return user;
+  };
+
 
 export default {
     get,
@@ -438,6 +478,7 @@ export default {
     getCurrent,
     getUserByUsername,
     updateUser,
+    createUser,
     getUserByToken,
     updateMobile
 }

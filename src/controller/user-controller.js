@@ -153,9 +153,9 @@ const update = async (req, res, next) => {
       const username = req.user.username;
       const request = req.body;
       let profile_picture = null;
-        if (req.file) {
-            profile_picture = req.file.buffer;
-        }
+      if (req.file) {
+          profile_picture = req.file.buffer;
+      }
 
   
       const result = await userService.update(username, request, profile_picture);
@@ -246,9 +246,8 @@ const getUserByPhoneNumber = async (req, res) => {
 }
 
 const updateUserByUsername = async (req, res) => {
-    const { username } = req.query; // Mengambil username dari query parameter
+    const { username } = req.query;
 
-    // Mengambil data yang ingin diupdate
     const updateData = req.body;
 
     try {
@@ -264,6 +263,26 @@ const updateUserByUsername = async (req, res) => {
             error: err.message,
         });
     }
+};
+
+const postCreateUser = async (req, res, next) => {
+  try {
+    let profile_picture = null;
+    if (req.file) {
+      profile_picture = req.file.buffer;
+    }
+    console.log(req.body);
+    console.log(profile_picture);
+    const result = await userService.createUser(req.body, profile_picture);
+    res.status(201).json({
+      status: 'success',
+      message: 'User berhasil dibuat',
+      data: result
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({ message: err.message });
+  }
 };
 
 export default {
@@ -283,6 +302,7 @@ export default {
     getUserByUsername,
     getUserByPhoneNumber,
     updateUserByUsername,
+    postCreateUser,
     getUserBalance,
     getUserProfile,
     updateMobile

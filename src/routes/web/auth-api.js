@@ -24,6 +24,7 @@ userRouter.use(authMiddleware);
 userRouter.get('/api/users/current', userController.getCurrent);
 userRouter.patch('/api/users/current',upload.single('profile_picture'), userController.update);
 userRouter.delete('/api/users/logout', userController.logout);
+userRouter.post('/api/create/user',upload.single('profile_picture'), userController.postCreateUser);
 
 userRouter.get('/api/uom/get-one/:id', uomController.getOneUOM);
 userRouter.get('/api/uom/get', uomController.getUOM);
