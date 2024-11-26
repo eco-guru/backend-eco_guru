@@ -4,12 +4,20 @@ import {validate} from "../validation/validation.js";
 import {
     getUserValidation,
     loginUserValidation,
+    proofUserValidation,
     registerUserValidation,
     updateUserValidation,
-    createUserValidation
+    createUserValidation,
+    resetPasswordAuthenticatedValidation,
+    resetPasswordValidation,
+    tokenValidation,
+    updateMobileValidation,
+    updateUserValidation,
+    verificationUserValidation
 } from "../validation/user-validation.js";
 import bcrypt from "bcrypt";
 import {v4 as uuid} from "uuid";
+import jwt from 'jsonwebtoken'
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request);
@@ -30,7 +38,18 @@ const register = async (request) => {
     user.password = await bcrypt.hash(user.password, 10);
 
     return prismaClient.users.create({
-        data: user,
+        data: {
+            username: user.username,
+            password: user.password,
+            phone: user.phone,
+            role_id: user.role_id,
+            answers: {
+                create: {
+                    question_id: user.question_id,
+                    answer_text: user.answers
+                }
+            }
+        },
         select: {
             username: true,
             phone: true
@@ -94,6 +113,119 @@ const login = async (request) => {
     };
 };
 
+const mobileLogin = async (request) => {
+    request = validate(loginUserValidation, request);
+
+    const user = await prismaClient.users.findFirst({
+      where: {
+        username: request.username
+      },
+      include: { Roles: true } 
+    });
+
+    if (!user) {
+      throw new ResponseError(404, 'User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(request.password, user.password);
+
+    if (!isPasswordValid) {
+      throw new ResponseError(404, 'Invalid password');
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {expiresIn: '1d'});
+
+    return {
+        message: "Login berhasil",
+        token: token,
+        user: {role: user.role_id},
+    };
+};
+
+const verification = async (request) => {
+    request = validate(verificationUserValidation, request);
+    const questionText = await prismaClient.users.findFirst({
+        where: {
+            phone: request.phone
+        },
+        select: {
+            answers: {
+                select: {
+                    question: {
+                        select: {
+                            question_text: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if(!questionText) {
+        return { message: "Pengguna tidak ditemukan", error: true};
+    } 
+
+    return {
+        message: "Nomor telepon ditemukan, lakukan verifikasi berikut",
+        question: questionText.answers[0].question.question_text,
+    };
+
+}
+
+const proofUser = async (request, response) => {
+    request = validate(proofUserValidation, request);
+    const answers = await prismaClient.users.findFirst({
+        where: { phone: request.phone },
+        select: {
+            answers: {
+                select: {
+                    answer_text: true
+                }
+            }
+        }
+    });
+    const answer = answers.answers[0].answer_text  === request.answer
+    if(answer) return response.status(200).json({ message: "Verifikasi berhasil, lakukan reset password segera" });
+    else return response.status(400).json({ message: "Verifikasi gagal, jawaban yang diberikan tidak sesuai" });
+
+}
+
+const resetPassword = async (request) => {
+    request = validate(resetPasswordValidation, request);
+    const newPassword = await bcrypt.hash(request.password, 10);
+    return prismaClient.users.update({
+        where: {
+            phone: request.phone
+        },
+        data: {
+            password: newPassword
+        },
+        select: {
+            username: true
+        }
+    });
+}
+
+const resetPasswordAuthenticated = async (request, res) => {
+    request = validate(resetPasswordAuthenticatedValidation, request);
+
+    const data = jwt.verify(request.token, process.env.SECRET_KEY);
+    const user = await prismaClient.users.findFirst({
+        where: { id: data.id },
+        select: { password: true }
+    });
+    const match = await bcrypt.compare(request.oldPassword, user.password);
+
+    if(!match) return res.status(400).json({ message: "Password yang kamu masukkan salah!", wrongPassword: true });
+
+    const newPassword = await bcrypt.hash(request.password, 10);
+    await prismaClient.users.update({
+        where: {  id: data.id },
+        data: { password: newPassword }
+    });
+
+    return res.status(200).json({message: "Password mu berhasil diubah!"});
+}
 
 const logout = async (username) => {
     username = validate(getUserValidation, username);
@@ -121,6 +253,16 @@ const logout = async (username) => {
     })
 }
 
+const getUserByToken = async (token) => {
+    token = validate(tokenValidation, token);
+    const data = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await prismaClient.users.findFirst({
+        where: { id: data.id },
+        select: { balance: true, username: true, phone: true, profile_picture: true }
+    });
+    return user;
+}
+
 const get = async (username) => {
   
     const user = await prismaClient.users.findMany({
@@ -131,6 +273,25 @@ const get = async (username) => {
     });
 
     return user;
+}
+
+const updateMobile = async (req, token) => {
+    token = validate(tokenValidation, token);
+    req = validate(updateMobileValidation, req);
+
+    const data = jwt.verify(token, process.env.SECRET_KEY);
+    const totalUser = await prismaClient.users.count({
+        where: { id: data.id },
+    });
+    if(totalUser !== 1) return ({ message: "Pengguna tidak ditemukan "});
+    return prismaClient.users.update({
+        where: {id: data.id},
+        data: {
+            username: req.username,
+            phone: req.phone
+        }
+    })
+
 }
 
 const update = async (username,request,profile_picture) => {
@@ -276,11 +437,18 @@ const createUser = async (request, profile_picture) => {
 export default {
     get,
     login,
+    mobileLogin,
+    verification,
+    proofUser,
+    resetPassword,
+    resetPasswordAuthenticated,
     register,
     logout,
     update,
     getCurrent,
     getUserByUsername,
     updateUser,
-    createUser
+    createUser,
+    getUserByToken,
+    updateMobile
 }

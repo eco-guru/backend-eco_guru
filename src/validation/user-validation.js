@@ -5,14 +5,44 @@ const registerUserValidation = Joi.object({
     password: Joi.string().max(100).required(),
     phone: Joi.string().optional().pattern(/^[0-9]+$/),
     role_id: Joi.number().optional().default(2),
+    question_id: Joi.number().required(),
+    answers: Joi.string().max(40).required(),
 });
 
 const loginUserValidation = Joi.object({
     usernameOrPhone: Joi.string().optional(),
+    username: Joi.string().optional(),
     password: Joi.string().min(6).required()
 });
 
+const verificationUserValidation = Joi.object({
+    phone: Joi.string().required()
+});
+
+const proofUserValidation = Joi.object({
+    phone: Joi.string().required(),
+    answer: Joi.string().required()
+});
+
+const resetPasswordValidation = Joi.object({
+    phone: Joi.string().required(),
+    password: Joi.string().required()
+});
+
+const resetPasswordAuthenticatedValidation = Joi.object({
+    token: Joi.string().required(),
+    oldPassword: Joi.string().required(),
+    password: Joi.string().required()
+});
+
 const getUserValidation = Joi.string().max(100).required();
+
+const tokenValidation = Joi.string().required();
+
+const updateMobileValidation = Joi.object({
+    username: Joi.string().required(),
+    phone: Joi.string().required()
+})
 
 const updateUserValidation = Joi.object({
     username: Joi.string().max(100).required(),
@@ -44,5 +74,11 @@ export {
     loginUserValidation,
     getUserValidation,
     updateUserValidation,
-    createUserValidation
+    createUserValidation,
+    verificationUserValidation,
+    resetPasswordValidation,
+    resetPasswordAuthenticatedValidation,
+    proofUserValidation,
+    tokenValidation, 
+    updateMobileValidation
 }

@@ -1,9 +1,9 @@
 import express from "express";
-import {educatorMiddleware} from "../middleware/educator-middleware.js";
-import articleController from "../controller/article-controller.js";
-import logArticleController from "../controller/logArticle-controller.js";
-import videosController from "../controller/videos-controller.js";
-import logVideosController from "../controller/logVideos-controller.js";
+import {educatorMiddleware} from "../../middleware/educator-middleware.js";
+import articleController from "../../controller/article-controller.js";
+import logArticleController from "../../controller/logArticle-controller.js";
+import videosController from "../../controller/videos-controller.js";
+import logVideosController from "../../controller/logVideos-controller.js";
 
 const educatorRouter = new express.Router();
 educatorRouter.use(educatorMiddleware);
