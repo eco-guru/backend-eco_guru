@@ -267,6 +267,27 @@ const get = async (username) => {
       select: {
         username: true,
         phone: true,
+        role_id: true,
+        profile_picture: true,
+        balance: true,
+      }
+    });
+
+    return user;
+}
+
+const getHouseHold = async (username) => {
+  
+    const user = await prismaClient.users.findMany({
+      select: {
+        username: true,
+        phone: true,
+        role_id: true,
+        profile_picture: true,
+        balance: true,
+      },
+      where: {
+        role_id: 1
       }
     });
 
@@ -359,10 +380,18 @@ const getUserByUsername = async (username) => {
   
     // Query untuk mencari user berdasarkan username
     const user = await prismaClient.users.findFirst({
-      where: { username: username },
+      where: { 
+        OR: [
+            {username: username},
+            {phone: username},
+        ]
+       },
       select:{
         username: true,
-        phone: true
+        phone: true,
+        role_id: true,
+        profile_picture: true,
+        balance: true,
       }
     });
   
@@ -396,6 +425,7 @@ const updateUser = async (username, data) => {
 
 export default {
     get,
+    getHouseHold,
     login,
     mobileLogin,
     verification,

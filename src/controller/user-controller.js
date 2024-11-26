@@ -124,6 +124,19 @@ const getUserProfile = async (req, res) => {
   }
 }
 
+const getUserMobile = async (req, res, next) => {
+  try {
+    const result = await userService.getHouseHold();
+    if (result) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
+    }
+  } catch (e) {
+    next(e);
+  }
+}
+
 const get = async (req, res, next) => {
     try {
       const result = await userService.get();
@@ -187,6 +200,21 @@ const getCurrent = async (req, res, next) => {
     }
 }
 
+const getUserMobileByUsername = async (req, res) => {
+  try {
+    const username = req.params.username; 
+    const user = await userService.getUserByUsername(username);
+
+    if (user) {
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
+    }
+  } catch (err) {
+    return res.status(400).json({ message: "Terjadi kesalahan saat mencari pengguna" });
+  }
+};
+
 const getUserByUsername = async (req, res) => {
     try {
       const username = req.query.username; 
@@ -201,6 +229,21 @@ const getUserByUsername = async (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 };
+
+const getUserByPhoneNumber = async (req, res) => {
+  try {
+    const phone = req.params.phone; 
+    const user = await userService.getUserByUsername(phone);
+
+    if (user) {
+      return res.status(200).json({ message: 'User found', user });
+    } else {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+}
 
 const updateUserByUsername = async (req, res) => {
     const { username } = req.query; // Mengambil username dari query parameter
@@ -225,6 +268,7 @@ const updateUserByUsername = async (req, res) => {
 
 export default {
     get,
+    getUserMobile,
     update,
     login,
     mobileLogin,
@@ -235,7 +279,9 @@ export default {
     resetPasswordAuthenticated,
     logout,
     getCurrent,
+    getUserMobileByUsername,
     getUserByUsername,
+    getUserByPhoneNumber,
     updateUserByUsername,
     getUserBalance,
     getUserProfile,

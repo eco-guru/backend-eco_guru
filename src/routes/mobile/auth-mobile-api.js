@@ -15,6 +15,9 @@ authMobileRouter.put('/edit-profile/:token', userController.updateMobile);
 authMobileRouter.post('/reset-login-password', userController.resetPasswordAuthenticated);
 
 authMobileRouter.get('/home/:token', userController.getUserBalance);
+authMobileRouter.get('/users/username/:username', userController.getUserMobileByUsername);
+authMobileRouter.get('/users/all/', userController.getUserMobile);
+authMobileRouter.get('/users/phone/:phone', userController.getUserByPhoneNumber);
   
 //   app.post("/edit-photo/:token", async (req, res) => {
 //     const { token } = req.params;
