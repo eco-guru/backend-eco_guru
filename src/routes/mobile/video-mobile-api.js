@@ -1,3 +1,7 @@
+import express from 'express';
+
+export const videoMobileRouter = express.Router();
+
 // app.get("/videos", async (req, res) => {
 //     try {
 //       const data = await pool.query(`SELECT v.*, COUNT(l.accessed_by) as views FROM VIDEOS v LEFT JOIN LOG_VIDEOS l ON v.video_id = l.video_id WHERE v.is_active = $1 GROUP BY v.video_id, v.title`,[true]);

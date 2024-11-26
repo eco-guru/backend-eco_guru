@@ -2,8 +2,7 @@ import Joi from "joi";
 
 const createLogArticles = Joi.object({
     article_id: Joi.number().optional(),
-    accessed_by: Joi.string().max(100).required(),
-    accessed_time: Joi.date().required()
+    accessed_by: Joi.string().max(100).required()
 });
 
 const schemaUpdateLogArticle = Joi.object({

@@ -14,12 +14,15 @@ const getArticles = async () => {
       id: true,
       title: true,
       content: true,
-      category: true,
+      categoryId: true,
       isPublished: true,
       created_by: true,
       created_date: true,
       article_order: true,
     },
+    where: {
+      isPublished: true,
+    }
   });
 
   if (!articles) {

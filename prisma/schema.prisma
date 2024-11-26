@@ -168,7 +168,7 @@ model ArticleCategory {
 model LogArticles {
   article_id    Int
   accessed_by   String
-  accessed_time DateTime
+  accessed_time DateTime @default(now())
 
   Articles Articles @relation(fields: [article_id], references: [id])
 
@@ -178,7 +178,7 @@ model LogArticles {
 model LogVideos {
   video_id      Int
   accessed_by   String
-  accessed_time DateTime
+  accessed_time DateTime @default(now())
 
   Videos Videos @relation(fields: [video_id], references: [id])
 

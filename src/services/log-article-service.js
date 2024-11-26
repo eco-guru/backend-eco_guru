@@ -117,7 +117,6 @@ const createArticle = async (request) => {
     data: {
       article_id: request.article_id,
       accessed_by: request.accessed_by,
-      accessed_time: request.accessed_time,
     },
   });
 };

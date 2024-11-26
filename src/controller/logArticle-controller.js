@@ -1,4 +1,6 @@
+import articlesService from '../services/articles-service.js';
 import logArticleService from '../services/log-article-service.js';
+import userService from '../services/user-service.js';
 
 const createLogArticles = async (req, res) => {
   try {
@@ -7,6 +9,27 @@ const createLogArticles = async (req, res) => {
     return res.status(201).json({
       message: 'Log Articles created successfully',
       data: result
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message
+    });
+  }
+};
+
+const createLogMobileArticles = async (req, res) => {
+  try {
+    if(req.body.token !== "VISITOR") {
+      const users = await userService.getUserByToken(req.body.token);
+  
+      const articles = await articlesService.getArticles();
+      const article_id = articles.find(article => article.title === req.body.title);
+  
+      const request = {article_id: article_id.id, accessed_by: users.username};
+      const result = await logArticleService.createArticle(request);
+    }
+    return res.status(201).json({
+      message: 'Silahkan membaca artikel'
     });
   } catch (error) {
     return res.status(400).json({
@@ -103,6 +126,7 @@ async function countArticles(req, res) {
 
 export default {
     createLogArticles,
+    createLogMobileArticles,
     updateLogArticles,
     deleteLogArticles,
     getLogArticles,

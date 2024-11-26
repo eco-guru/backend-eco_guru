@@ -1,4 +1,5 @@
 import articleService from '../services/articles-service.js';
+import logArticleService from '../services/log-article-service.js';
 
 const createArticles = async (req, res) => {
   try {
@@ -60,6 +61,25 @@ const getArticles = async (req, res) => {
   }
 };
 
+const getMobileArticles = async (req, res) => {
+  try {
+    const results = await articleService.getArticles();
+    const logs = await logArticleService.getLogArticles();
+    const data = results.map((result) => {
+      const logResult = logs.filter(log => log.article_id === result.id);
+      return {...result, views: logResult.length || 0};
+    });
+    return res.status(200).json({
+      message: 'Artikel berhasil didapatkan',
+      articles: data
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Terjadi kesalahan saat mengambil artikel"
+    });
+  }
+}
+
 const getOneArticles = async (req, res) => {
   try {
     const request = req.params.id;
@@ -81,5 +101,6 @@ export default {
     updateArticles,
     deleteArticles,
     getArticles,
+    getMobileArticles,
     getOneArticles
 }

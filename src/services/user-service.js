@@ -255,6 +255,7 @@ const logout = async (username) => {
 const getUserByToken = async (token) => {
     token = validate(tokenValidation, token);
     const data = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(data.id);
     const user = await prismaClient.users.findFirst({
         where: { id: data.id },
         select: { balance: true, username: true, phone: true, profile_picture: true }
