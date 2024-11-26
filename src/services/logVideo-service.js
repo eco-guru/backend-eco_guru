@@ -116,7 +116,6 @@ const createVideos = async (request) => {
     data: {
       video_id: request.video_id,
       accessed_by: request.accessed_by,
-      accessed_time: request.accessed_time,
     },
   });
 };

@@ -1,4 +1,6 @@
 import logVideosService from '../services/logVideo-service.js';
+import userService from '../services/user-service.js';
+import videoService from '../services/video-service.js';
 
 const createLogVideos = async (req, res) => {
   try {
@@ -7,6 +9,27 @@ const createLogVideos = async (req, res) => {
     return res.status(201).json({
       message: 'Log Videos created successfully',
       data: result
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message
+    });
+  }
+};
+
+const createLogMobileVideos = async (req, res) => {
+  try {
+    if(req.body.token !== "VISITOR") {
+      const users = await userService.getUserByToken(req.body.token);
+  
+      const videos = await videoService.getVideos();
+      const video_id = videos.find(video => video.title === req.body.title);
+  
+      const request = {video_id: video_id.id, accessed_by: users.username};
+      const result = await logVideosService.createVideos(request);
+    }
+    return res.status(201).json({
+      message: 'Silahkan membaca artikel'
     });
   } catch (error) {
     return res.status(400).json({
@@ -102,6 +125,7 @@ async function countVideos(req, res) {
 
 export default {
     createLogVideos,
+    createLogMobileVideos,
     updateLogVideos,
     deleteLogVideos,
     getLogVideos,
