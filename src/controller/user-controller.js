@@ -256,7 +256,7 @@ export default {
     getCurrent,
     getUserByUsername,
     updateUserByUsername,
-    postCreateUser
+    postCreateUser,
     getUserBalance,
     getUserProfile,
     updateMobile
