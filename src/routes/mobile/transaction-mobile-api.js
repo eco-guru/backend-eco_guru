@@ -1,6 +1,7 @@
 import express from 'express'
 import wasteTypeController from '../../controller/wasteType-controller.js';
 import transactionController from '../../controller/transaction-controller.js';
+import paymentRequestController from '../../controller/payment-request-controller.js';
 
 export const transactionMobileRouter = express.Router();
 
@@ -8,14 +9,14 @@ transactionMobileRouter.get('/waste-types', wasteTypeController.getWasteTypeMobi
 transactionMobileRouter.post('/transactions', transactionController.createTransactionMobile);
 transactionMobileRouter.get('/transaction-history/:token', transactionController.getTransactionByToken);
 
-transactionMobileRouter.post('/disbursement/:token')
+transactionMobileRouter.post('/disbursement/:token', paymentRequestController.createMobilePaymentRequest);
 transactionMobileRouter.put('/give-disbursement-confirmation/:token')
-transactionMobileRouter.get('/get-all-disbursement')
+transactionMobileRouter.get('/get-all-disbursement', paymentRequestController.getMobilePayer);
 transactionMobileRouter.get('/history-disbursement/:token')
 transactionMobileRouter.put('/accept-disbursement/:token')
 transactionMobileRouter.put('/decline-disbursement')
-transactionMobileRouter.get('/waste-collector-home-data/:token')
 
+transactionMobileRouter.get('/waste-collector-home-data/:token')
 transactionMobileRouter.get('/report/:token')
 transactionMobileRouter.get('/report-specify/:token')
 

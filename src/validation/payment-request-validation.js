@@ -11,6 +11,8 @@ const createPaymentRequest = Joi.object({
     confirmation_date: Joi.date().required()
 });
 
+const createMobilePaymentRequest = Joi.object({ amount: Joi.number().required(), token: Joi.string().required() });
+
 const updatePaymentRequest = Joi.object({
     payment_request_id: Joi.number().required(),
     user_id: Joi.number().required(),
@@ -27,6 +29,7 @@ const getAndDeletePaymentRequest = Joi.number().required();
 
 export {
     createPaymentRequest,
+    createMobilePaymentRequest,
     updatePaymentRequest,
     getAndDeletePaymentRequest
 };

@@ -208,14 +208,16 @@ model PaymentRequest {
   user_id               Int
   request_date          DateTime
   request_amount        Int
+  accepted_amount       Int?
   expected_payment_date DateTime?
   payment_date          DateTime?
-  payment_by            Int
+  payment_by            Int?
   confirmation_status   STATUS_PAYMENT
-  confirmation_date     DateTime
+  confirmation_date     DateTime?
+  proof_picture         String?
 
   user  Users @relation("UserPaymentRequests", fields: [user_id], references: [id])
-  payer Users @relation("UserPaymentsToPay", fields: [payment_by], references: [id])
+  payer Users? @relation("UserPaymentsToPay", fields: [payment_by], references: [id])
 
   @@unique([user_id, payment_by])
 }
@@ -239,7 +241,8 @@ model SecretAnswer {
 
 
 enum STATUS_PAYMENT {
-  Waiting_For_Confirmation
-  Success
-  Canceled
+  Sedang_diproses
+  Ambil_uang
+  Selesai
+  Batal
 }

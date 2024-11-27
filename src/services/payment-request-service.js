@@ -4,8 +4,10 @@ import {
   createPaymentRequest,
   updatePaymentRequest,
   getAndDeletePaymentRequest,
+  createMobilePaymentRequest,
 } from "../validation/payment-request-validation.js";
 import { validate } from "../validation/validation.js";
+import jwt from 'jsonwebtoken'
 
 // Get all payment requests
 const getPaymentRequests = async () => {
@@ -15,11 +17,13 @@ const getPaymentRequests = async () => {
       user_id: true,
       request_date: true,
       request_amount: true,
+      accepted_amount: true,
       expected_payment_date: true,
       payment_date: true,
       payment_by: true,
       confirmation_status: true,
       confirmation_date: true,
+      proof_picture: true,
       user: {
         select: {
           username: true,
@@ -130,6 +134,33 @@ const createNewPaymentRequest = async (request) => {
   return paymentRequest;
 };
 
+const createNewMobilePaymentRequest = async (req, res) => {
+  req = validate(createMobilePaymentRequest, req);
+
+  try {
+    const data = jwt.verify(req.token, process.env.SECRET_KEY);
+    const createRequest = await prismaClient.paymentRequest.create({
+      data: {
+        user_id: data.id,
+        request_date: new Date(),
+        request_amount: req.amount,
+        confirmation_status: "Sedang_diproses"
+      }
+    });
+    if(createRequest) {
+      return res.status(200).json({
+        message: "Permintaan pencairan saldo Anda sudah kami terima dan sedang di proses!",
+      });
+    } else {
+      return res.status(200).json({
+        message: "Pencairan gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki",
+      });
+    }
+  } catch (e) {
+    return res.status(500).json({ message: "Pencairan gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
+  }
+}
+
 // Update payment request
 const updatePaymentRequestById = async (request) => {
   request = validate(updatePaymentRequest, request);
@@ -175,4 +206,5 @@ export default {
   createNewPaymentRequest,
   updatePaymentRequestById,
   deletePaymentRequest,
+  createNewMobilePaymentRequest,
 };

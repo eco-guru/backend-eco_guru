@@ -11,6 +11,17 @@ const get = async (req, res, next) => {
   }
 };
 
+const getMobilePayer = async (req, res, next) => {
+  try {
+    const result = await paymentRequestService.getPaymentRequests();
+    res.status(200).json({
+      disbursement: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getById = async (req, res, next) => {
   try {
     const paymentRequestId = parseInt(req.params.paymentRequestId);
@@ -59,10 +70,25 @@ const remove = async (req, res, next) => {
   }
 };
 
+const createMobilePaymentRequest = async (req, res) => {
+  try {
+    const request = {
+      token: req.params.token,
+      amount: req.body.amount
+    };
+    const result = await paymentRequestService.createNewMobilePaymentRequest(request, res);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default {
   get,
+  getMobilePayer,
   getById,
   create,
   update,
   remove,
+  createMobilePaymentRequest
 };
