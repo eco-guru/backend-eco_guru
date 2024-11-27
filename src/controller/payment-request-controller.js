@@ -24,6 +24,25 @@ const getMobilePayerById = async (req, res, next) => {
   }
 }
 
+const giveConfirmation = async (req, res) => {
+  try {
+    const data = jwt.verify(req.params.token, process.env.SECRET_KEY);
+    const response = await paymentRequestService.giveConfirmationService(req.body, data.id, res);
+    return response;
+  } catch (error) {
+    return res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
+  }
+}
+
+const decline = async (req, res) => {
+  try {
+    const response = await paymentRequestService.declinePayment(req.body, res);
+    return response;
+  } catch (error) {
+    return res.status(500).json({ message: "Pencarian gagal dibatalkan dikarenakan kesalahan server. Silahkan dicoba lagi" });
+  }
+}
+
 const getById = async (req, res, next) => {
   try {
     const paymentRequestId = parseInt(req.params.paymentRequestId);
@@ -92,5 +111,7 @@ export default {
   create,
   update,
   remove,
-  createMobilePaymentRequest
+  createMobilePaymentRequest,
+  giveConfirmation,
+  decline
 };

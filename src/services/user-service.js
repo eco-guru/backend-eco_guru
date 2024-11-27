@@ -56,6 +56,85 @@ const register = async (request) => {
     });
 }
 
+const getWasteCollector = async (request, response) => {
+    const data = jwt.verify(request.token, process.env.SECRET_KEY);
+    const user = await prismaClient.paymentRequest.aggregate({
+        _sum: {
+            accepted_amount: true
+        },
+        where: {
+            payment_by: data.id,
+            confirmation_status: "Selesai",
+            payment_date: {
+                gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+            }
+        }
+    });
+
+    const userTransactions = await prismaClient.transactions.findMany({
+        where: { 
+            approved_by: data.id,
+            transaction_date: {
+                gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+            }
+        },
+        select: { id: true }
+    });
+
+    const transaction = await Promise.all(userTransactions.map(async (value) => {
+        const transactionData = await prismaClient.transactionData.findMany({
+            where: { transaction_id: value.id },
+            select: {
+                quantity: true,
+                UOM: {
+                    select: {
+                        unit: true
+                    }
+                },
+                WasteType: {
+                    select : {
+                        WasteCategory: {
+                            select: {
+                                category: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const transactionResultData = transactionData.map(value => {
+            return {
+                waste_category: value.WasteType.WasteCategory.category,
+                unit_name: value.UOM.unit,
+                quantity: value.quantity
+            }
+        })
+        return transactionResultData;
+    }))
+
+    const transactionsData = transaction.flat().reduce((acc, item) => {
+        const { waste_category, unit_name, quantity } = item;
+        if(!acc[waste_category]) acc[waste_category] = { unit_name, quantity: 0 };
+        acc[waste_category].quantity += quantity
+        return acc;
+    }, {});
+    
+    const transactions = Object.entries(transactionsData).map(([key, value]) => {
+        return {
+            waste_category: key,
+            quantity: value.quantity,
+            unit_name: value.unit_name
+        };
+    });
+
+    return response.status(200).json({
+        userBalance: user._sum.accepted_amount,
+        transactions: transactions
+    });
+}
+
 const login = async (request) => {
     request = validate(loginUserValidation, request);
 
@@ -489,5 +568,6 @@ export default {
     createUser,
     getUserByToken,
     updateMobile,
-    updateBalance
+    updateBalance,
+    getWasteCollector
 }

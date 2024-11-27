@@ -21,6 +21,8 @@ authMobileRouter.get('/users/all/', userController.getUserMobile);
 authMobileRouter.get('/users/phone/:phone', userController.getUserByPhoneNumber);
 
 authMobileRouter.get('/list-question', questionController.getQuestion);
+
+authMobileRouter.get('/waste-collector-home-data/:token', userController.getWasteCollectorData);
   
 //   app.post("/edit-photo/:token", async (req, res) => {
 //     const { token } = req.params;

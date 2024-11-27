@@ -51,6 +51,62 @@ const getPaymentRequests = async () => {
   return paymentRequests;
 };
 
+const giveConfirmationService = async (request, paymentBy, res) => {
+  const previousData = await prismaClient.paymentRequest.findFirst({
+    where: {
+      payment_request_id: request.payment_request_id
+    },
+    select: {
+      user_id: true,
+      confirmation_status: true,
+    }
+  });
+
+  const userBalanceData = await prismaClient.users.findFirst({
+    where: {
+      id: previousData.user_id
+    },
+    select: {
+      balance: true
+    }
+  });
+
+  if(request.amount > userBalanceData.balance) {
+    return res.status(400).json({ message: "Pencairan gagal! Saldo yang dimiliki pengguna tidak cukup dengan jumlah yang diajukan" });
+  } else if(previousData.confirmation_status !== "Sedang_diproses") {
+    return res.status(400).json({ message: "Pencairan gagal! Pencairan telah diajukan" });
+  }
+
+  await prismaClient.paymentRequest.update({
+    where: {
+      payment_request_id: request.payment_request_id
+    },
+    data: {
+      confirmation_date: new Date(),
+      accepted_amount: request.amount,
+      confirmation_status: 'Ambil_uang',
+      payment_by: paymentBy
+    }
+  });
+
+  return res.status(200).json({
+    message: "Konfirmasi Pencairan saldo sudah dikirimkan!",
+  }); 
+}
+
+const declinePayment = async (request, response) => {
+  await prismaClient.paymentRequest.update({
+    where: { payment_request_id: request.payment_request_id },
+    data: {
+      confirmation_status: 'Batal',
+      payment_date: new Date()
+    }
+  });
+  return response.status(200).json({
+    message: "Pencairan batal dilakukan!",
+  });
+}
+
 // Get one payment request by user ID
 const getOnePaymentRequestByUser = async (request) => {
   request = validate(getAndDeletePaymentRequest, request);
@@ -253,4 +309,6 @@ export default {
   updatePaymentRequestById,
   deletePaymentRequest,
   createNewMobilePaymentRequest,
+  giveConfirmationService,
+  declinePayment
 };

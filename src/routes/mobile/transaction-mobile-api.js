@@ -6,104 +6,20 @@ import paymentRequestController from '../../controller/payment-request-controlle
 export const transactionMobileRouter = express.Router();
 
 transactionMobileRouter.get('/waste-types', wasteTypeController.getWasteTypeMobile);
+
 transactionMobileRouter.post('/transactions', transactionController.createTransactionMobile);
 transactionMobileRouter.get('/transaction-history/:token', transactionController.getTransactionByToken);
 
 transactionMobileRouter.post('/disbursement/:token', paymentRequestController.createMobilePaymentRequest);
-transactionMobileRouter.put('/give-disbursement-confirmation/:token')
+transactionMobileRouter.put('/give-disbursement-confirmation/:token', paymentRequestController.giveConfirmation);
 transactionMobileRouter.get('/get-all-disbursement', paymentRequestController.get);
 transactionMobileRouter.get('/history-disbursement/:token', paymentRequestController.getMobilePayerById);
 transactionMobileRouter.put('/accept-disbursement/:token')
-transactionMobileRouter.put('/decline-disbursement')
+transactionMobileRouter.put('/decline-disbursement', paymentRequestController.decline);
 
 transactionMobileRouter.get('/waste-collector-home-data/:token')
 transactionMobileRouter.get('/report/:token')
 transactionMobileRouter.get('/report-specify/:token')
-
-// app.post("/disbursement/:token", async (req, res) => {
-//     const { token } = req.params;
-//     const { amount } = req.body;
-  
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-  
-//       await pool.query("INSERT INTO PAYMENT_REQUEST (user_id, request_date, request_amount, confirmation_status) VALUES ($1, CURRENT_TIMESTAMP, $2, 'Sedang diproses')", [userId, amount]);
-//       res.status(200).json({
-//         message: "Permintaan pencairan saldo Anda sudah kami terima dan sedang di proses!",
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
-//     }
-//   });
-  
-//   app.put("/give-disbursement-confirmation/:token", async (req, res) => {
-//     const { token } = req.params;
-//     const { amount, payment_request_id } = req.body;
-  
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const paymentById = data.id;
-  
-//       const payment = await pool.query("SELECT user_id, confirmation_status FROM PAYMENT_REQUEST WHERE payment_request_id = $1", [payment_request_id]);
-//       const userId = payment.rows[0].user_id;
-//       const confirmation_status = payment.rows[0].confirmation_status;
-  
-//       const user = await pool.query("SELECT balance FROM USERS WHERE user_id = $1", [userId]);
-//       const userBalance = user.rows[0].balance;
-  
-//       if(amount > userBalance) {
-//         return res.status(400).json({ message: "Pencairan gagal! Saldo yang dimiliki pengguna tidak cukup dengan jumlah yang diajukan" });
-//       } else if(confirmation_status !== "Sedang diproses") {
-//         return res.status(400).json({ message: "Pencairan gagal! Pencairan telah diajukan" });
-//       }
-  
-//       await pool.query("UPDATE PAYMENT_REQUEST SET confirmation_date = CURRENT_TIMESTAMP, accepted_amount = $1, confirmation_status = 'Ambil uang', payment_by = $2 WHERE payment_request_id = $3", [amount, paymentById, payment_request_id]);
-//       return res.status(200).json({
-//         message: "Konfirmasi Pencairan saldo sudah dikirimkan!",
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
-//     }
-//   });
-  
-//   app.get('/get-all-disbursement', async (req, res) => {
-//     try {
-//       const disbursement = await pool.query(
-//         "SELECT payment.*, usr.username username, usr2.username payment_by_name FROM PAYMENT_REQUEST payment LEFT JOIN USERS usr ON usr.user_id = payment.user_id LEFT JOIN USERS usr2 ON usr2.user_id = payment.payment_by"
-//       );
-//       res.status(200).json({
-//         disbursement: disbursement.rows,
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Terjadi kesalahan server, coba lagi!" });
-//     }
-//   });
-  
-//   app.get('/history-disbursement/:token', async (req, res) => {
-//     const { token } = req.params;
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-  
-//       const disbursement = await pool.query(
-//         "SELECT payment.*, usr.username username, usr2.username payment_by_name FROM PAYMENT_REQUEST payment LEFT JOIN USERS usr ON usr.user_id = payment.user_id LEFT JOIN USERS usr2 ON usr2.user_id = payment.payment_by WHERE payment.user_id = $1",
-//         [userId]
-//       );
-//       res.status(200).json({
-//         disbursement: disbursement.rows,
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
-//     }
-//   })
   
 //   app.put('/accept-disbursement/:token', async (req, res) => {
 //     const { token } = req.params;
@@ -150,42 +66,7 @@ transactionMobileRouter.get('/report-specify/:token')
 //       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
 //     }
 //   });
-  
-//   app.put('/decline-disbursement', async (req, res) => {
-//     const { payment_request_id } = req.body;
-//     try {
-  
-//       await pool.query("UPDATE PAYMENT_REQUEST SET confirmation_status = 'Batal', payment_date = CURRENT_TIMESTAMP WHERE payment_request_id = $1", [payment_request_id]);
-  
-//       res.status(200).json({
-//         message: "Pencairan batal dilakukan!",
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
-//     }
-//   });
-  
-//   app.get('/waste-collector-home-data/:token', async (req, res) => {
-//     const { token } = req.params;
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-  
-//       const user = await pool.query("SELECT SUM(accepted_amount) as balance FROM PAYMENT_REQUEST WHERE payment_by = $1 AND confirmation_status = 'Selesai' AND payment_date >= DATE_TRUNC('month', CURRENT_DATE) AND payment_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'", [userId]);
-//       const userBalance = user.rows[0].balance;
-  
-//       const transactions = await pool.query("SELECT SUM(td.quantity) AS quantity, td.waste_category, u.unit_name FROM TRANSACTIONS t LEFT JOIN TRANSACTION_DATA td ON t.transaction_id = td.transaction_id LEFT JOIN UOM u ON td.uom_id = u.uom_id WHERE t.approved_by = $1 AND t.transaction_date >= DATE_TRUNC('month', CURRENT_DATE) AND t.transaction_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month' GROUP BY td.waste_category, u.unit_name", [userId]);
-//       res.status(200).json({
-//         userBalance: userBalance,
-//         transactions: transactions.rows
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
-//     }
-//   });
+
   
 //   app.get('/report/:token', async(req, res) => {
 //     const { token } = req.params;

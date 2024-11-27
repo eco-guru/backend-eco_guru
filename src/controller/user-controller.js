@@ -138,6 +138,15 @@ const getUserMobile = async (req, res, next) => {
   }
 }
 
+const getWasteCollectorData = async (req, res, next) => {
+  try {
+    const result = await userService.getWasteCollector(req.params,res);
+    return result;
+  } catch (e) {
+    next(e);
+  }
+}
+
 const get = async (req, res, next) => {
     try {
       const result = await userService.get();
@@ -306,5 +315,6 @@ export default {
     postCreateUser,
     getUserBalance,
     getUserProfile,
-    updateMobile
+    updateMobile,
+    getWasteCollectorData
 }
