@@ -51,6 +51,51 @@ const getPaymentRequests = async () => {
   return paymentRequests;
 };
 
+// Get one payment request by user ID
+const getOnePaymentRequestByUser = async (request) => {
+  request = validate(getAndDeletePaymentRequest, request);
+  const paymentRequest = await prismaClient.paymentRequest.findMany({
+    where: { user_id: request },
+    select: {
+      payment_request_id: true,
+      user_id: true,
+      request_date: true,
+      request_amount: true,
+      accepted_amount: true,
+      expected_payment_date: true,
+      payment_date: true,
+      payment_by: true,
+      confirmation_status: true,
+      confirmation_date: true,
+      proof_picture: true,
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      payer: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+  
+  paymentRequest.forEach((request) => {
+    request.username = request.user?.username || "";
+    request.payment_by_name = request.payer?.username || "";
+  
+    delete request.user;
+    delete request.payer;
+  });
+
+  if (!paymentRequest) {
+    throw new ResponseError(404, "Payment request not found");
+  }
+
+  return paymentRequest;
+};
+
 // Get one payment request by ID
 const getOnePaymentRequest = async (request) => {
   request = validate(getAndDeletePaymentRequest, request);
@@ -203,6 +248,7 @@ const deletePaymentRequest = async (request) => {
 export default {
   getPaymentRequests,
   getOnePaymentRequest,
+  getOnePaymentRequestByUser,
   createNewPaymentRequest,
   updatePaymentRequestById,
   deletePaymentRequest,

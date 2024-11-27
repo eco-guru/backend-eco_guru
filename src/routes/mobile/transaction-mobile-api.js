@@ -11,8 +11,8 @@ transactionMobileRouter.get('/transaction-history/:token', transactionController
 
 transactionMobileRouter.post('/disbursement/:token', paymentRequestController.createMobilePaymentRequest);
 transactionMobileRouter.put('/give-disbursement-confirmation/:token')
-transactionMobileRouter.get('/get-all-disbursement', paymentRequestController.getMobilePayer);
-transactionMobileRouter.get('/history-disbursement/:token')
+transactionMobileRouter.get('/get-all-disbursement', paymentRequestController.get);
+transactionMobileRouter.get('/history-disbursement/:token', paymentRequestController.getMobilePayerById);
 transactionMobileRouter.put('/accept-disbursement/:token')
 transactionMobileRouter.put('/decline-disbursement')
 

@@ -1,4 +1,5 @@
 import paymentRequestService from "../services/payment-request-service.js";
+import jwt from 'jsonwebtoken';
 
 const get = async (req, res, next) => {
   try {
@@ -11,9 +12,10 @@ const get = async (req, res, next) => {
   }
 };
 
-const getMobilePayer = async (req, res, next) => {
+const getMobilePayerById = async (req, res, next) => {
   try {
-    const result = await paymentRequestService.getPaymentRequests();
+    const data = jwt.verify(req.params.token, process.env.SECRET_KEY);
+    const result = await paymentRequestService.getOnePaymentRequestByUser(parseInt(data.id));
     res.status(200).json({
       disbursement: result,
     });
@@ -85,7 +87,7 @@ const createMobilePaymentRequest = async (req, res) => {
 
 export default {
   get,
-  getMobilePayer,
+  getMobilePayerById,
   getById,
   create,
   update,
