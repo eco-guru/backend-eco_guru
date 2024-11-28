@@ -39,7 +39,7 @@ async function main() {
       password: hashedPassword,
       phone: "081234567890",
       token: uuid().toString(),
-      role_id: 1,
+      role_id: 2,
     },
   });
 
@@ -49,7 +49,7 @@ async function main() {
         password: hashedPassword,
         phone: "081234567891",
         token: uuid().toString(),
-        role_id: 2
+        role_id: 3
       },
     });
 
@@ -59,7 +59,7 @@ async function main() {
         password: hashedPassword,
         phone: "081234567892",
         token: uuid().toString(),
-        role_id: 2
+        role_id: 4
       },
     });
   const user4 = await prisma.users.create({
@@ -68,7 +68,7 @@ async function main() {
         password: hashedPassword,
         phone: "081234567893",
         token: uuid().toString(),
-        role_id: 3
+        role_id: 1
       },
     });
 
@@ -79,7 +79,7 @@ async function main() {
         password: hashedPassword,
         phone: "081234567894",
         token: uuid().toString(),
-        role_id: 4
+        role_id: 2
       },
   });
 
