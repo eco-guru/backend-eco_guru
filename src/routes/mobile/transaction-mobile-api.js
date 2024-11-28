@@ -17,9 +17,8 @@ transactionMobileRouter.get('/history-disbursement/:token', paymentRequestContro
 transactionMobileRouter.put('/accept-disbursement/:token')
 transactionMobileRouter.put('/decline-disbursement', paymentRequestController.decline);
 
-transactionMobileRouter.get('/waste-collector-home-data/:token')
-transactionMobileRouter.get('/report/:token')
-transactionMobileRouter.get('/report-specify/:token')
+transactionMobileRouter.get('/report/:token', transactionController.getUserTransactionReport);
+transactionMobileRouter.get('/report-specify/:token', transactionController.getUserReportSpecify);
   
 //   app.put('/accept-disbursement/:token', async (req, res) => {
 //     const { token } = req.params;
@@ -66,39 +65,3 @@ transactionMobileRouter.get('/report-specify/:token')
 //       res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
 //     }
 //   });
-
-  
-//   app.get('/report/:token', async(req, res) => {
-//     const { token } = req.params;
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-//       const report = await pool.query("SELECT DATE_TRUNC('month', t.transaction_date) AS transaction_month, SUM(td.quantity) AS total_quantity FROM TRANSACTIONS t LEFT JOIN TRANSACTION_DATA td ON t.transaction_id = td.transaction_id LEFT JOIN UOM u ON td.uom_id = u.uom_id WHERE t.user_id = $1 AND u.unit_name = 'Kg' GROUP BY transaction_month, u.unit_name ORDER BY transaction_month", [userId]);
-//       const transactions = await pool.query("SELECT SUM(td.quantity) AS quantity, td.waste_category, u.unit_name FROM TRANSACTIONS t LEFT JOIN TRANSACTION_DATA td ON t.transaction_id = td.transaction_id LEFT JOIN UOM u ON td.uom_id = u.uom_id WHERE t.user_id = $1 AND t.transaction_date >= DATE_TRUNC('month', CURRENT_DATE) AND t.transaction_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month' GROUP BY td.waste_category, u.unit_name", [userId]);
-//       res.status(200).json({
-//         report: report.rows,
-//         transactions: transactions.rows
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Laporan gagal didapatkan!" });
-//     }
-//   });
-  
-//   app.get('/report-specify/:token', async(req, res) => {
-//     const { token } = req.params;
-//     try {
-//       const secret_key = process.env.SECRET_KEY;
-//       const data = jwt.verify(token, secret_key);
-//       const userId = data.id;
-  
-//       const report = await pool.query("SELECT DATE_TRUNC('month', t.transaction_date) AS transaction_month, td.waste_category, SUM(td.quantity) AS total_quantity FROM TRANSACTIONS t LEFT JOIN TRANSACTION_DATA td ON t.transaction_id = td.transaction_id LEFT JOIN UOM u ON td.uom_id = u.uom_id WHERE t.user_id = $1 GROUP BY transaction_month, td.waste_category ORDER BY transaction_month, td.waste_category", [userId]);
-//       res.status(200).json({
-//         report: report.rows
-//       });
-//     } catch (e) {
-//       console.error(e);
-//       res.status(500).json({ message: "Laporan gagal didapatkan!" });
-//     }
-//   })

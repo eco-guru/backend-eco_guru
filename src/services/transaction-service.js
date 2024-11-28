@@ -116,6 +116,190 @@ const updateTransaction = async (request) => {
     return updatedTransaction;
 };
 
+const getTransactionDataReport = async (userTransactions) => {
+    const transaction = await Promise.all(userTransactions.map(async (value) => {
+        const transactionData = await prismaClient.transactionData.findMany({
+            where: { transaction_id: value.id },
+            select: {
+                quantity: true,
+                UOM: {
+                    select: {
+                        unit: true
+                    }
+                },
+                WasteType: {
+                    select : {
+                        WasteCategory: {
+                            select: {
+                                category: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const transactionResultData = transactionData.map(value => {
+            return {
+                waste_category: value.WasteType.WasteCategory.category,
+                unit_name: value.UOM.unit,
+                quantity: value.quantity
+            }
+        })
+        return transactionResultData;
+    }))
+
+    const transactionsData = transaction.flat().reduce((acc, item) => {
+        const { waste_category, unit_name, quantity } = item;
+        if(!acc[waste_category]) acc[waste_category] = { unit_name, quantity: 0 };
+        acc[waste_category].quantity += quantity
+        return acc;
+    }, {});
+    
+    const transactions = Object.entries(transactionsData).map(([key, value]) => {
+        return {
+            waste_category: key,
+            quantity: value.quantity,
+            unit_name: value.unit_name
+        };
+    });
+
+    return transactions;
+}
+
+const getTransactionReport = async (where) => {
+    const userTransactions = await prismaClient.transactions.findMany({
+        where: where,
+        select: { 
+            id: true, 
+            transaction_date: true 
+        }
+    });
+    return userTransactions;
+}
+
+const getReportData = async (userTransactions) => {
+    const reportData = await Promise.all(userTransactions.map(async value => {
+        const transactionData = await prismaClient.transactionData.findMany({
+            where: { 
+                transaction_id: value.id,
+                OR: [
+                    { UOM: { unit: "Kilogram" } },
+                    { UOM: { unit: "Kg" } }
+                ]
+            },
+            select: {
+                quantity: true,
+                UOM: {
+                    select: {
+                        unit: true
+                    }
+                },
+                WasteType: {
+                    select: {
+                        WasteCategory: {
+                            select: {
+                                category: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        const transactionResultData = transactionData.map(val => {
+            return {
+                unit_name: val.UOM.unit,
+                quantity: val.quantity,
+                transaction_month: value.transaction_date,
+                category: val.WasteType.WasteCategory.category
+            }
+        })
+        return transactionResultData;
+    }));
+    return reportData;
+}
+
+const getUserReportSpecifyData = async (request) => {
+    const data = jwt.verify(request.token, process.env.SECRET_KEY);
+
+    const userTransactions = await getTransactionReport({ 
+        user_id: data.id,
+    });
+
+    const reportData = await getReportData(userTransactions);
+    const reportFlatData = reportData.flat().reduce((acc, curr) => {
+        const category = curr.category;
+        const monthKey = curr.transaction_month.toISOString().slice(0, 7);
+      
+        if (!acc[category]) {
+          acc[category] = {};
+        }
+      
+        if (!acc[category][monthKey]) {
+          acc[category][monthKey] = {
+            total_quantity: 0,
+          };
+        }
+      
+        acc[category][monthKey].total_quantity += curr.quantity;
+      
+        return acc;
+    }, {});
+    const report = Object.entries(reportFlatData).flatMap(([category, months]) =>
+        Object.entries(months).map(([transaction_month, { total_quantity }]) => ({
+          waste_category: category,
+          transaction_month,
+          total_quantity,
+        }))
+    );
+    return {
+        report: report
+    };
+}
+
+const getUserTransactionReport = async (request) => {
+    const data = jwt.verify(request.token, process.env.SECRET_KEY);
+
+    const userTransactions = await getTransactionReport({ 
+        user_id: data.id,
+    });
+
+    const reportData = await getReportData(userTransactions);
+
+    const reportFlatData = reportData.flat().reduce((acc, curr) => {
+        const monthKey = curr.transaction_month.toISOString().slice(0, 7);
+        if (!acc[monthKey]) {
+          acc[monthKey] = {
+            total_quantity: 0,
+            transaction_month: curr.transaction_month,
+          };
+        }
+        acc[monthKey].total_quantity += curr.quantity;
+      
+        return acc;
+      }, {});
+    
+    const report = Object.entries(reportFlatData).map(([key, value]) => {
+        return {
+            transaction_month: value.transaction_month,
+            total_quantity: value.total_quantity,
+        };
+    });
+
+    const userTransactionsData = await getTransactionReport({ 
+        user_id: data.id,
+        transaction_date: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+        }
+    });
+    const transactions = await getTransactionDataReport(userTransactionsData);
+
+    return {
+        report: report,
+        transactions: transactions
+    }
+}
+
 const deleteTransaction = async (request) => {
     request = validate(ListAndDeleteSchema, request);
 
@@ -149,5 +333,8 @@ export default {
     getTransactionById,
     getTransactionByUser,
     updateTransaction,
-    deleteTransaction
+    deleteTransaction,
+    getUserTransactionReport,
+    getTransactionDataReport,
+    getUserReportSpecifyData
 };

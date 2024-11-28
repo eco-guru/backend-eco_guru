@@ -101,6 +101,26 @@ const listAllTransactions = async (req, res, next) => {
       next(e);
     }
   };
+
+  const getUserTransactionReport = async (req, res, next) => {
+    try {
+      const request = req.params;
+      const transactionReport = await transactionService.getUserTransactionReport(request);
+      res.status(200).json(transactionReport);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  const getUserReportSpecify = async (req, res, next) => {
+    try {
+      const request = req.params;
+      const transactionReport = await transactionService.getUserReportSpecifyData(request);
+      res.status(200).json(transactionReport);
+    } catch (e) {
+      next(e);
+    }
+  }
   
   const updateTransaction = async (req, res, next) => {
     try {
@@ -137,5 +157,7 @@ const listAllTransactions = async (req, res, next) => {
     getTransactionById,
     getTransactionByToken,
     updateTransaction,
-    deleteTransaction
+    deleteTransaction,
+    getUserTransactionReport,
+    getUserReportSpecify
   };
