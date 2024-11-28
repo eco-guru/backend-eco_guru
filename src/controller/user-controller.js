@@ -295,6 +295,15 @@ const postCreateUser = async (req, res, next) => {
   }
 };
 
+const updatePhoto = async (req, res) => {
+  try {
+    const response = await userService.updatePhoto(req.params, req.body, res);
+    return response;
+  } catch (e) {
+    return res.status(500).json({ message: "Terjadi kesalahan saat memperbarui profil" });
+  }
+}
+
 export default {
     get,
     getUserMobile,
@@ -316,5 +325,6 @@ export default {
     getUserBalance,
     getUserProfile,
     updateMobile,
-    getWasteCollectorData
+    getWasteCollectorData,
+    updatePhoto
 }

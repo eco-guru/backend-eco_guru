@@ -7,7 +7,12 @@ import {
   createMobilePaymentRequest,
 } from "../validation/payment-request-validation.js";
 import { validate } from "../validation/validation.js";
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import fs from "fs";
+import path, {dirname, join} from 'path';
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
 
 // Get all payment requests
 const getPaymentRequests = async () => {
@@ -39,7 +44,7 @@ const getPaymentRequests = async () => {
 
   paymentRequests.forEach((paymentRequest) => {
     paymentRequest.user_name = paymentRequest.user.username;
-    paymentRequest.payer_name = paymentRequest.payer.username;
+    paymentRequest.payer_name = paymentRequest.payer ? paymentRequest.payer.username : "";
     delete paymentRequest.user;
     delete paymentRequest.payer;
   });
@@ -77,13 +82,13 @@ const giveConfirmationService = async (request, paymentBy, res) => {
     return res.status(400).json({ message: "Pencairan gagal! Pencairan telah diajukan" });
   }
 
-  await prismaClient.paymentRequest.update({
+  const data = await prismaClient.paymentRequest.update({
     where: {
       payment_request_id: request.payment_request_id
     },
     data: {
       confirmation_date: new Date(),
-      accepted_amount: request.amount,
+      accepted_amount: Number(request.amount),
       confirmation_status: 'Ambil_uang',
       payment_by: paymentBy
     }
@@ -92,6 +97,69 @@ const giveConfirmationService = async (request, paymentBy, res) => {
   return res.status(200).json({
     message: "Konfirmasi Pencairan saldo sudah dikirimkan!",
   }); 
+}
+
+const acceptPayment = async (requestBody, response) => {
+  try {
+    const disbursementData = await prismaClient.paymentRequest.findFirst({
+      select: {
+        accepted_amount: true,
+        user: {
+          select: {
+            id: true,
+            balance: true,
+            username: true
+          }
+        },
+        payer: {
+          select: {
+            id: true,
+            balance: true
+          }
+        }
+      },
+      where: { payment_request_id: requestBody.payment_request_id }
+    });
+  
+    const __dirname = dirname(__filename);
+    const rootDir = join(__dirname, '../../');
+    const base64Data = requestBody.uri.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    const filename = `${Date.now()}-${requestBody.name}-${disbursementData.user.id}-${disbursementData.user.username}-${requestBody.payment_request_id}-${disbursementData.payer.id}.${requestBody.type.split("/")[1]}`;
+    const filePath = path.join(rootDir, 'storage', 'proofVerificationPicture', filename);
+  
+    fs.writeFile(filePath, buffer, (err) => {
+      if (err) {
+        console.error("Gagal menyimpan gambar:", err);
+        return response.status(500).json({ message: "Gagal menyimpan gambar" });
+      }
+    });
+  
+    await prismaClient.paymentRequest.update({
+      data: {
+        payment_date: new Date(),
+        confirmation_status: "Selesai",
+        proof_picture: filename
+      },
+      where: { payment_request_id: requestBody.payment_request_id }
+    });
+  
+    await prismaClient.users.update({
+      where: { id: disbursementData.user.id },
+      data: { balance: disbursementData.user.balance - disbursementData.accepted_amount }
+    });
+  
+    await prismaClient.users.update({
+      where: { id: disbursementData.payer.id },
+      data: { balance: disbursementData.user.balance + disbursementData.accepted_amount }
+    });
+  
+    return response.status(200).json({
+      message: "Pencairan berhasil dilakukan! Saldo anda tersisa "+(disbursementData.user.balance - disbursementData.accepted_amount),
+    });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 const declinePayment = async (request, response) => {
@@ -310,5 +378,6 @@ export default {
   deletePaymentRequest,
   createNewMobilePaymentRequest,
   giveConfirmationService,
+  acceptPayment,
   declinePayment
 };

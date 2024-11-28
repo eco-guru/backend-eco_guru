@@ -34,6 +34,15 @@ const giveConfirmation = async (req, res) => {
   }
 }
 
+const accept = async (req, res) => {
+  try {
+    const response = await paymentRequestService.acceptPayment(req.body, res);
+    return response;
+  } catch (e) {
+    return res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
+  }
+}
+
 const decline = async (req, res) => {
   try {
     const response = await paymentRequestService.declinePayment(req.body, res);
@@ -113,5 +122,6 @@ export default {
   remove,
   createMobilePaymentRequest,
   giveConfirmation,
+  accept,
   decline
 };

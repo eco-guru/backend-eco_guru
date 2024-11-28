@@ -13,8 +13,8 @@ mobile.use(express.json({limit: '50mb'}));
 mobile.use(multer().none());
 mobile.use(cors());
 
-mobile.use('/photoProfile', express.static('photoProfile'));
-mobile.use('/proofVerificationPicture', express.static('proofVerificationPicture'));
+mobile.use('/storage/photoProfile', express.static('storage/photoProfile'));
+mobile.use('/storage/proofVerificationPicture', express.static('storage/proofVerificationPicture'));
 
 mobile.use(bodyParser.json(({limit: '30mb'})));
 mobile.use(bodyParser.urlencoded({limit: '30mb', extended: true}));

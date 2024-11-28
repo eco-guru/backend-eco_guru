@@ -18,6 +18,11 @@ import bcrypt from "bcrypt";
 import {v4 as uuid} from "uuid";
 import jwt from 'jsonwebtoken'
 import transactionService from "./transaction-service.js";
+import fs from "fs";
+import path, {dirname, join} from 'path';
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request);
@@ -497,14 +502,55 @@ const createUser = async (request, profile_picture) => {
     });
   
     return user;
-  };
+};
 
-  const updateBalance = async (req) => {
-    return await prismaClient.users.update({
-        where: { id: req.user_id },
-        data: { balance: req.total },
-    })
-  }
+const updateBalance = async (req) => {
+  return await prismaClient.users.update({
+      where: { id: req.user_id },
+      data: { balance: req.total },
+  })
+}
+
+const updatePhoto = async (requestParam, requestBody, res) => {
+    try {
+        const data = jwt.verify(requestParam.token, process.env.SECRET_KEY);
+        const user = await prismaClient.users.findFirst({
+            where: { id: data.id },
+            select: { 
+                id: true, 
+                username: true 
+            }
+        });
+
+        if(!user) {
+            return res.status(404).json({ message: "Pengguna tidak ditemukan" });
+        }
+
+        const __dirname = dirname(__filename);
+        const rootDir = join(__dirname, '../../');
+        const base64Data = requestBody.uri.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+        const filename = `${Date.now()}-${requestBody.name}-${user.id}-${user.username}.${requestBody.type.split("/")[1]}`;
+        const filePath = path.join(rootDir, 'storage', 'photoProfile', filename);
+    
+        fs.writeFile(filePath, buffer, (err) => {
+            if (err) {
+              console.error("Gagal menyimpan gambar:", err);
+              return res.status(500).json({ message: "Gagal menyimpan gambar" });
+            }
+        });
+
+        await prismaClient.users.update({
+            where: { id: data.id },
+            data: {
+                profile_picture: filename
+            }
+        });
+        return res.status(200).json({ message: "Profil berhasil diperbarui" });
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 
 export default {
@@ -526,5 +572,6 @@ export default {
     getUserByToken,
     updateMobile,
     updateBalance,
-    getWasteCollector
+    getWasteCollector,
+    updatePhoto,
 }
