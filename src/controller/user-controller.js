@@ -1,5 +1,8 @@
 import userService from "../services/user-service.js";
 import bcrypt from "bcrypt";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { promises as fs } from 'fs';
 
 
 const register = async (req, res) => {
@@ -158,24 +161,41 @@ const get = async (req, res, next) => {
     }
 }
 
+const __filenameUpdate = fileURLToPath(import.meta.url);
+const __dirnameUpdate = path.dirname(__filenameUpdate);
+
 const update = async (req, res, next) => {
     try {
-      const username = req.user.username;
-      const request = req.body;
-      let profile_picture = null;
-      if (req.file) {
-          profile_picture = req.file.buffer;
-      }
+        const username = req.user.username;
+        const request = req.body;
+        let profilePicturePath = null;
+        
+        if (req.file) {
+            const fileExtension = path.extname(req.file.originalname);
+            const fileName = `${username}-${Date.now()}${fileExtension}`;
+            
+            const rootDir = path.resolve(__dirnameUpdate, '..', '..');
+            const uploadDir = path.join(rootDir, 'storage', 'photoProfile');
 
-  
-      const result = await userService.update(username, request, profile_picture);
-      res.status(200).json({
-        data: result
-      });
-    } catch (e) {
-      next(e);
+            await fs.mkdir(uploadDir, { recursive: true });
+            
+            const filePath = path.join(uploadDir, fileName);
+            await fs.writeFile(filePath, req.file.buffer);
+
+            profilePicturePath = `storage/photoProfile/${fileName}`;
+        }
+
+        const result = await userService.update(username, request, profilePicturePath);
+        res.status(200).json({
+            status: 'success',
+            message: 'User berhasil diupdate',
+            data: result
+        });
+    } catch (err) {
+        console.error('Error in update:', err);
+        next(err);
     }
-}
+};
 
 const updateMobile = async (req, res) => {
   try {
@@ -275,25 +295,43 @@ const updateUserByUsername = async (req, res) => {
     }
 };
 
-const postCreateUser = async (req, res, next) => {
-  try {
-    let profile_picture = null;
-    if (req.file) {
-      profile_picture = req.file.buffer;
-    }
-    console.log(req.body);
-    console.log(profile_picture);
-    const result = await userService.createUser(req.body, profile_picture);
-    res.status(201).json({
-      status: 'success',
-      message: 'User berhasil dibuat',
-      data: result
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(400).json({ message: err.message });
-  }
-};
+  // Dapatkan __dirname equivalent untuk ESM
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const rootDir = path.resolve(__dirname, '..', '..');
+
+  // Controller
+  const postCreateUser = async (req, res, next) => {
+      try {
+          let profilePicturePath = null;
+          
+          if (req.file) {
+              // Buat nama file yang unik
+              const fileExtension = path.extname(req.file.originalname);
+              const fileName = `${req.body.username}-${Date.now()}${fileExtension}`;
+              
+              const uploadDir = path.join(rootDir, 'storage', 'photoProfile');
+              await fs.mkdir(uploadDir, { recursive: true });
+              
+              const filePath = path.join(uploadDir, fileName);
+              await fs.writeFile(filePath, req.file.buffer);
+              
+              profilePicturePath = `storage/photoProfile/${fileName}`;
+          }
+
+          const result = await userService.createUser(req.body, profilePicturePath);
+          
+          res.status(201).json({
+              status: 'success',
+              message: 'User berhasil dibuat',
+              data: result
+          });
+      } catch (err) {
+          console.error('Error in postCreateUser:', err);
+          next(err);
+      }
+  };
+
 
 const updatePhoto = async (req, res) => {
   try {

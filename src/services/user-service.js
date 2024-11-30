@@ -356,47 +356,64 @@ const updateMobile = async (req, token) => {
 
 }
 
-const update = async (username,request,profile_picture) => {
-    const user = validate(updateUserValidation, request);
-    console.log(user.username);
-    const totalUserInDatabase = await prismaClient.users.count({
+const __filenameUpdate = fileURLToPath(import.meta.url);
+const __dirnameUpdate = path.dirname(__filenameUpdate);
+
+const update = async (username, request, profilePicturePath) => {
+    const user = await prisma.user.findUnique({
         where: {
             username: username
         }
     });
 
-    if (totalUserInDatabase !== 1) {
-        throw new ResponseError(404, "user is not found");
+    if (!user) {
+        if (profilePicturePath) {
+            try {
+                const filePath = path.join(process.cwd(), profilePicturePath);
+                await fs.unlink(filePath);
+            } catch (error) {
+                console.error('Error deleting uploaded file:', error);
+            }
+        }
+        throw new ResponseError(404, "User not found");
     }
 
-    const data = {};
-    if (user.username) {
-        data.username = user.username;
+    if (user.profile_picture && profilePicturePath) {
+        try {
+            const rootDir = path.resolve(__dirnameUpdate, '..', '..');
+            const oldFilePath = path.join(rootDir, user.profile_picture);
+            await fs.unlink(oldFilePath);
+        } catch (error) {
+            console.error('Error deleting old profile picture:', error);
+        }
     }
-    if (user.password) {
-        data.password = await bcrypt.hash(user.password, 10);
+
+    // Prepare data untuk update
+    const data = {
+        ...request
+    };
+
+    if (profilePicturePath) {
+        data.profile_picture = profilePicturePath;
     }
-    if (user.phone) {
-        data.phone = user.phone;
-    }
-    if (user.profile_picture) {
-        data.profile_picture = user.profile_picture;
-    }else{
-        data.profile_picture = profile_picture;
-    }
-    console.log(data);
-    return prismaClient.users.update({
+
+    // Update user
+    const updatedUser = await prisma.user.update({
         where: {
             username: username
         },
         data: data,
         select: {
             username: true,
+            name: true,
             phone: true,
+            role_id: true,
             profile_picture: true
         }
-    })
-}
+    });
+
+    return updatedUser;
+};
 
 const getCurrent = async (username) => {
     username = validate(getUserValidation, username);
@@ -466,43 +483,61 @@ const updateUser = async (username, data) => {
     return updatedUser;
 };
 
-const createUser = async (request, profile_picture) => {
+const createUser = async (request, profilePicturePath) => {
     request = validate(createUserValidation, request);
-  
+    
     const existingUser = await prismaClient.users.findUnique({
-      where: { username: request.username }
+        where: { username: request.username }
     });
-  
+    
     if (existingUser) {
-      throw new ResponseError(400, "Username sudah digunakan");
+        if (profilePicturePath) {
+            try {
+                const filePath = path.join(__dirname, profilePicturePath);
+                await fs.unlink(filePath);
+            } catch (error) {
+                console.error('Error deleting uploaded file:', error);
+            }
+        }
+        throw new ResponseError(400, "Username sudah digunakan");
     }
-  
+    
     const role = await prismaClient.roles.findUnique({
-      where: { id: request.role_id }
+        where: { id: request.role_id }
     });
-  
+    
     if (!role) {
-      throw new ResponseError(400, "Role ID tidak valid");
+        if (profilePicturePath) {
+            try {
+                const filePath = path.join(__dirname, profilePicturePath);
+                await fs.unlink(filePath);
+            } catch (error) {
+                console.error('Error deleting uploaded file:', error);
+            }
+        }
+        throw new ResponseError(400, "Role ID tidak valid");
     }
 
     const hashedPassword = await bcrypt.hash(request.password, 10);
-  
+    
     const user = await prismaClient.users.create({
-      data: {
-        ...request,
-        profile_picture: profile_picture,
-        password: hashedPassword
-      },
-      select: {
-        id: true,
-        username: true,
-        phone: true,
-        role_id: true
-      }
+        data: {
+            ...request,
+            profile_picture: profilePicturePath,
+            password: hashedPassword
+        },
+        select: {
+            id: true,
+            username: true,
+            phone: true,
+            role_id: true,
+            profile_picture: true
+        }
     });
-  
+    
     return user;
 };
+
 
 const updateBalance = async (req) => {
   return await prismaClient.users.update({
