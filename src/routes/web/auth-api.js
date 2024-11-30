@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+import upload from "../../config/multer-config.js";
 import userController from "../../controller/user-controller.js";
 import {authMiddleware} from "../../middleware/auth-middleware.js";
 import pricelistController from "../../controller/pricelist-controller.js";
@@ -14,9 +14,6 @@ import videosController from "../../controller/videos-controller.js";
 import logVideosController from "../../controller/logVideos-controller.js";
 
 const userRouter = new express.Router();
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 userRouter.use(authMiddleware);
 
