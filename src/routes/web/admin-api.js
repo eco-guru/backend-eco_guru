@@ -21,7 +21,7 @@ const adminRouter = new express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-adminRouter.use(adminMiddleware);
+// adminRouter.use(adminMiddleware);
 
 adminRouter.get('/api/admin/users', userController.get);
 adminRouter.get('/api/admin/users/get-one', userController.getUserByUsername);
