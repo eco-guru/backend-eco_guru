@@ -78,29 +78,35 @@ const resetPasswordAuthenticated = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    try {
-        const user = await userService.login(req.body);
-        const data = await bcrypt.hash(user.role, 10);
+  try {
+    const user = await userService.login(req.body);
+    const data = await bcrypt.hash(user.role, 10);
 
-      if (user) {
-        res.cookie('user-role', data, {
-          httpOnly: true,
-          maxAge: 2 * 60 * 60 * 1000,
-          domain: 'localhost',
-          secure: true,
-          sameSite: 'Lax',
-        });
-  
-        return res.status(200).json({
-          message: 'Login successful',
-          user: user
-        });
-      } else {
-        return res.status(401).json({ message: 'Invalid username or password' });
-      }
-    } catch (err) {
-      return res.status(500).json({message: err.message });
+    if (user) {
+      res.cookie("user-role", data, {
+        httpOnly: true,
+        maxAge: 2 * 60 * 60 * 1000,
+        domain: "localhost",
+        secure: true,
+        sameSite: "Lax",
+      });
+
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          id: user.id,
+          name: user.name,
+          username: user.username,
+          token: user.token,
+          role: data,
+        },
+      });
+    } else {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
 const getUserBalance = async (req, res) => {
