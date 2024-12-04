@@ -46,6 +46,7 @@ const verification = async (req, res) => {
       return res.status(401).json({ message: 'Nomor telepon tidak ditemukan' });
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ message: "Terjadi kesalahan pada server, silahkan coba lagi" });
   }
 }
@@ -55,6 +56,7 @@ const verifyWithQuestion = async (req, res) => {
     const validate = await userService.proofUser(req.body, res);
     return validate;
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: "Terjadi kesalahan saat verifikasi pengguna" });
   }
 }

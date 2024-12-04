@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 export const adminMiddleware = async (req, res, next) => {
     const token = req.get('Authorization');
-    
+    console.log('middleware', req.path);
     if (!token) {
         return res.status(401).json({
             errors: "Unauthorized - Token is missing"
@@ -28,7 +28,9 @@ export const adminMiddleware = async (req, res, next) => {
 
     // Ambil cookie 'user-role'
     const encryptedRole = req.cookies['user-role'];
-
+    // const encryptedRole = req.cookies._parsed.get('user-role')?.value;
+    console.log('kue: ', req.cookies);
+    console.log('encrypted: ', encryptedRole);
     if (!encryptedRole) {
         return res.status(403).json({
             errors: "Forbidden - Role cookie is missing"
@@ -37,7 +39,8 @@ export const adminMiddleware = async (req, res, next) => {
 
     // Bandingkan role user yang terenkripsi dengan role Admin
     const isAdmin = await bcrypt.compare('Admin', encryptedRole);
-
+    // const isAdmin = encryptedRole === 'Admin';
+    console.log('isadmin: ', isAdmin);
     if (!isAdmin) {
         return res.status(403).json({
             errors: "Forbidden - You do not have admin access"
