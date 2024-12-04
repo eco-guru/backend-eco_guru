@@ -110,6 +110,11 @@ const getWasteType = async () => {
             select:{
                 category: true
             }
+        },
+        Pricelist: {
+          select: {
+            price
+          }
         }
       }
     });

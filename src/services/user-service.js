@@ -99,59 +99,59 @@ const getWasteCollector = async (request, response) => {
 
 const login = async (request) => {
     request = validate(loginUserValidation, request);
-
+  
     const user = await prismaClient.users.findFirst({
       where: {
         OR: [
           { username: request.usernameOrPhone },
-          { phone: request.usernameOrPhone }
-        ]
+          { phone: request.usernameOrPhone },
+        ],
       },
-      include: { Roles: true } 
+      include: { Roles: true },
     });
-
+  
     if (!user) {
-      throw new ResponseError(404, 'User not found');
+      throw new ResponseError(404, "User not found");
     }
-
+  
     const isPasswordValid = await bcrypt.compare(request.password, user.password);
     if (!isPasswordValid) {
-      throw new ResponseError(404, 'Invalid password');
+      throw new ResponseError(404, "Invalid password");
     }
-
+  
     const token = uuid().toString();
-
+  
     const updatedUser = await prismaClient.users.update({
       data: {
-        token: token
+        token: token,
       },
       where: {
-        id: user.id
+        id: user.id,
       },
-      select:{
+      select: {
         username: true,
         phone: true,
         token: true,
-        Roles:{
-            select:{
-                name: true
-            }
-        }
-      }
+        Roles: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
-
-
+  
     if (!updatedUser) {
-      throw new ResponseError(400, 'Failed to update user token');
+      throw new ResponseError(400, "Failed to update user token");
     }
-
+  
     return {
-        username: updatedUser.username,
-        phone: updatedUser.phone,
-        token: updatedUser.token,
-        role: updatedUser.Roles.name
+      id: user.id,
+      username: updatedUser.username,
+      phone: updatedUser.phone,
+      token: updatedUser.token,
+      role: updatedUser.Roles.name,
     };
-};
+  };
 
 const mobileLogin = async (request) => {
     request = validate(loginUserValidation, request);
@@ -308,6 +308,7 @@ const get = async (username) => {
   
     const user = await prismaClient.users.findMany({
       select: {
+        id: true,
         username: true,
         phone: true,
         role_id: true,
