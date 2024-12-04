@@ -113,7 +113,7 @@ const getWasteType = async () => {
         },
         Pricelist: {
           select: {
-            price
+            price: true
           }
         }
       }
@@ -125,6 +125,9 @@ const getWasteType = async () => {
         category = element.WasteCategory.category;
         element.waste_category = category;
         delete element.WasteCategory;
+        price = element.Pricelist[0].price;
+        element.price = price;
+        delete element.Pricelist;
     });
 
     return result;
