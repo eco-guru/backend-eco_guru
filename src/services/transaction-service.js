@@ -37,7 +37,19 @@ const createTransaction = async (data) => {
 };
 
 const listAllTransactions = async () => {
-    const transactions = await prismaClient.transactions.findMany();
+    const transactions = await prismaClient.transactions.findMany({
+        select: {
+            id: true,
+            transaction_date: true,
+            total: true,
+            TransactionData: {
+                select: {
+                    price: true,
+                    quantity: true,
+                }
+            }
+        },
+    });
     return transactions;
 };
   
@@ -47,6 +59,24 @@ const getTransactionById = async (id) => {
         where: {
             id,
         },
+        select: {
+            Users: {
+                select: {
+                    username: true
+                }
+            },
+            TransactionData: {
+                select: {
+                    quantity: true,
+                    price: true,
+                    WasteType: {
+                        select: {
+                            type: true
+                        }
+                    }
+                }
+            }
+        }
     });
 
     if (!transaction) {

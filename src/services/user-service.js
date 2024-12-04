@@ -425,7 +425,8 @@ const getCurrent = async (username) => {
         },
         select: {
             username: true,
-            phone: true
+            phone: true,
+            id: true
         }
     });
 
