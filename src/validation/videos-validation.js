@@ -9,11 +9,12 @@ const createVideos = Joi.object({
     url: Joi.string().min(3).max(255).required(),
     upload_date: Joi.date().required(),
     uploaded_by: Joi.string().max(100).required(),
+    categoryId: Joi.number().required(),
     isActive: Joi.boolean().default(true).optional(),
-    video_order: Joi.number().optional().default(0)
-});
-
-const UpdateVideos = Joi.object({
+    video_order: Joi.number().optional().default(0),
+  });
+  
+  const UpdateVideos = Joi.object({
     id: Joi.number().required(),
     title: Joi.string().min(3).max(100).required(),
     description: Joi.string().min(3).max(255).required(),
@@ -23,9 +24,11 @@ const UpdateVideos = Joi.object({
     url: Joi.string().min(3).max(255).required(),
     upload_date: Joi.date().required(),
     uploaded_by: Joi.string().max(100).required(),
+    categoryId: Joi.number().required(),
     isActive: Joi.boolean().default(true).optional(),
-    video_order: Joi.number().optional().default(0)
-});
+    video_order: Joi.number().optional().default(0),
+  });
+  
 
 const getAndDeleteVideos = Joi.number().required();
 
