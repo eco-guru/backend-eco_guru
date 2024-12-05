@@ -33,7 +33,6 @@ const getArticles = async () => {
   return articles;
 };
 
-// Menambahkan artikel baru
 const postArticle = async (request) => {
   request = validate(createArticles, request);
 
@@ -45,12 +44,34 @@ const postArticle = async (request) => {
     throw new ResponseError(400, "User not found");
   }
 
+  const category = await prismaClient.articleCategory.findUnique({
+    where: { id: request.categoryId },
+  });
+
+  if (!category) {
+    throw new ResponseError(400, "Category not found");
+  }
+
   const article = await prismaClient.articles.create({
-    data: request,
+    data: {
+      title: request.title,
+      content: request.content,
+      isPublished: request.isPublished,
+      created_date: request.created_date,
+      article_order: request.article_order,
+      thumbnail_url: request.thumbnail_url,
+      category: {
+        connect: { id: request.categoryId },
+      },
+      user: {
+        connect: { username: request.created_by },
+      },
+    },
   });
 
   return article;
 };
+
 
 // Memperbarui artikel berdasarkan ID
 const updateArticle = async (request) => {
@@ -64,13 +85,41 @@ const updateArticle = async (request) => {
     throw new ResponseError(404, "Article not found");
   }
 
+  if (request.created_by) {
+    const user = await prismaClient.users.findUnique({
+      where: { username: request.created_by },
+    });
+    if (!user) {
+      throw new ResponseError(400, "User not found");
+    }
+  }
+
+  if (request.categoryId) {
+    const category = await prismaClient.articleCategory.findUnique({
+      where: { id: request.categoryId },
+    });
+    if (!category) {
+      throw new ResponseError(400, "Category not found");
+    }
+  }
+
   const updatedArticle = await prismaClient.articles.update({
     where: { id: request.id },
-    data: request,
+    data: {
+      title: request.title,
+      content: request.content,
+      isPublished: request.isPublished,
+      created_by: request.created_by,
+      created_date: request.created_date,
+      article_order: request.article_order,
+      thumbnail_url: request.thumbnail_url,
+      categoryId: request.categoryId,
+    },
   });
 
   return updatedArticle;
 };
+
 
 // Menghapus artikel berdasarkan ID
 const deleteArticle = async (request) => {

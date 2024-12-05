@@ -99,8 +99,8 @@ Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0Omn
 # Create UOM
 POST http://localhost:5000/api/uom/create
 Content-Type: application/json
-Authorization: 36ee06f1-5098-4e25-a6b1-fe031805080b
-Cookie: user-role=%242b%2410%24XTJMwEj4TIMhoKyikK40pOAtgTfSdD8Hlxoo.T4.p7BOeSvYVNbDK
+Authorization: 8db2510f-6a2f-4578-8ff2-bdac6af7143b
+Cookie: user-role=%242b%2410%24f.82AAzIheFroLzJIGxlK.89CvhVfgS5zHKT4SwfwlYg1.w713tim
 
 {
   "unit": "Arang",
@@ -254,8 +254,8 @@ Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkK
 POST http://localhost:5000/api/pricelist
 Content-Type: application/json
 Accept: application/json
-Authorization: b0a36ebd-b1f2-44d3-8c84-dfcd5bf2bd1e
-Cookie: user-role=%242b%2410%24LGMRfs2bmEneJz2QeO.UwuXC56kT6kCt5j89QbIBHFpEV5LGXEeDS
+Authorization: 8db2510f-6a2f-4578-8ff2-bdac6af7143b
+Cookie: user-role=%242b%2410%24f.82AAzIheFroLzJIGxlK.89CvhVfgS5zHKT4SwfwlYg1.w713tim
 
 {
   "waste_type_id": 6,
@@ -271,12 +271,12 @@ Cookie: user-role=%242b%2410%24LGMRfs2bmEneJz2QeO.UwuXC56kT6kCt5j89QbIBHFpEV5LGX
 PUT  http://localhost:5000/api/pricelist/update/6/2
 Content-Type: application/json
 Accept: application/json
-Authorization: 36ee06f1-5098-4e25-a6b1-fe031805080b
-Cookie: user-role=%242b%2410%24XTJMwEj4TIMhoKyikK40pOAtgTfSdD8Hlxoo.T4.p7BOeSvYVNbDK
+Authorization: af29e696-bdf3-4503-b333-fe0f85ad2954
+Cookie: user-role=%242b%2410%24EmDWlMff0QKOxfQfENRTi.M9bGFm6tzzipJl8BxzNFxoUxmCzwRmy
 
 {
   "waste_type_id": 6,
-  "uom_id": 3,
+  "uom_id": 2,
   "price": 15000,
   "isActive": true,
   "start_date": "2022-01-01T00:00:00.000Z",
@@ -411,17 +411,18 @@ Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YT
 ###
 POST http://localhost:5000/api/article/create
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
+Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
 
 {
   "title": "Pengelolaan Bungkus Botol",
   "content": "Pentingnya pengelolaan Bungkus Botol.",
-  "category": "Lingkungan",
+  "categoryId": 3,
   "isPublished": true,
   "created_by": "user1",
   "created_date": "2024-11-09T03:18:03.378Z",
-  "article_order": 1
+  "article_order": 1,
+  "thumbnail_url": "https://google.com"
 }
 
 # READ Article
@@ -444,17 +445,18 @@ Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0Omn
 ###
 PUT http://localhost:5000/api/article/update/2
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
+Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
 
 {
-  "title": "Pengelolaan Bungkus Botol Coba",
+  "title": "Pengelolaan Bungkus Botol Boba",
   "content": "Pentingnya pengelolaan Bungkus Botol.",
-  "category": "Lingkungan",
+  "categoryId": 3,
   "isPublished": true,
   "created_by": "user1",
   "created_date": "2024-11-09T03:18:03.378Z",
-  "article_order": 1
+  "article_order": 1,
+  "thumbnail_url": "https://google.com"
 }
 
 # Delete Article
@@ -518,18 +520,19 @@ Cookie: user-role=%242b%2410%24KflxByPGJFbW2g4DAf9bru6ISR66iZDVFOJaXXH1eh5iLphVp
 ###
 POST http://localhost:5000/api/videos/create
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
+Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
 
 {
-  "title": "Pengelolaan Bungkus Botol",
-  "description": "Pentingnya pengelolaan Bungkus Botol.",
-  "duration": 400,
-  "format": "mp4",
+  "title": "Tutorial Daur Ulang",
+  "description": "Panduan lengkap tentang daur ulang sampah plastik.",
+  "duration": 120,
+  "format": "MP4",
   "thumbnail_url": "https://example.com/thumbnail.jpg",
   "url": "https://example.com/video.mp4",
-  "upload_date": "2024-11-09T03:18:03.378Z",
+  "upload_date": "2024-12-05T10:00:00.000Z",
   "uploaded_by": "user1",
+  "categoryId": 2,
   "isActive": true,
   "video_order": 1
 }
@@ -554,20 +557,22 @@ Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0Omn
 ###
 PUT http://localhost:5000/api/videos/update/1
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
+Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
 
 {
-  "title": "Pengelolaan Bungkus Botol",
-  "description": "Pentingnya pengelolaan Bungkus Botol.",
-  "duration": 350,
-  "format": "mp4",
-  "thumbnail_url": "https://example.com/thumbnail.jpg",
-  "url": "https://example.com/video.mp4",
-  "upload_date": "2024-11-09T03:18:03.378Z",
+  "id": 1,
+  "title": "Tutorial Daur Ulang - Updated",
+  "description": "Panduan lengkap tentang daur ulang sampah plastik - versi terbaru.",
+  "duration": 125,
+  "format": "MP4",
+  "thumbnail_url": "https://example.com/new-thumbnail.jpg",
+  "url": "https://example.com/new-video.mp4",
+  "upload_date": "2024-12-06T10:00:00.000Z",
   "uploaded_by": "user1",
+  "categoryId": 2,
   "isActive": true,
-  "video_order": 1
+  "video_order": 2
 }
 
 # Delete Article
