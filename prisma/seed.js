@@ -145,7 +145,7 @@ async function main() {
   });
 
   // Seed UOMs
-  const uoms = [{ unit: "Liter" }, { unit: "Kilogram" }];
+  const uoms = [{ unit: "Kilogram" }];
   await prisma.uOM.createMany({
     data: uoms,
   });
@@ -166,13 +166,13 @@ async function main() {
 
   // Seed Pricelist
   const pricelist = [
-    {waste_type_id: 1, uom_id: 2, price: 500, isActive: true, start_date: new Date() },
-    {waste_type_id: 2, uom_id: 2, price: 300, isActive: true, start_date: new Date() },
-    {waste_type_id: 3, uom_id: 2, price: 1000, isActive: true, start_date: new Date() },
-    {waste_type_id: 4, uom_id: 2, price: 800, isActive: true, start_date: new Date() },
-    {waste_type_id: 5, uom_id: 2, price: 600, isActive: true, start_date: new Date() },
+    {waste_type_id: 1, uom_id: 1, price: 500, isActive: true, start_date: new Date() },
+    {waste_type_id: 2, uom_id: 1, price: 300, isActive: true, start_date: new Date() },
+    {waste_type_id: 3, uom_id: 1, price: 1000, isActive: true, start_date: new Date() },
+    {waste_type_id: 4, uom_id: 1, price: 800, isActive: true, start_date: new Date() },
+    {waste_type_id: 5, uom_id: 1, price: 600, isActive: true, start_date: new Date() },
     {waste_type_id: 6, uom_id: 1, price: 5000, isActive: true, start_date: new Date() },
-    {waste_type_id: 7, uom_id: 2, price: 1500, isActive: true, start_date: new Date() },
+    {waste_type_id: 7, uom_id: 1, price: 1500, isActive: true, start_date: new Date() },
   ];
   await prisma.pricelist.createMany({
     data: pricelist,

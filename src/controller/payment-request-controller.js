@@ -27,6 +27,7 @@ const getMobilePayerById = async (req, res, next) => {
 const giveConfirmation = async (req, res) => {
   try {
     const data = jwt.verify(req.params.token, process.env.SECRET_KEY);
+    console.log(data.id);
     const response = await paymentRequestService.giveConfirmationService(req.body, data.id, res);
     return response;
   } catch (error) {

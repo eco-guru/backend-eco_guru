@@ -1,13 +1,16 @@
 import transactionService from '../services/transaction-service.js';
 import transactionDataService from '../services/transaction-data-service.js';
 import userService from '../services/user-service.js';
+import { prismaClient } from '../application/database.js';
 
 const createTransaction = async (req, res, next) => {
   try {
     const request = req.body;
-    console.log(request);
     const result = await transactionService.createTransaction(request);
-    return res.status(201).json({
+    const user = await prismaClient.users.findUnique({ where: { id: result.user_id }, select: { balance: true }});
+    const updateBalance = user.balance + result.total;
+    await userService.updateBalance({ user_id: result.user_id, total: updateBalance });
+    return res.status(201).json({ 
         message: 'Transaction created successfully',
         data: result
       });

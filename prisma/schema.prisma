@@ -219,7 +219,6 @@ model PaymentRequest {
   user  Users @relation("UserPaymentRequests", fields: [user_id], references: [id])
   payer Users? @relation("UserPaymentsToPay", fields: [payment_by], references: [id])
 
-  @@unique([user_id, payment_by])
 }
 
 model SecretQuestion {
