@@ -14,7 +14,7 @@ const createVideos = Joi.object({
     video_order: Joi.number().optional().default(0),
   });
   
-  const UpdateVideos = Joi.object({
+  const UpdatedVideos = Joi.object({
     id: Joi.number().required(),
     title: Joi.string().min(3).max(100).required(),
     description: Joi.string().min(3).max(255).required(),
@@ -34,6 +34,6 @@ const getAndDeleteVideos = Joi.number().required();
 
 export {
     createVideos,
-    UpdateVideos,
+    UpdatedVideos,
     getAndDeleteVideos
 }

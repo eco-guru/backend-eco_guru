@@ -2,7 +2,7 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { validate } from "../validation/validation.js";
 import {
-  UpdateVideos,
+  UpdatedVideos,
   createVideos,
   getAndDeleteVideos,
 } from "../validation/videos-validation.js";
@@ -77,7 +77,7 @@ const postVideos = async (request) => {
 
 
 const updateVideos = async (request) => {
-  request = validate(updateVideos, request);
+  request = validate(UpdatedVideos, request);
 
   const video = await prismaClient.videos.findUnique({
     where: { id: request.id },

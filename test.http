@@ -541,8 +541,8 @@ Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2F
 ###
 GET http://localhost:5000/api/videos/list
 Content-Type: application/json
-Authorization: a841e297-d32a-478b-a439-bd34bd435e3e
-Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0OmnPqgXoi
+Authorization: f73b25a2-ec35-4ff8-b245-fdca88ae3bf7
+Cookie: user-role=%242b%2410%24bfQ5HzSkIIRrvR%2F.E0jKMO.qw5JuLqOe1GXSUwq7XeE37QY7FfW4S
 
 
 # Get One Videos
@@ -557,11 +557,10 @@ Cookie: user-role=%242b%2410%24R6CgJPQ6mCKaYRKgFr7%2Fue9EEsovp0bYU237TFr723N0Omn
 ###
 PUT http://localhost:5000/api/videos/update/1
 Content-Type: application/json
-Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
-Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
+Authorization: f73b25a2-ec35-4ff8-b245-fdca88ae3bf7
+Cookie: user-role=%242b%2410%24bfQ5HzSkIIRrvR%2F.E0jKMO.qw5JuLqOe1GXSUwq7XeE37QY7FfW4S
 
 {
-  "id": 1,
   "title": "Tutorial Daur Ulang - Updated",
   "description": "Panduan lengkap tentang daur ulang sampah plastik - versi terbaru.",
   "duration": 125,
