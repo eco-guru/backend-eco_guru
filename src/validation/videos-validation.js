@@ -17,7 +17,7 @@ const createVideos = Joi.object({
   const UpdatedVideos = Joi.object({
     id: Joi.number().required(),
     title: Joi.string().min(3).max(100).required(),
-    description: Joi.string().min(3).max(255).required(),
+    description: Joi.string().min(3).required(),
     duration: Joi.number().required(),
     format: Joi.string().min(3).max(255).required(),
     thumbnail_url: Joi.string().min(3).max(255).required(),

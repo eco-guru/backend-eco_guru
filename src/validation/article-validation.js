@@ -14,7 +14,7 @@ const createArticles = Joi.object({
 const UpdateArticles = Joi.object({
     id: Joi.number().required(),
     title: Joi.string().min(3).max(100).required(),
-    content: Joi.string().min(3).max(100).required(),
+    content: Joi.string().min(3).required(),
     isPublished: Joi.boolean().optional(),
     created_by: Joi.string().max(100).optional(),
     created_date: Joi.date().optional(),
