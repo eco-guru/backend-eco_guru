@@ -27,7 +27,6 @@ const getMobilePayerById = async (req, res, next) => {
 const giveConfirmation = async (req, res) => {
   try {
     const data = jwt.verify(req.params.token, process.env.SECRET_KEY);
-    console.log(data.id);
     const response = await paymentRequestService.giveConfirmationService(req.body, data.id, res);
     return response;
   } catch (error) {
@@ -37,8 +36,9 @@ const giveConfirmation = async (req, res) => {
 
 const accept = async (req, res) => {
   try {
-    const response = await paymentRequestService.acceptPayment(req.body, res);
-    return response;
+    console.log("test");
+    const response = await paymentRequestService.acceptPayment(req.body);
+    return res.status(response.status).json(response);
   } catch (e) {
     return res.status(500).json({ message: "Pencarian gagal! Pastikan Anda tidak melebihi batas saldo yang anda miliki" });
   }
@@ -79,9 +79,11 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const params = req.params.paymentRequestId;
-    const request = { ...req.body, payment_request_id: params };
-    const result = await paymentRequestService.updatePaymentRequestById(request);
-    res.status(200).json({
+    const { user_id } = req.body;
+    const request = { ...req.body, payment_request_id: Number(params), user_id };
+    console.log("request: ", request);
+    const result = await paymentRequestService.giveConfirmationService(request, user_id);
+    res.status(result.status).json({
       data: result,
     });
   } catch (error) {

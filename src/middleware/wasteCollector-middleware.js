@@ -33,7 +33,7 @@ export const wasteCollectorMiddleware = async (req, res, next) => {
         }).end();
     }
 
-    const isWasteCollector = await bcrypt.compare('Waste Collector', encryptedRole);
+    const isWasteCollector = await bcrypt.compare('Waste collector', encryptedRole);
 
     if (!isWasteCollector) {
         return res.status(403).json({

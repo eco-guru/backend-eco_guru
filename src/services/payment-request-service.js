@@ -67,6 +67,7 @@ const giveConfirmationService = async (request, paymentBy, res) => {
     }
   });
 
+  
   const userBalanceData = await prismaClient.users.findFirst({
     where: {
       id: previousData.user_id
@@ -76,10 +77,13 @@ const giveConfirmationService = async (request, paymentBy, res) => {
     }
   });
 
+  console.log(previousData);
   if(request.amount > userBalanceData.balance) {
-    return res.status(400).json({ message: "Pencairan gagal! Saldo yang dimiliki pengguna tidak cukup dengan jumlah yang diajukan" });
+    if(res) return res.status(400).json({ message: "Pencairan gagal! Saldo yang dimiliki pengguna tidak cukup dengan jumlah yang diajukan" });
+    else return { message: "Pencairan gagal! Saldo yang dimiliki pengguna tidak cukup dengan jumlah yang diajukan", status: 400 }
   } else if(previousData.confirmation_status !== "Sedang_diproses") {
-    return res.status(400).json({ message: "Pencairan gagal! Pencairan telah diajukan" });
+    if(res) return res.status(400).json({ message: "Pencairan gagal! Pencairan telah diajukan", status: 400 });
+    else return { message: "Pencairan gagal! Pencairan telah diajukan",  status: 400 }
   }
 
   const data = await prismaClient.paymentRequest.update({
@@ -94,9 +98,8 @@ const giveConfirmationService = async (request, paymentBy, res) => {
     }
   });
 
-  return res.status(200).json({
-    message: "Konfirmasi Pencairan saldo sudah dikirimkan!",
-  }); 
+  if(res) return res.status(200).json({ message: "Konfirmasi Pencairan saldo sudah dikirimkan!" });
+  else return { message: "Konfirmasi Pencairan saldo sudah dikirimkan!", status: 200 };
 }
 
 const acceptPayment = async (requestBody, response) => {
@@ -131,7 +134,8 @@ const acceptPayment = async (requestBody, response) => {
     fs.writeFile(filePath, buffer, (err) => {
       if (err) {
         console.error("Gagal menyimpan gambar:", err);
-        return response.status(500).json({ message: "Gagal menyimpan gambar" });
+        if(response) return response.status(500).json({ message: "Gagal menyimpan gambar" });
+        else return { status: 500, message: "Gagal menyimpan gambar"};
       }
     });
   
@@ -154,9 +158,10 @@ const acceptPayment = async (requestBody, response) => {
       data: { balance: disbursementData.user.balance + disbursementData.accepted_amount }
     });
   
-    return response.status(200).json({
+    if(response) return response.status(200).json({
       message: "Pencairan berhasil dilakukan! Saldo anda tersisa "+(disbursementData.user.balance - disbursementData.accepted_amount),
     });
+    else return { status: 200, message: "Pencairan berhasil dilakukan! Saldo anda tersisa "+(disbursementData.user.balance - disbursementData.accepted_amount) };
   } catch (e) {
     console.log(e);
   }
