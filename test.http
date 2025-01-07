@@ -12,7 +12,7 @@ Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
 Cookie: user-role=%242b%2410%24o9fIinqE.W1zZCG86gnY1Od5cnnvJJh66oKLC0uXAD0CBzHYjo.B6
 
 ### Register
-POST http://localhost:5000/api/users
+POST http://localhost:5004/api/users
 Content-Type: application/json
 Accept: application/json
 Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
@@ -21,17 +21,18 @@ Authorization: 6bcd2db7-80c4-4a8e-94f4-26683dd8583a
 {
   "username" : "aomrizky",
   "password" : "rahasia",
-  "phone" : "08748399200"
+  "phone" : "08748399200",
+  "role_id": 4
 }
 
 ### Login
 
-POST http://localhost:5000/api/users/login
+POST http://localhost:5004/api/users/login
 Content-Type: application/json
 Accept: application/json
 
 {
-  "usernameOrPhone" : "user1",
+  "usernameOrPhone" : "john_doe",
   "password" : "password123"
 }
 
@@ -244,10 +245,10 @@ Cookie: user-role=%242b%2410%24440VTKOn%2Fz1f0SipYF6oReR08wikDiCbb0PTBS3ET3TcQjg
 
 ### GET Price List
 
-GET http://localhost:5000/api/pricelist/get
+GET http://localhost:5004/api/pricelist/get
 Content-Type: application/json
-Authorization: 270c565b-8502-4f7c-a4fa-3bba8e296343
-Cookie: user-role=%242b%2410%24aOaoUVRhqfZS5zrkOjqCWOjapE%2FKakLET0%2FhB2GkSMNkKl4mcC90e
+Authorization: e2e3afdc-b007-4585-b59f-63144289e4f0
+Cookie: user-role=$2b$10$bVCIv6x/4CqCbxxh8fRMS.92x/MD2uA7jEbkqqga8Qr.kx58ulPBe
 
 
 ### CREATE Price List
@@ -409,10 +410,10 @@ Cookie: user-role=%242b%2410%24H7%2FZfgnzfNnlBvpKr7W9p.GeKJd6%2FxVJZ2GxbHWfJW4YT
 
 # CREATE Article
 ###
-POST http://localhost:5000/api/article/create
+POST http://localhost:5004/api/article/create
 Content-Type: application/json
-Authorization: 5753023c-b4f4-4c18-abf9-34d1790de9f0
-Cookie: user-role=%242b%2410%247izigPjvK0J89DG%2Fo%2F8cN.hLNJnCyyGHbkmqv%2Fmr%2FH8xjLHQmFATK
+Authorization: 31087e95-a0ae-469e-abbc-ad1facbfa570
+Cookie: user-role=%242b%2410%24iiTBwn.TtA3GHjFhrB24Xe9xU7kRGh5tPnJUP5s4CiUUglx7aoYp2
 
 {
   "title": "Pengelolaan Bungkus Botol",
@@ -857,7 +858,7 @@ Authorization: 95d7550b-a24f-4a14-8fc6-039bb6dfed8d
 Cookie: user-role=%242b%2410%24h7vo8mZZKwbMXSdT30q7v.cOgfLHukaC6YYY4ZAYox4VrKsbiRTO2
 
 ### Get Dashboard Data with Custom Date Range
-GET http://localhost:5000/api/dashboard?startDate=2024-01-01&endDate=2024-11-30
+GET http://localhost:5004/api/dashboard?startDate=2024-01-01&endDate=2024-11-30
 Content-Type: application/json
-Authorization: 95d7550b-a24f-4a14-8fc6-039bb6dfed8d
-Cookie: user-role=%242b%2410%24h7vo8mZZKwbMXSdT30q7v.cOgfLHukaC6YYY4ZAYox4VrKsbiRTO2
+Authorization: e2e3afdc-b007-4585-b59f-63144289e4f0
+Cookie: user-role=%242b%2410%24bVCIv6x%2F4CqCbxxh8fRMS.92x%2FMD2uA7jEbkqqga8Qr.kx58ulPBe

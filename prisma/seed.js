@@ -5,8 +5,14 @@ import {v4 as uuid} from "uuid";
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('password123', 10);
-  // Seed Roles
+  const salt = process.env.HASH_SALT;
+  if (!salt) {
+      throw new Error("HASH_SALT is not set in environment variables");
+  }
+
+  const saltedPassword = 'password123' + salt;
+  const hashedPassword = await bcrypt.hash(saltedPassword, 10);
+
   const adminRole = await prisma.roles.createMany({
     data: [
       {

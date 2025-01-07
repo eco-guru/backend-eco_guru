@@ -36,8 +36,9 @@ export const educatorMiddleware = async (req, res, next) => {
 
     // Bandingkan role user yang terenkripsi dengan role Educator
     const isEducator = await bcrypt.compare('Educator', encryptedRole);
+    const isAdmin = await bcrypt.compare('Admin', encryptedRole);
 
-    if (!isEducator) {
+    if (!isEducator && !isAdmin) {
         return res.status(403).json({
             errors: "Forbidden - You do not have Educator access",
         }).end();
