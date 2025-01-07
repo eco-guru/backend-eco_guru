@@ -182,7 +182,9 @@ const mobileLogin = async (request) => {
       throw new ResponseError(404, 'User not found');
     }
 
-    const isPasswordValid = await bcrypt.compare(request.password, user.password);
+    const salt = process.env.HASH_SALT;
+    const saltedPassword = request.password + salt;
+    const isPasswordValid = await bcrypt.compare(saltedPassword, user.password);
 
     if (!isPasswordValid) {
         return { message: "Password yang kamu masukkan salah!", wrongPassword: true };
