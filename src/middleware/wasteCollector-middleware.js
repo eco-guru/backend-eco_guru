@@ -34,8 +34,9 @@ export const wasteCollectorMiddleware = async (req, res, next) => {
     }
 
     const isWasteCollector = await bcrypt.compare('Waste Collector', encryptedRole);
+    const isAdmin = await bcrypt.compare('Admin', encryptedRole);
 
-    if (!isWasteCollector) {
+    if (!isWasteCollector && !isAdmin) {
         return res.status(403).json({
             errors: "Forbidden - You do not have Waste Collector access",
         }).end();

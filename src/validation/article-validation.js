@@ -1,8 +1,8 @@
 import Joi from "joi";
 
 const createArticles = Joi.object({
-    title: Joi.string().min(3).max(100).required(),
-    content: Joi.string().min(3).max(100).required(),
+    title: Joi.string().min(3).required(),
+    content: Joi.string().min(3).required(),
     categoryId: Joi.number().required(),
     isPublished: Joi.boolean().optional().default(false),
     article_order: Joi.number().optional().default(0),
@@ -13,8 +13,8 @@ const createArticles = Joi.object({
 
 const UpdateArticles = Joi.object({
     id: Joi.number().required(),
-    title: Joi.string().min(3).max(100).required(),
-    content: Joi.string().min(3).max(100).required(),
+    title: Joi.string().min(3).required(),
+    content: Joi.string().min(3).required(),
     isPublished: Joi.boolean().optional(),
     created_by: Joi.string().max(100).optional(),
     created_date: Joi.date().optional(),

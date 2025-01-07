@@ -40,7 +40,13 @@ const register = async (request) => {
         throw new ResponseError(400, "Username Or Phone already exists");
     }
 
-    user.password = await bcrypt.hash(user.password, 10);
+    const salt = process.env.HASH_SALT;
+    if (!salt) {
+        throw new Error("HASH_SALT is not set in environment variables");
+    }
+
+    const saltedPassword = user.password + salt;
+    user.password = await bcrypt.hash(saltedPassword, 10);
 
     return prismaClient.users.create({
         data: {
@@ -60,7 +66,8 @@ const register = async (request) => {
             phone: true
         }
     });
-}
+};
+
 
 const getWasteCollector = async (request, response) => {
     const data = jwt.verify(request.token, process.env.SECRET_KEY);
@@ -99,59 +106,67 @@ const getWasteCollector = async (request, response) => {
 
 const login = async (request) => {
     request = validate(loginUserValidation, request);
-  
+
+    const salt = process.env.HASH_SALT;
+    if (!salt) {
+        throw new Error("HASH_SALT is not set in environment variables");
+    }
+
     const user = await prismaClient.users.findFirst({
-      where: {
-        OR: [
-          { username: request.usernameOrPhone },
-          { phone: request.usernameOrPhone },
-        ],
-      },
-      include: { Roles: true },
-    });
-  
-    if (!user) {
-      throw new ResponseError(404, "User not found");
-    }
-  
-    const isPasswordValid = await bcrypt.compare(request.password, user.password);
-    if (!isPasswordValid) {
-      throw new ResponseError(404, "Invalid password");
-    }
-  
-    const token = uuid().toString();
-  
-    const updatedUser = await prismaClient.users.update({
-      data: {
-        token: token,
-      },
-      where: {
-        id: user.id,
-      },
-      select: {
-        username: true,
-        phone: true,
-        token: true,
-        Roles: {
-          select: {
-            name: true,
-          },
+        where: {
+            OR: [
+                { username: request.usernameOrPhone },
+                { phone: request.usernameOrPhone },
+            ],
         },
-      },
+        include: { Roles: true },
     });
-  
-    if (!updatedUser) {
-      throw new ResponseError(400, "Failed to update user token");
+
+    if (!user) {
+        throw new ResponseError(404, "User not found");
     }
-  
+
+    const saltedPassword = request.password + salt;
+
+    const isPasswordValid = await bcrypt.compare(saltedPassword, user.password);
+    if (!isPasswordValid) {
+        throw new ResponseError(404, "Invalid password");
+    }
+
+    const token = uuid().toString();
+
+    const updatedUser = await prismaClient.users.update({
+        data: {
+            token: token,
+        },
+        where: {
+            id: user.id,
+        },
+        select: {
+            username: true,
+            phone: true,
+            token: true,
+            Roles: {
+                select: {
+                    name: true,
+                },
+            },
+        },
+    });
+
+    if (!updatedUser) {
+        throw new ResponseError(400, "Failed to update user token");
+    }
+
     return {
-      id: user.id,
-      username: updatedUser.username,
-      phone: updatedUser.phone,
-      token: updatedUser.token,
-      role: updatedUser.Roles.name,
+        id: user.id,
+        username: updatedUser.username,
+        phone: updatedUser.phone,
+        token: updatedUser.token,
+        role: updatedUser.Roles.name,
     };
-  };
+};
+
 
 const mobileLogin = async (request) => {
     request = validate(loginUserValidation, request);
