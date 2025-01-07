@@ -21,7 +21,7 @@ const adminRouter = new express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// adminRouter.use(adminMiddleware);
+adminRouter.use(adminMiddleware);
 
 adminRouter.get('/api/admin/users', userController.get);
 adminRouter.get('/api/admin/users/get-one', userController.getUserByUsername);
@@ -90,7 +90,6 @@ adminRouter.delete('/api/log-videos/delete/:video_id/:accessed_by', logVideosCon
 
 adminRouter.get('/api/count/articles/:articleId/:option', logArticleController.countArticles);
 
-
 adminRouter.get("/api/payment-requests", paymentRequestController.get);
 adminRouter.get("/api/payment-requests/:paymentRequestId", paymentRequestController.getById);
 adminRouter.post("/api/payment-requests", paymentRequestController.create);
@@ -104,6 +103,7 @@ adminRouter.put('/api/waste-pickups/:id', wastePickupController.updateWastePicku
 adminRouter.delete('/api/waste-pickups/:id', wastePickupController.deleteWastePickup);
 
 adminRouter.get('/api/dashboard', dashboardController.DashboardController);
+adminRouter.get('/api/content', dashboardController.ContentController)
 
 
 export {

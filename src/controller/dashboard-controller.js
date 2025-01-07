@@ -17,6 +17,24 @@ const DashboardController= async (req, res) => {
     }
 }
 
-export default{
-    DashboardController
+const ContentController = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const dashboardData = await dashboardService.getContentData(startDate, endDate);
+    
+    res.status(200).json({
+      status: 'success',
+      data: dashboardData
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+}
+
+export default {
+    DashboardController,
+    ContentController
 };

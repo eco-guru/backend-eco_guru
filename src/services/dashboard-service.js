@@ -196,6 +196,156 @@ const getDashboardData = async (
   }
 };
 
+const getTotalArticleViews = async (startDate, endDate) => {
+  const result = await prismaClient.logArticles.count({});
+  return bigIntToNumber(result) || 0;
+}
+
+const getTotalArticle = async () => {
+  const result = await prismaClient.articles.count({});
+  return bigIntToNumber(result) || 0;
+}
+
+const getTotalVideoViews = async (startDate, endDate) => {
+  const result = await prismaClient.logVideos.count({});
+  return bigIntToNumber(result) || 0;
+}
+
+const getTotalVideos = async () => {
+  const result = await prismaClient.videos.count({});
+  return bigIntToNumber(result) || 0;
+}
+
+const getPopularVideo = async () => {
+  const result = await prismaClient.videos.findMany({
+    select: {
+      thumbnail_url: true,
+      title: true,
+      _count: {
+        select: {
+          LogVideos: true
+        }
+      }
+    }
+  });
+  
+  const data = result.sort((a, b) => b._count.LogVideos - a._count.LogVideos)[0];
+
+  return {
+    title: data.title,
+    thumbnail_url: data.thumbnail_url,
+    views: data._count.LogVideos
+  };
+}
+
+const getPopularArticle = async () => {
+  const result = await prismaClient.articles.findMany({
+    select: {
+      thumbnail_url: true,
+      title: true, 
+      _count: {
+        select: {
+          LogArticles: true
+        }
+      }
+    }
+  });
+  
+  const data = result.sort((a, b) => b._count.LogArticles - a._count.LogArticles)[0];
+
+  return {
+    title: data.title,
+    thumbnail_url: data.thumbnail_url,
+    views: data._count.LogArticles
+  };
+}
+
+const getFluctuationContent = async () => {
+
+  const articles = await prismaClient.articles.findMany({
+    select: {
+      created_date: true,
+      _count: {
+        select: {
+          LogArticles: true
+        }
+      }
+    }
+  });
+
+  const videos = await prismaClient.videos.findMany({
+    select: {
+      upload_date: true,
+      _count: {
+        select: {
+          LogVideos: true
+        }
+      }
+    }
+  });
+
+  const data = [
+    ...articles.map(value => ({
+      created_date: value.created_date,
+      views: value._count.LogArticles
+    })), 
+    ...videos.map(value => ({
+      created_date: value.upload_date,
+      views: value._count.LogVideos
+    }))
+  ];
+
+  const result = data.reduce((result, item) => {
+    const month = item.created_date.toISOString().slice(0, 7);
+    result[month] = result[month] || { views: 0 };
+    result[month].views += item.views;
+    return result;
+  }, {});
+
+  console.log("result: ", result);
+
+  return result;
+}
+
+const getContentData = async (
+  startDate = new Date(new Date().getFullYear(), 0, 1),
+  endDate = new Date()
+) => {
+  const request = validate(dashboardSchema, { startDate, endDate });
+  try {
+    const [
+      totalViewsArticle,
+      totalArticle,
+      totalViewsVideo,
+      totalVideo,
+      popularVideo,
+      popularArticle,
+      fluctuationContent,
+    ] = await Promise.all([
+      getTotalArticleViews(),
+      getTotalArticle(),
+      getTotalVideoViews(),
+      getTotalVideos(),
+      getPopularVideo(),
+      getPopularArticle(),
+      getFluctuationContent()
+    ]);
+
+    return {
+      totalViewersArticles: totalViewsArticle,
+      totalArticle: totalArticle,
+      totalViewsVideo: totalViewsVideo,
+      totalVideo: totalVideo,
+      popularVideo: popularVideo,
+      popularArticle: popularArticle,
+      fluctuationContent: fluctuationContent
+    };
+  } catch (error) {
+    throw new ResponseError(500, `Error getting content data: ${error.message}`);
+  }
+}
+
 export default {
   getDashboardData,
+  getContentData
 };
