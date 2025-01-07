@@ -14,12 +14,22 @@ const getArticles = async () => {
       id: true,
       title: true,
       content: true,
-      categoryId: true,
+      category: {
+        select: {
+          category: true
+        }
+      },
       isPublished: true,
       created_by: true,
       created_date: true,
       article_order: true,
       thumbnail_url: true,
+      article_order: true,
+      _count: {
+        select: {
+          LogArticles: true,
+        },
+      },  
     },
     where: {
       isPublished: true,
@@ -30,7 +40,11 @@ const getArticles = async () => {
     throw new ResponseError(404, "Articles not found");
   }
 
-  return articles;
+  return articles.map(value => ({
+    ...value,
+    views: value._count.LogArticles,
+    category: value.category.category
+  })).map(({_count, ...rest}) => rest);
 };
 
 const postArticle = async (request) => {
@@ -157,6 +171,7 @@ const getOneArticle = async (request) => {
       title: true,
       content: true,
       category: true,
+      thumbnail_url: true, 
       isPublished: true,
       created_by: true,
       created_date: true,

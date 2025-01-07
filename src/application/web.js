@@ -18,15 +18,15 @@ export const web = express.Router();
 
 // Basic middleware
 web.use(cookieParser());
-web.use(express.json({ limit: '50mb' }));
+web.use(express.json({ limit: '100mb' }));
 
 // Static file serving
 web.use('/storage/photoProfile', express.static('storage/photoProfile'));
 web.use('/storage/proofVerificationPicture', express.static('storage/proofVerificationPicture'));
 
 // Body parser middleware
-web.use(bodyParser.json({ limit: '30mb' }));
-web.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+web.use(bodyParser.json({ limit: '100mb' }));
+web.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 // Mobile routes
 web.use(authMobileRouter);

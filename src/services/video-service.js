@@ -22,7 +22,17 @@ const getVideos = async () => {
       uploaded_by: true,
       isActive: true,
       video_order: true,
-      categoryId: true
+      categoryId: true,
+      category: {
+        select: {
+          category: true,
+        },
+      },
+      _count: {
+        select: {
+          LogVideos: true,
+        },
+      },
     },
   });
 
@@ -30,7 +40,11 @@ const getVideos = async () => {
     throw new ResponseError(404, "Videos not found");
   }
 
-  return videos;
+  return videos.map(value => ({ 
+    ...value, 
+    category: value.category.category,
+    views: value._count.LogVideos
+  })).map(({_count, ...rest}) => rest);
 };
 
 const postVideos = async (request) => {
@@ -77,6 +91,7 @@ const postVideos = async (request) => {
 
 
 const updateVideos = async (request) => {
+
   request = validate(UpdatedVideos, request);
 
   const video = await prismaClient.videos.findUnique({

@@ -18,6 +18,8 @@ collectorRouter.get("/api/payment-requests/:paymentRequestId", paymentRequestCon
 collectorRouter.post("/api/payment-requests", paymentRequestController.create);
 collectorRouter.put("/api/payment-requests/:paymentRequestId", paymentRequestController.update);
 collectorRouter.delete("/api/payment-requests/:paymentRequestId", paymentRequestController.remove);
+collectorRouter.put('/api/payment-requests/accept/:paymentRequestId', paymentRequestController.accept);
+
 
 collectorRouter.get('/api/waste-pickups', wastePickupController.getAllWastePickups);
 collectorRouter.get('/api/waste-pickups/:id', wastePickupController.getOneWastePickup);
