@@ -346,7 +346,10 @@ const deleteTransaction = async (request) => {
     });
 
     if (transactionData.length > 0) {
-        throw new ResponseError(409, 'Cannot delete transaction with associated transaction data');
+        await prismaClient.transactionData.deleteMany({
+            where: { transaction_id: request }
+        });
+        // throw new ResponseError(409, 'Cannot delete transaction with associated transaction data');
     }
 
     const deletedTransaction = await prismaClient.transactions.delete({
