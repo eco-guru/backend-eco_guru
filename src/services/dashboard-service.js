@@ -260,6 +260,50 @@ const getPopularArticle = async () => {
   };
 }
 
+const getNewestArticle = async () => {
+  const result = await prismaClient.articles.findFirst({
+    orderBy: {
+      created_date: 'desc'
+    },
+    select: {
+      thumbnail_url: true, 
+      title: true,
+      _count: {
+        select: {
+          LogArticles: true
+        }
+      }
+    }
+  });
+  
+  const { thumbnail_url, title } = result;
+  const views = result._count.LogArticles;
+  
+  return { thumbnail_url, title, views };
+}
+
+const getNewestVideo = async () => {
+  const result = await prismaClient.videos.findFirst({
+    orderBy: {
+      upload_date: 'desc'
+    },
+    select: {
+      thumbnail_url: true, 
+      title: true,
+      _count: {
+        select: {
+          LogVideos: true
+        }
+      }
+    }
+  });
+
+  const { thumbnail_url, title } = result;
+  const views = result._count.LogVideos;
+  
+  return { thumbnail_url, title, views };
+}
+
 const getFluctuationContent = async () => {
 
   const articles = await prismaClient.articles.findMany({
@@ -302,8 +346,6 @@ const getFluctuationContent = async () => {
     return result;
   }, {});
 
-  console.log("result: ", result);
-
   return result;
 }
 
@@ -321,6 +363,8 @@ const getContentData = async (
       popularVideo,
       popularArticle,
       fluctuationContent,
+      newestArticle,
+      newestVideo
     ] = await Promise.all([
       getTotalArticleViews(),
       getTotalArticle(),
@@ -328,7 +372,9 @@ const getContentData = async (
       getTotalVideos(),
       getPopularVideo(),
       getPopularArticle(),
-      getFluctuationContent()
+      getFluctuationContent(),
+      getNewestArticle(),
+      getNewestVideo(),
     ]);
 
     return {
@@ -338,8 +384,11 @@ const getContentData = async (
       totalVideo: totalVideo,
       popularVideo: popularVideo,
       popularArticle: popularArticle,
-      fluctuationContent: fluctuationContent
+      fluctuationContent: fluctuationContent,
+      newestVideo: newestVideo,
+      newestArticle: newestArticle
     };
+
   } catch (error) {
     throw new ResponseError(500, `Error getting content data: ${error.message}`);
   }

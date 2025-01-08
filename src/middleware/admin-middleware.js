@@ -39,9 +39,11 @@ export const adminMiddleware = async (req, res, next) => {
 
     // Bandingkan role user yang terenkripsi dengan role Admin
     const isAdmin = await bcrypt.compare('Admin', encryptedRole);
+    const isWasteCollector = await bcrypt.compare('Waste collector', encryptedRole);
+    const isEducator = await bcrypt.compare('Educator', encryptedRole);
     // const isAdmin = encryptedRole === 'Admin';
     console.log('isadmin: ', isAdmin);
-    if (!isAdmin) {
+    if (!isAdmin && !isWasteCollector && !isEducator) {
         return res.status(403).json({
             errors: "Forbidden - You do not have admin access"
         }).end();

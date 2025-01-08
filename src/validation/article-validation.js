@@ -8,7 +8,7 @@ const createArticles = Joi.object({
     article_order: Joi.number().optional().default(0),
     created_by: Joi.string().max(100).required(),
     created_date: Joi.date().required(),
-    thumbnail_url: Joi.string().min(3).max(255).required()
+    thumbnail_url: Joi.string().min(3).required()
 });
 
 const UpdateArticles = Joi.object({

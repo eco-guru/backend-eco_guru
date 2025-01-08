@@ -27,6 +27,7 @@ collectorRouter.post('/api/waste-pickups', wastePickupController.createWastePick
 collectorRouter.put('/api/waste-pickups/:id', wastePickupController.updateWastePickup);
 collectorRouter.delete('/api/waste-pickups/:id', wastePickupController.deleteWastePickup);
 
+
 export {
     collectorRouter
 }

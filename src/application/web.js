@@ -37,9 +37,9 @@ web.use(videoMobileRouter);
 // Web routes
 web.use(publicRouter);
 web.use(userRouter);
-web.use(educatorRouter);
-web.use(collectorRouter);
 web.use(adminRouter);
+web.use(collectorRouter);
+web.use(educatorRouter);
 
 // Error middleware harus selalu di akhir
 web.use(errorMiddleware);
