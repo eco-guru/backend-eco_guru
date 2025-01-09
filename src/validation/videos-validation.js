@@ -2,11 +2,11 @@ import Joi from "joi";
 
 const createVideos = Joi.object({
     title: Joi.string().min(3).max(100).required(),
-    description: Joi.string().min(3).max(255).required(),
+    description: Joi.string().min(3).required(),
     duration: Joi.number().required(),
     format: Joi.string().min(3).max(255).required(),
     thumbnail_url: Joi.string().min(3).max(255).required(),
-    url: Joi.string().min(3).max(255).required(),
+    url: Joi.string().min(3).required(),
     upload_date: Joi.date().required(),
     uploaded_by: Joi.string().max(100).required(),
     categoryId: Joi.number().required(),
