@@ -7,7 +7,6 @@ import { promises as fs } from 'fs';
 
 const register = async (req, res) => {
     try {
-        console.log(req.body);
         const result = await userService.register(req.body);
         return res.status(200).json({
             data: result,
@@ -121,7 +120,7 @@ const getUserProfile = async (req, res) => {
       message: "Profil pengguna berhasil diambil",
       data: {
         username: user.username,
-        phone: user.phone,
+        email: user.email,
         profile_picture: user.profile_picture
       }
     })

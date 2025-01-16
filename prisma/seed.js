@@ -43,7 +43,7 @@ async function main() {
     data: {
       username: "user1",
       password: hashedPassword,
-      phone: "081234567890",
+      email: "user1@gmail.com",
       token: uuid().toString(),
       role_id: 2,
     },
@@ -53,7 +53,7 @@ async function main() {
       data: {
         username: "john_doe",
         password: hashedPassword,
-        phone: "081234567891",
+        email: "john_doe@gmail.com",
         token: uuid().toString(),
         role_id: 3
       },
@@ -63,7 +63,7 @@ async function main() {
       data: {
         username: "jane_smith",
         password: hashedPassword,
-        phone: "081234567892",
+        email: "jane_smith@gmail.com",
         token: uuid().toString(),
         role_id: 4
       },
@@ -72,7 +72,7 @@ async function main() {
       data: {
         username: "bob_johnson",
         password: hashedPassword,
-        phone: "081234567893",
+        email: "bob_johnson@gmail.com",
         token: uuid().toString(),
         role_id: 1
       },
@@ -83,7 +83,7 @@ async function main() {
       data: {
         username: "alice_brown",
         password: hashedPassword,
-        phone: "081234567894",
+        email: "alice_brown@gmail.com",
         token: uuid().toString(),
         role_id: 2
       },

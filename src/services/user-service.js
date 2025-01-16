@@ -30,14 +30,14 @@ const register = async (request) => {
     const countUser = await prismaClient.users.count({
         where: {
             OR: [
-                { phone: user.phone },
+                { email: user.email },
                 { username: user.username }
             ]
         }
     });
 
     if (countUser === 1) {
-        throw new ResponseError(400, "Username Or Phone already exists");
+        throw new ResponseError(400, "Username Or Email already exists");
     }
 
     const salt = process.env.HASH_SALT;
@@ -52,7 +52,7 @@ const register = async (request) => {
         data: {
             username: user.username,
             password: user.password,
-            phone: user.phone,
+            email: user.email,
             role_id: user.role_id,
             answers: {
                 create: {
@@ -63,7 +63,7 @@ const register = async (request) => {
         },
         select: {
             username: true,
-            phone: true
+            email: true
         }
     });
 };
@@ -201,9 +201,10 @@ const mobileLogin = async (request) => {
 
 const verification = async (request) => {
     request = validate(verificationUserValidation, request);
+    console.log(request);
     const questionText = await prismaClient.users.findFirst({
         where: {
-            phone: request.phone
+            email: request.email
         },
         select: {
             answers: {
@@ -223,7 +224,7 @@ const verification = async (request) => {
     } 
 
     return {
-        message: "Nomor telepon ditemukan, lakukan verifikasi berikut",
+        message: "Email ditemukan, lakukan verifikasi berikut",
         question: questionText.answers[0].question.question_text,
     };
 
@@ -232,7 +233,7 @@ const verification = async (request) => {
 const proofUser = async (request, response) => {
     request = validate(proofUserValidation, request);
     const answers = await prismaClient.users.findFirst({
-        where: { phone: request.phone },
+        where: { email: request.email },
         select: {
             answers: {
                 select: {
@@ -249,10 +250,17 @@ const proofUser = async (request, response) => {
 
 const resetPassword = async (request) => {
     request = validate(resetPasswordValidation, request);
-    const newPassword = await bcrypt.hash(request.password, 10);
+    
+    const salt = process.env.HASH_SALT;
+    if (!salt) {
+        throw new Error("HASH_SALT is not set in environment variables");
+    }
+    
+    const newSaltedPassword = request.password + salt;
+    const newPassword = await bcrypt.hash(newSaltedPassword, 10);
     return prismaClient.users.update({
         where: {
-            phone: request.phone
+            email: request.email
         },
         data: {
             password: newPassword
@@ -271,11 +279,17 @@ const resetPasswordAuthenticated = async (request, res) => {
         where: { id: data.id },
         select: { password: true }
     });
-    const match = await bcrypt.compare(request.oldPassword, user.password);
+    const salt = process.env.HASH_SALT;
+    if (!salt) {
+        throw new Error("HASH_SALT is not set in environment variables");
+    }
+    const oldPassword = request.oldPassword + salt;
+    const match = await bcrypt.compare(oldPassword, user.password);
 
     if(!match) return res.status(400).json({ message: "Password yang kamu masukkan salah!", wrongPassword: true });
 
-    const newPassword = await bcrypt.hash(request.password, 10);
+    const newSaltedPassword = request.password + salt;
+    const newPassword = await bcrypt.hash(newSaltedPassword, 10);
     await prismaClient.users.update({
         where: {  id: data.id },
         data: { password: newPassword }
@@ -313,10 +327,9 @@ const logout = async (username) => {
 const getUserByToken = async (token) => {
     token = validate(tokenValidation, token);
     const data = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(data.id);
     const user = await prismaClient.users.findFirst({
         where: { id: data.id },
-        select: { balance: true, username: true, phone: true, profile_picture: true }
+        select: { balance: true, username: true, email: true, profile_picture: true }
     });
     return user;
 }
@@ -337,12 +350,12 @@ const get = async (username) => {
     return user;
 }
 
-const getHouseHold = async (username) => {
+const getHouseHold = async () => {
   
     const user = await prismaClient.users.findMany({
       select: {
         username: true,
-        phone: true,
+        email: true,
         role_id: true,
         profile_picture: true,
         balance: true,
@@ -368,7 +381,7 @@ const updateMobile = async (req, token) => {
         where: {id: data.id},
         data: {
             username: req.username,
-            phone: req.phone
+            email: req.email
         }
     })
 
@@ -463,13 +476,13 @@ const getUserByUsername = async (username) => {
       where: { 
         OR: [
             {username: username},
-            {phone: username},
+            {email: username},
         ]
        },
       select:{
         id: true,
         username: true,
-        phone: true,
+        email: true,
         role_id: true,
         profile_picture: true,
         balance: true,

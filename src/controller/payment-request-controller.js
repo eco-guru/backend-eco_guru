@@ -46,6 +46,7 @@ const accept = async (req, res) => {
 
 const decline = async (req, res) => {
   try {
+    console.log("reqbody: ", req.body);
     const response = await paymentRequestService.declinePayment(req.body, res);
     return response;
   } catch (error) {

@@ -32,7 +32,7 @@ model Users {
   id              Int     @id @default(autoincrement())
   username        String  @unique
   password        String
-  phone           String? @unique
+  email           String? @unique
   profile_picture String?
   role_id         Int
   token           String? @db.VarChar(100)
