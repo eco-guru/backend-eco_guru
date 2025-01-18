@@ -116,7 +116,7 @@ const login = async (request) => {
         where: {
             OR: [
                 { username: request.usernameOrPhone },
-                { phone: request.usernameOrPhone },
+                { email: request.usernameOrPhone },
             ],
         },
         include: { Roles: true },
@@ -144,7 +144,7 @@ const login = async (request) => {
         },
         select: {
             username: true,
-            phone: true,
+            email: true,
             token: true,
             Roles: {
                 select: {
@@ -161,7 +161,7 @@ const login = async (request) => {
     return {
         id: user.id,
         username: updatedUser.username,
-        phone: updatedUser.phone,
+        email: updatedUser.email,
         token: updatedUser.token,
         role: updatedUser.Roles.name,
     };
@@ -455,7 +455,7 @@ const getCurrent = async (username) => {
         },
         select: {
             username: true,
-            phone: true,
+            email: true,
             id: true,
             profile_picture: true,
         }
