@@ -340,8 +340,13 @@ const get = async (username) => {
       select: {
         id: true,
         username: true,
-        phone: true,
+        email: true,
         role_id: true,
+        Roles: {
+            select: {
+                name: true
+            }
+        },
         profile_picture: true,
         balance: true,
       }
@@ -498,17 +503,22 @@ const getUserByUsername = async (username) => {
 
 const updateUser = async (username, data) => {
     username = validate(getUserValidation, username);
-
+    
     if (!username) {
         throw new Error('Username is required');
     }
+    
+    if(data.password) {
+        data.password = await bcrypt.hash(data.password + process.env.HASH_SALT, 10);
+    }
+    data.role_id = Number(data.role_id);
 
     const updatedUser = await prismaClient.users.update({
         where: { username: username },
         data: data,
         select:{
             username: true,
-            phone: true,
+            email: true,
             role_id: true
         }
     });
@@ -551,7 +561,8 @@ const createUser = async (request, profilePicturePath) => {
         throw new ResponseError(400, "Role ID tidak valid");
     }
 
-    const hashedPassword = await bcrypt.hash(request.password, 10);
+    const saltedPassword = request.password + process.env.HASH_SALT;
+    const hashedPassword = await bcrypt.hash(saltedPassword, 10);
     
     const user = await prismaClient.users.create({
         data: {
@@ -562,7 +573,7 @@ const createUser = async (request, profilePicturePath) => {
         select: {
             id: true,
             username: true,
-            phone: true,
+            email: true,
             role_id: true,
             profile_picture: true
         }

@@ -53,13 +53,13 @@ const updateUserValidation = Joi.object({
         }
         return helpers.message("Profile picture must be a binary data (Blob).");
     }),
-    phone: Joi.string().optional().pattern(/^[0-9]+$/)
+    email: Joi.string().optional().pattern(/^[0-9]+$/)
 });
 
 const createUserValidation = Joi.object({
     username: Joi.string().min(3).max(50).required(),
     password: Joi.string().required(),
-    phone: Joi.string().pattern(/^(\+62|62|0)8[1-9][0-9]{6,10}$/).optional(),
+    email: Joi.string().required(),
     role_id: Joi.number().required(),
     profile_picture: Joi.any().optional().custom((value, helpers) => {
         if (Buffer.isBuffer(value)) {
